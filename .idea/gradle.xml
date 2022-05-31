@@ -13,13 +13,17 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/core-common" />
+            <option value="$PROJECT_DIR$/core/core-database-data" />
+            <option value="$PROJECT_DIR$/core/core-database-domain" />
             <option value="$PROJECT_DIR$/core/core-model" />
             <option value="$PROJECT_DIR$/core/core-navigation" />
             <option value="$PROJECT_DIR$/core/core-network-data" />
             <option value="$PROJECT_DIR$/core/core-network-domain" />
             <option value="$PROJECT_DIR$/core/core-ui" />
             <option value="$PROJECT_DIR$/feature" />
-            <option value="$PROJECT_DIR$/feature/feature-apps" />
+            <option value="$PROJECT_DIR$/feature/feature-authorization" />
+            <option value="$PROJECT_DIR$/feature/feature-products" />
+            <option value="$PROJECT_DIR$/feature/feature-profile" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -2,10 +2,13 @@ package com.example.storeapp.di.modules
 
 import com.example.core_network_data.api.CompanyApi
 import com.example.core_network_data.api.ProductApi
+import com.example.core_network_data.api.UserApi
 import com.example.core_network_data.repositoryImpl.CompanyRepositoryImpl
 import com.example.core_network_data.repositoryImpl.ProductRepositoryImpl
+import com.example.core_network_data.repositoryImpl.UserRepositoryImpl
 import com.example.core_network_domain.repository.CompanyRepository
 import com.example.core_network_domain.repository.ProductRepository
+import com.example.core_network_domain.repository.UserRepository
 import com.example.storeapp.common.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -19,6 +22,18 @@ import javax.inject.Singleton
 
 @Module
 class ApiModule {
+
+    @[Provides Singleton]
+    fun providerUserRepository(
+        userApi: UserApi
+    ):UserRepository = UserRepositoryImpl(
+        userApi = userApi
+    )
+
+    @[Provides Singleton]
+    fun providerUserApi(
+        retrofit: Retrofit
+    ):UserApi = retrofit.create(UserApi::class.java)
 
     @[Provides Singleton]
     fun providerCompanyRepository(

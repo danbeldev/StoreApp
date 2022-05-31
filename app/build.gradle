@@ -50,11 +50,20 @@ android {
 dependencies {
 
     implementation project(":core:core-ui")
+
     implementation project(":core:core-model")
+
     implementation project(":core:core-network-domain")
     implementation project(":core:core-network-data")
+
+    implementation project(":core:core-database-domain")
+    implementation project(":core:core-database-data")
+
     implementation project(":core:core-navigation")
-    implementation project(":feature:feature-apps")
+
+    implementation project(':feature:feature-products')
+    implementation project(':feature:feature-profile')
+    implementation project(':feature:feature-authorization')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"

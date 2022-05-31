@@ -24,7 +24,10 @@ class MainActivity : ComponentActivity() {
 
             MainTheme{
 
-                val appComponent = DaggerAppComponent.create()
+                val appComponent = DaggerAppComponent
+                    .builder()
+                    .context(this)
+                    .build()
 
                 val systemUiController = rememberSystemUiController()
                 val primaryBackground = JetHabitTheme.colors.primaryBackground
@@ -38,6 +41,7 @@ class MainActivity : ComponentActivity() {
                         color = primaryBackground
                     )
                 })
+
                 BaseNavHost(appComponent = appComponent)
             }
         }
