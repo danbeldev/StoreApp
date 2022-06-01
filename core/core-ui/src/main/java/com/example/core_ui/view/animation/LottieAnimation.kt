@@ -7,23 +7,24 @@ import com.example.core_ui.R
 
 enum class LottieAnimation(val resId: Int){
     WELCOME(R.raw.welcom),
-    ERROR(R.raw.error)
+    ERROR(R.raw.error),
+    LOADING(R.raw.loading),
+    COMPANY(R.raw.company),
+    ADD_COMPANY(R.raw.company_add)
 }
 
 @Composable
 fun BaseLottieAnimation(
     lottieAnimation:LottieAnimation,
+    iterations:Int = LottieConstants.IterateForever,
     modifier: Modifier
 ){
     val compositionResult =
         rememberLottieComposition(spec = LottieCompositionSpec.RawRes(lottieAnimation.resId))
 
-    val isPlaying by remember { mutableStateOf(true) }
-
     val progress = animateLottieCompositionAsState(
         composition = compositionResult.value,
-        isPlaying = isPlaying,
-        iterations = LottieConstants.IterateForever
+        iterations = iterations,
     )
 
     LottieAnimation(

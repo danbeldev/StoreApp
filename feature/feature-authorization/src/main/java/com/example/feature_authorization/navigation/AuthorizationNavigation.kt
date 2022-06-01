@@ -13,13 +13,15 @@ object AuthorizationDestination : NiaNavigationDestination {
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.authorizationNavigation(
-    authorizationViewModel:AuthorizationViewModel
+    authorizationViewModel:AuthorizationViewModel,
+    onBackClick:() -> Unit
 ) {
     composable(
         route = AuthorizationDestination.route
     ){
         AuthorizationScreen(
-            viewModel = authorizationViewModel
+            viewModel = authorizationViewModel,
+            onBackClick = onBackClick
         )
     }
 }

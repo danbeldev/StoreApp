@@ -1,7 +1,6 @@
 package com.example.storeapp.navigation.navHost
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -18,6 +17,8 @@ import com.example.feature_apps.navigation.ProductsDestination
 import com.example.feature_apps.navigation.productsNavigation
 import com.example.feature_authorization.navigation.AuthorizationDestination
 import com.example.feature_authorization.navigation.authorizationNavigation
+import com.example.feature_create_company.navigation.CreateCompanyDestination
+import com.example.feature_create_company.navigation.createCompanyNavigation
 import com.example.feature_profile.navigation.ProfileDestination
 import com.example.feature_profile.navigation.profileNavigation
 import com.example.storeapp.di.AppComponent
@@ -56,9 +57,11 @@ fun BaseNavHost(
                         label = {
                             Text(text = item.title)
                         }, icon = {
-                            Image(
+                            Icon(
                                 imageVector = item.icon,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = if(bottomBar == item) JetHabitTheme.colors.tintColor else
+                                    JetHabitTheme.colors.primaryText
                             )
                         }
                     )
@@ -79,10 +82,16 @@ fun BaseNavHost(
                         )
                         profileNavigation(
                             profileViewModel = appComponent.profileViewModel(),
-                            onAuthorizationScreen = { navHostController.navigate(AuthorizationDestination.route) }
+                            onAuthorizationScreen = { navHostController.navigate(AuthorizationDestination.route) },
+                            onCreateCompanyScreen = { navHostController.navigate(CreateCompanyDestination.route) }
                         )
                         authorizationNavigation(
-                            authorizationViewModel = appComponent.authorizationViewModel()
+                            authorizationViewModel = appComponent.authorizationViewModel(),
+                            onBackClick = { navHostController.navigateUp() }
+                        )
+                        createCompanyNavigation(
+                            viewModel = appComponent.createCompanyViewModel(),
+                            onBackClick = { navHostController.navigateUp() }
                         )
                     }
                 )

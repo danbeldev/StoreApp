@@ -1,6 +1,7 @@
 package com.example.storeapp.di.modules
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.core_database_data.repositoryImpl.UserRepositoryImpl
 import com.example.core_database_domain.repository.UserRepository
 import dagger.Module
@@ -12,9 +13,11 @@ class DatabaseModule {
 
     @[Provides Singleton]
     fun providerUserRepository(
-        context: Context
+        context: Context,
+        sharedPreferences: SharedPreferences
     ):UserRepository = UserRepositoryImpl(
-        context = context
+        context = context,
+        sharedPreferences = sharedPreferences
     )
 
 }

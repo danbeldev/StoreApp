@@ -1,10 +1,12 @@
 package com.example.core_database_data.repositoryImpl
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.core_common.common.BaseConstants
 import com.example.core_database_domain.repository.UserRepository
 import com.example.core_model.data.enums.user.UserRole
 import kotlinx.coroutines.flow.Flow
@@ -12,8 +14,15 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val sharedPreferences: SharedPreferences
 ):UserRepository {
+
+    override fun saveUserToken(token: String) {
+        sharedPreferences.edit()
+            .putString(BaseConstants.USER_TOKEN_SHARED, token)
+            .apply()
+    }
 
     override suspend fun saveStatusRegistration(userRegistration: Boolean) {
         context.userDataStore.edit { preferences ->

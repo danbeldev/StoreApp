@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.user.Authorization
+import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.TextFieldEmail
 import com.example.core_ui.view.TextFieldPassword
@@ -22,15 +23,16 @@ import kotlinx.coroutines.flow.onEach
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun AuthorizationScreen(
-    viewModel: AuthorizationViewModel
+    viewModel: AuthorizationViewModel,
+    onBackClick:() -> Unit
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    var authorizationResponseError:String? by remember { mutableStateOf(null) }
+    var authorizationResponse:Result<Unit>? by remember { mutableStateOf(null) }
 
-    viewModel.responseAuthorizationResponseError.onEach {
-        authorizationResponseError = it
+    viewModel.responseAuthorizationResponse.onEach {
+        authorizationResponse = it
     }.launchWhenStarted()
 
     LazyColumn(content = {
@@ -40,7 +42,7 @@ internal fun AuthorizationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (authorizationResponseError != null){
+                if (authorizationResponse != null){
 
                     Spacer(modifier = Modifier.height(100.dp))
 
@@ -48,16 +50,26 @@ internal fun AuthorizationScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        BaseLottieAnimation(
-                            lottieAnimation = LottieAnimation.ERROR,
-                            modifier = Modifier.size(300.dp)
-                        )
+                        if (authorizationResponse is Result.Loading){
 
-                        Text(
-                            text = authorizationResponseError ?: "",
-                            color = Color.Red,
-                            modifier = Modifier.padding(5.dp)
-                        )
+                            BaseLottieAnimation(
+                                lottieAnimation = LottieAnimation.LOADING,
+                                modifier = Modifier.size(300.dp)
+                            )
+
+                        }else if (authorizationResponse is Result.Error){
+                            BaseLottieAnimation(
+                                lottieAnimation = LottieAnimation.ERROR,
+                                modifier = Modifier.size(300.dp)
+                            )
+                            authorizationResponse?.let {
+                                Text(
+                                    text = it.message ?: "",
+                                    color = Color.Red,
+                                    modifier = Modifier.padding(5.dp)
+                                )
+                            }
+                        }
                     }
                 }else{ Spacer(modifier = Modifier.height(300.dp)) }
 
@@ -67,7 +79,8 @@ internal fun AuthorizationScreen(
 
                 BaseButton(label = "Authorization") {
                     viewModel.authorization(
-                        Authorization(email = email.value, password = password.value)
+                        Authorization(email = email.value, password = password.value),
+                        onBackClick = onBackClick
                     )
                 }
             }

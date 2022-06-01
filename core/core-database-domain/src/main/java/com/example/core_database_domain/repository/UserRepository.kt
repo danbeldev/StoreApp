@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
 
+    fun saveUserToken(token:String)
+
     suspend fun saveStatusRegistration(userRegistration:Boolean)
 
     suspend fun savaUserRole(userRole: UserRole)

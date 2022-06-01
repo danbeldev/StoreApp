@@ -3,6 +3,7 @@ package com.example.storeapp.di
 import android.content.Context
 import com.example.feature_apps.viewModel.ProductsViewModel
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
+import com.example.feature_create_company.viewModel.CreateCompanyViewModel
 import com.example.feature_profile.veiwModel.ProfileViewModel
 import com.example.storeapp.di.modules.ApiModule
 import com.example.storeapp.di.modules.DatabaseModule
@@ -18,6 +19,8 @@ interface AppComponent {
     fun profileViewModel():ProfileViewModel
 
     fun authorizationViewModel():AuthorizationViewModel
+
+    fun createCompanyViewModel():CreateCompanyViewModel
 
     @Component.Builder
     interface Builder{

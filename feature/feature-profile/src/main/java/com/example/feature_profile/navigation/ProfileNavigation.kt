@@ -16,14 +16,16 @@ object ProfileDestination : NiaNavigationDestination {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.profileNavigation(
     profileViewModel:ProfileViewModel,
-    onAuthorizationScreen:() -> Unit
+    onAuthorizationScreen:() -> Unit,
+    onCreateCompanyScreen:() -> Unit
 ) {
     composable(
         route = ProfileDestination.route
     ){
         ProfileScreen(
             profileViewModel = profileViewModel,
-            onAuthorizationScreen = onAuthorizationScreen
+            onAuthorizationScreen = onAuthorizationScreen,
+            onCreateCompanyScreen = onCreateCompanyScreen
         )
     }
 }

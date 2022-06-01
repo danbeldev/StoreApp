@@ -53,6 +53,8 @@ dependencies {
 
     implementation project(":core:core-model")
 
+    implementation project(":core:core-common")
+
     implementation project(":core:core-network-domain")
     implementation project(":core:core-network-data")
 
@@ -64,6 +66,7 @@ dependencies {
     implementation project(':feature:feature-products')
     implementation project(':feature:feature-profile')
     implementation project(':feature:feature-authorization')
+    implementation project(':feature:feature-create-company')
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -77,6 +80,9 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    //Okhttp
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2")
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
