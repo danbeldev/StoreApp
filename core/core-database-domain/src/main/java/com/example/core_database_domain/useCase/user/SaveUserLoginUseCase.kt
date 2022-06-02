@@ -1,4 +1,4 @@
 package com.example.core_database_domain.useCase.user
 
-class saveUserTokenUseCase {
+class SaveUserLoginUseCase {
 }
