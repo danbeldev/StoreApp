@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core_database_domain.useCase.user.SavaUserRoleUseCase
 import com.example.core_database_domain.useCase.user.SaveStatusRegistrationUseCase
+import com.example.core_database_domain.useCase.user.SaveUserLoginUseCase
 import com.example.core_database_domain.useCase.user.SaveUserTokenUseCase
 import com.example.core_model.data.api.user.Authorization
+import com.example.core_model.data.database.user.UserLogin
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_network_domain.useCase.user.AuthorizationUseCase
@@ -19,6 +21,7 @@ class AuthorizationViewModel @Inject constructor(
     private val authorizationUseCase: AuthorizationUseCase,
     private val saveStatusRegistrationUseCase: SaveStatusRegistrationUseCase,
     private val saveUserRoleUseCase: SavaUserRoleUseCase,
+    private val saveUserLoginUseCase: SaveUserLoginUseCase,
     private val saveUserTokenUseCase: SaveUserTokenUseCase
 ):ViewModel() {
 
@@ -37,8 +40,13 @@ class AuthorizationViewModel @Inject constructor(
                 is Result.Success -> null
             }
             it.data?.let { data ->
-                saveUserRole(data.role)
+                val userLogin = UserLogin(
+                    email = authorization.email,
+                    password = authorization.password,
+                )
                 saveUserToken(data.access_token)
+                saveUserRole(data.role)
+                saveUserLogin(userLogin)
                 saveStatusRegistration(true)
                 onBackClick()
             }
@@ -53,7 +61,11 @@ class AuthorizationViewModel @Inject constructor(
         saveUserRoleUseCase.invoke(userRole)
     }
 
-    private fun saveUserToken(token:String){
+    private suspend fun saveUserLogin(userLogin: UserLogin){
+        saveUserLoginUseCase.invoke(userLogin)
+    }
+
+    private suspend fun saveUserToken(token:String){
         saveUserTokenUseCase.invoke(token)
     }
 }

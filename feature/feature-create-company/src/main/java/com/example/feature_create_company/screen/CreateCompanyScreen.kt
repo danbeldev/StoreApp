@@ -22,6 +22,8 @@ import com.example.core_common.extension.decodeResourceBitmap
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_common.extension.toByteArray
 import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.user.Authorization
+import com.example.core_model.data.database.user.UserLogin
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.activityResult.FileManagerActivityResult
 import com.example.core_ui.icon.NiaIcons
@@ -31,19 +33,34 @@ import com.example.core_ui.view.TextFieldBase
 import com.example.core_ui.view.animation.BaseLottieAnimation
 import com.example.core_ui.view.animation.LottieAnimation
 import com.example.feature_create_company.viewModel.CreateCompanyViewModel
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 private enum class FileManagerState {
     LOGO, BANNER, NULL
 }
 
-@SuppressLint("FlowOperatorInvokedInComposition")
+private enum class PagerEnum{
+    CREATE_COMPANY,
+    ADD_LOGO,
+    ADD_BANNER
+}
+
+@ExperimentalPagerApi
+@SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
 @Composable
-fun CreateCompanyScreen(
+internal fun CreateCompanyScreen(
     viewModel:CreateCompanyViewModel,
     onBackClick:() -> Unit
 ) {
     val context = LocalContext.current
+
+    val scope = rememberCoroutineScope()
+
+    val pagerState = rememberPagerState(pageCount = PagerEnum.values().size)
 
     val title = remember { mutableStateOf("") }
     val description = remember { mutableStateOf("") }
@@ -51,12 +68,16 @@ fun CreateCompanyScreen(
     var fileManagerState by remember { mutableStateOf(FileManagerState.NULL) }
     val openFileManager = remember { mutableStateOf(false) }
 
+    var companyCreate by remember { mutableStateOf(true) }
+
     var companyResult:Result<Unit?>? by remember { mutableStateOf(null) }
     var companyBannerResult:Result<Void?>? by remember { mutableStateOf(null) }
     var companyLogoResult:Result<Void?>? by remember { mutableStateOf(null) }
 
     var banner by remember { mutableStateOf(NiaIcons.noImage.decodeResourceBitmap(context)) }
     var logo by remember { mutableStateOf(NiaIcons.noImage.decodeResourceBitmap(context)) }
+
+    var userLogin by remember { mutableStateOf(UserLogin()) }
 
     val fileManagerActivityResult = FileManagerActivityResult(
         openFileManager = openFileManager,
@@ -83,15 +104,13 @@ fun CreateCompanyScreen(
         companyLogoResult = it
     }.launchWhenStarted()
 
+    viewModel.responseUserLogin.onEach {
+        userLogin = it
+    }.launchWhenStarted()
+
     if (openFileManager.value){
         fileManagerActivityResult.launch("image/*")
     }
-
-    if (
-        companyResult is Result.Success &&
-        companyBannerResult is Result.Success &&
-        companyLogoResult is Result.Success
-    ){ onBackClick() }
 
     Scaffold(
         topBar = {
@@ -100,11 +119,28 @@ fun CreateCompanyScreen(
                 elevation = 8.dp,
                 title = {
                     Text(
-                        text = "Create Company",
+                        text = when(pagerState.currentPage){
+                            PagerEnum.CREATE_COMPANY.ordinal -> "Create company"
+                            PagerEnum.ADD_LOGO.ordinal -> "Company add logo"
+                            PagerEnum.ADD_BANNER.ordinal -> "Company add banner"
+                            else -> ""
+                        },
                         color = JetHabitTheme.colors.primaryText
                     )
                 }, navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(
+                        onClick = {
+                            when(pagerState.currentPage){
+                                PagerEnum.CREATE_COMPANY.ordinal -> onBackClick()
+                                PagerEnum.ADD_LOGO.ordinal -> scope.launch {
+                                    pagerState.animateScrollToPage(PagerEnum.CREATE_COMPANY.ordinal)
+                                }
+                                PagerEnum.ADD_BANNER.ordinal -> scope.launch {
+                                    pagerState.animateScrollToPage(PagerEnum.ADD_LOGO.ordinal)
+                                }
+                            }
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowLeft,
                             contentDescription = null,
@@ -118,113 +154,147 @@ fun CreateCompanyScreen(
                 modifier = Modifier.fillMaxWidth(),
                 color = JetHabitTheme.colors.primaryBackground
             ) {
-                LazyColumn(content = {
-                    item {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            BaseLottieAnimation(
-                                lottieAnimation = when (companyResult) {
-                                    is Result.Loading -> LottieAnimation.LOADING
-                                    is Result.Error -> LottieAnimation.ERROR
-                                    else -> LottieAnimation.COMPANY
-                                },
-                                modifier = Modifier.size(400.dp)
-                            )
-
-                            Text(
-                                text = companyResult?.message
-                                    ?: companyBannerResult?.message
-                                    ?: companyLogoResult?.message ?: "",
-                                color = Color.Red,
-                                modifier = Modifier.padding(5.dp),
-                                fontWeight = FontWeight.Bold
-                            )
-
-                            TextFieldBase(
-                                label = "Title",
-                                value = title
-                            )
-
-                            TextFieldBase(
-                                label = "Description",
-                                value = description
-                            )
-
-                            Divider()
-
-                            if(companyBannerResult is Result.Loading){
+                HorizontalPager(
+                    state = pagerState,
+                    dragEnabled = false
+                ) {
+                    LazyColumn(content = {
+                        item {
+                            Column(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
                                 BaseLottieAnimation(
-                                    lottieAnimation = LottieAnimation.LOADING,
-                                    modifier = Modifier.size(300.dp)
+                                    lottieAnimation = when (companyResult) {
+                                        is Result.Loading -> LottieAnimation.LOADING
+                                        is Result.Error -> LottieAnimation.ERROR
+                                        else -> LottieAnimation.COMPANY
+                                    },
+                                    modifier = Modifier.size(400.dp)
                                 )
-                            }else {
-                                Image(
-                                    bitmap = logo.asImageBitmap(),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(300.dp)
-                                        .pointerInput(Unit) {
-                                            detectTapGestures(onTap = {
-                                                fileManagerState = FileManagerState.LOGO
-                                                openFileManager.value = true
-                                            })
+
+                                Text(
+                                    text = companyResult?.message
+                                        ?: companyBannerResult?.message
+                                        ?: companyLogoResult?.message ?: "",
+                                    color = Color.Red,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight.Bold
+                                )
+
+                                when(it){
+                                    PagerEnum.CREATE_COMPANY.ordinal -> {
+                                        TextFieldBase(
+                                            label = "Title",
+                                            value = title
+                                        )
+
+                                        TextFieldBase(
+                                            label = "Description",
+                                            value = description
+                                        )
+
+                                        BaseButton(
+                                            label = if(companyCreate) "Create Company" else
+                                                "Update Company"
+                                        ) {
+
+                                            if (title.value.isEmpty()){
+                                                companyResult = Result.Error("title required field")
+                                                return@BaseButton
+                                            }
+
+                                            if (description.value.isEmpty()){
+                                                companyResult = Result.Error("description required field")
+                                                return@BaseButton
+                                            }
+
+                                            val company = PostCompany(
+                                                title = title.value, description = description.value)
+
+                                            val authorization = Authorization(
+                                                email = userLogin.email, password = userLogin.password)
+
+                                            if (companyCreate){
+                                                viewModel.postCompany(company)
+                                                viewModel.authorization(authorization)
+                                            }
+
+                                            scope.launch {
+                                                companyCreate = false
+                                                pagerState.animateScrollToPage(PagerEnum.ADD_LOGO.ordinal)
+                                            }
                                         }
-                                )
-                            }
+                                    }
+                                    PagerEnum.ADD_LOGO.ordinal -> {
+                                        if(companyLogoResult is Result.Loading){
+                                            BaseLottieAnimation(
+                                                lottieAnimation = LottieAnimation.LOADING,
+                                                modifier = Modifier.size(300.dp)
+                                            )
+                                        }else {
+                                            Image(
+                                                bitmap = logo.asImageBitmap(),
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .size(300.dp)
+                                                    .pointerInput(Unit) {
+                                                        detectTapGestures(onTap = {
+                                                            fileManagerState = FileManagerState.LOGO
+                                                            openFileManager.value = true
+                                                        })
+                                                    }
+                                            )
 
-                            Text(
-                                text = "Logo",
-                                color = JetHabitTheme.colors.tintColor,
-                                fontWeight = FontWeight.W900,
-                                modifier = Modifier.padding(5.dp)
-                            )
+                                            BaseButton(
+                                                label = "Company add logo"
+                                            ){
+                                                viewModel.postCompanyLogo(banner.toByteArray())
 
-                            Divider()
-
-                            if(companyBannerResult is Result.Loading){
-                                BaseLottieAnimation(
-                                    lottieAnimation = LottieAnimation.LOADING,
-                                    modifier = Modifier.size(300.dp)
-                                )
-                            }else {
-                                Image(
-                                    bitmap = banner.asImageBitmap(),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(300.dp)
-                                        .pointerInput(Unit) {
-                                            detectTapGestures(onTap = {
-                                                fileManagerState = FileManagerState.BANNER
-                                                openFileManager.value = true
-                                            })
+                                                scope.launch {
+                                                    pagerState.animateScrollToPage(PagerEnum.ADD_BANNER.ordinal)
+                                                }
+                                            }
                                         }
-                                )
-                            }
+                                    }
+                                    PagerEnum.ADD_BANNER.ordinal -> {
+                                        if(companyBannerResult is Result.Loading){
+                                            BaseLottieAnimation(
+                                                lottieAnimation = LottieAnimation.LOADING,
+                                                modifier = Modifier.size(300.dp)
+                                            )
+                                        }else {
+                                            Image(
+                                                bitmap = banner.asImageBitmap(),
+                                                contentDescription = null,
+                                                modifier = Modifier
+                                                    .size(300.dp)
+                                                    .pointerInput(Unit) {
+                                                        detectTapGestures(onTap = {
+                                                            fileManagerState =
+                                                                FileManagerState.BANNER
+                                                            openFileManager.value = true
+                                                        })
+                                                    }
+                                            )
+                                        }
 
-                            Text(
-                                text = "Banner",
-                                color = JetHabitTheme.colors.tintColor,
-                                fontWeight = FontWeight.W900,
-                                modifier = Modifier.padding(5.dp)
-                            )
-
-                            Divider()
-
-                            BaseButton(label = "Create Company") {
-                                val company = PostCompany(title = title.value, description = description.value)
-                                viewModel.postCompany(company)
-                                viewModel.postCompanyBanner(banner.toByteArray())
-                                viewModel.postCompanyLogo(banner.toByteArray())
+                                        BaseButton(
+                                            label = "Company add banner"
+                                        ){
+                                            viewModel.postCompanyBanner(banner.toByteArray())
+                                            onBackClick()
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
 
-                    item{
-                        Spacer(modifier = Modifier.height(80.dp))
-                    }
-                })
+                        item{
+                            Spacer(modifier = Modifier.height(80.dp))
+                        }
+                    })
+                }
             }
         }
     )

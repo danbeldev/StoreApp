@@ -19,6 +19,7 @@ import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.Image
+import com.example.core_ui.view.More
 
 
 @Composable
@@ -42,6 +43,9 @@ private fun ProductItem(
     Column {
         if (index != 0){
             if (index % 30 == 0){
+                More(text = "Companies") {
+
+                }
                 LazyRow(content = {
                     items(company){ item -> item?.let { CompanyItem(companyItem = item) }}
                 })

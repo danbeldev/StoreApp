@@ -6,6 +6,7 @@ internal object ConstantsUrl {
     const val GET_EVENT = "/storeApp/api/Event"
 
     const val COMPANY = "/storeApp/api/Company"
+    const val COMPANY_USER = "/storeApp/Company"
     const val COMPANY_LOGO = "/storeApp/api/Company/Logo"
     const val COMPANY_BANNER = "/storeApp/api/Company/Banner"
 

@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.user.User
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_network_domain.apiResponse.Result
@@ -20,6 +22,8 @@ import com.example.core_ui.view.animation.LottieAnimation
 @Composable
 fun ProfileStatusTrue(
     user: Result<User>,
+    company: Result<CompanyItem>,
+    userRole: UserRole,
     onCreateCompanyScreen:() -> Unit
 ) {
     Scaffold(
@@ -60,7 +64,7 @@ fun ProfileStatusTrue(
             ) {
                 Column {
                     user.data?.role?.let {
-                        if (user.data?.role != UserRole.CompanyUser){
+                        if (userRole != UserRole.CompanyUser){
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.End
@@ -70,10 +74,35 @@ fun ProfileStatusTrue(
                                     iterations = 1,
                                     modifier = Modifier
                                         .size(100.dp)
-                                        .pointerInput(Unit){
+                                        .pointerInput(Unit) {
                                             detectTapGestures(onTap = { onCreateCompanyScreen() })
                                         }
                                 )
+                            }
+                        }else{
+
+                            Text(
+                                text = "Company",
+                                modifier = Modifier.padding(5.dp),
+                                fontWeight = FontWeight.W900,
+                                color = JetHabitTheme.colors.tintColor
+                            )
+
+                            when(company){
+                                is Result.Error -> {
+                                    Text(
+                                        text = company.message ?: "Error",
+                                        modifier = Modifier.padding(5.dp),
+                                        color = Color.Red
+                                    )
+                                }
+                                is Result.Loading -> Unit
+                                is Result.Success -> {
+                                    Text(
+                                        text = company.data.toString(),
+                                        modifier = Modifier.padding(5.dp)
+                                    )
+                                }
                             }
                         }
                     }

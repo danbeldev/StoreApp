@@ -1,16 +1,16 @@
 package com.example.storeapp.di.modules
 
-import android.content.Context
-import android.content.SharedPreferences
-import com.example.core_common.common.BaseConstants.USER_TOKEN_SHARED
 import com.example.core_network_data.api.CompanyApi
 import com.example.core_network_data.api.ProductApi
 import com.example.core_network_data.api.UserApi
+import com.example.core_network_data.api.UserCompanyApi
 import com.example.core_network_data.repositoryImpl.CompanyRepositoryImpl
 import com.example.core_network_data.repositoryImpl.ProductRepositoryImpl
+import com.example.core_network_data.repositoryImpl.UserCompanyRepositoryImpl
 import com.example.core_network_data.repositoryImpl.UserRepositoryImpl
 import com.example.core_network_domain.repository.CompanyRepository
 import com.example.core_network_domain.repository.ProductRepository
+import com.example.core_network_domain.repository.UserCompanyRepository
 import com.example.core_network_domain.repository.UserRepository
 import com.example.storeapp.common.Constants.BASE_URL
 import com.example.storeapp.di.modules.annotations.UserToken
@@ -27,6 +27,18 @@ import javax.inject.Singleton
 
 @Module
 class ApiModule {
+
+    @[Provides Singleton]
+    fun providerUserCompanyRepository(
+        userCompanyApi: UserCompanyApi
+    ):UserCompanyRepository = UserCompanyRepositoryImpl(
+        userCompanyApi = userCompanyApi
+    )
+
+    @[Provides Singleton]
+    fun providerUserCompanyApi(
+        retrofit: Retrofit
+    ):UserCompanyApi = retrofit.create(UserCompanyApi::class.java)
 
     @[Provides Singleton]
     fun providerUserRepository(
@@ -88,7 +100,7 @@ class ApiModule {
 
     @[Singleton Provides]
     fun providerOkHttpClient(
-        @UserToken token:String
+        token:String
     ):OkHttpClient = OkHttpClient.Builder()
         .addInterceptor {
             val request = it.request().newBuilder()
@@ -97,14 +109,4 @@ class ApiModule {
             it.proceed(request = request)
         }
         .build()
-
-    @[Singleton Provides UserToken]
-    fun providerUserToken(
-        sharedPreferences: SharedPreferences
-    ):String = sharedPreferences.getString(USER_TOKEN_SHARED, "") ?: ""
-
-    @[Singleton Provides]
-    fun providerUserShared(
-        context: Context
-    ):SharedPreferences = context.getSharedPreferences(USER_TOKEN_SHARED, Context.MODE_PRIVATE)
 }
