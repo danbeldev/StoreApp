@@ -17,7 +17,8 @@ object ProfileDestination : NiaNavigationDestination {
 fun NavGraphBuilder.profileNavigation(
     profileViewModel:ProfileViewModel,
     onAuthorizationScreen:() -> Unit,
-    onCreateCompanyScreen:() -> Unit
+    onCreateCompanyScreen:() -> Unit,
+    onSettingsScreen:() -> Unit
 ) {
     composable(
         route = ProfileDestination.route
@@ -25,7 +26,8 @@ fun NavGraphBuilder.profileNavigation(
         ProfileScreen(
             profileViewModel = profileViewModel,
             onAuthorizationScreen = onAuthorizationScreen,
-            onCreateCompanyScreen = onCreateCompanyScreen
+            onCreateCompanyScreen = onCreateCompanyScreen,
+            onSettingsScreen = onSettingsScreen
         )
     }
 }

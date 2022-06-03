@@ -8,7 +8,7 @@ interface UserRepository {
 
     suspend fun saveStatusRegistration(userRegistration:Boolean)
 
-    suspend fun savaUserRole(userRole: UserRole)
+    suspend fun savaUserRole(userRole: UserRole?)
 
     fun getUserRole(): Flow<UserRole>
 

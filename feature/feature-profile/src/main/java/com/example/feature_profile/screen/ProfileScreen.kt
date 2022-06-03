@@ -21,7 +21,8 @@ import kotlinx.coroutines.flow.onEach
 internal fun ProfileScreen(
     profileViewModel: ProfileViewModel,
     onAuthorizationScreen:() -> Unit,
-    onCreateCompanyScreen:() -> Unit
+    onCreateCompanyScreen:() -> Unit,
+    onSettingsScreen:() -> Unit
 ) {
 
     var statusUserRegistration by remember { mutableStateOf(false) }
@@ -57,6 +58,7 @@ internal fun ProfileScreen(
                 user = user,
                 userRole = userRole,
                 onCreateCompanyScreen = onCreateCompanyScreen,
+                onSettingsScreen = onSettingsScreen,
                 company = company
             )
             false -> ProfileStatusFalse(

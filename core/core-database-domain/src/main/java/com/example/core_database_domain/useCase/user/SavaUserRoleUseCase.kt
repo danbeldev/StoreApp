@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SavaUserRoleUseCase @Inject constructor(
     private val userRepository: UserRepository
 ){
-    suspend operator fun invoke(userRole: UserRole){
+    suspend operator fun invoke(userRole: UserRole?){
         userRepository.savaUserRole(userRole)
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.core_ui.theme.JetHabitStyle
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.feature_apps.navigation.ProductsDestination
 import com.example.feature_apps.navigation.productsNavigation
@@ -21,6 +22,8 @@ import com.example.feature_create_company.navigation.CreateCompanyDestination
 import com.example.feature_create_company.navigation.createCompanyNavigation
 import com.example.feature_profile.navigation.ProfileDestination
 import com.example.feature_profile.navigation.profileNavigation
+import com.example.feature_settings.navigation.SettingsDestination
+import com.example.feature_settings.navigation.settingsNavigation
 import com.example.storeapp.di.AppComponent
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -28,7 +31,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
 fun BaseNavHost(
-    appComponent: AppComponent
+    appComponent: AppComponent,
+    isDarkMode: Boolean,
+    onDarkModeChanged: (Boolean) -> Unit,
+    onNewStyle: (JetHabitStyle) -> Unit
 ) {
     val navHostController = rememberNavController()
 
@@ -83,7 +89,8 @@ fun BaseNavHost(
                         profileNavigation(
                             profileViewModel = appComponent.profileViewModel(),
                             onAuthorizationScreen = { navHostController.navigate(AuthorizationDestination.route) },
-                            onCreateCompanyScreen = { navHostController.navigate(CreateCompanyDestination.route) }
+                            onCreateCompanyScreen = { navHostController.navigate(CreateCompanyDestination.route) },
+                            onSettingsScreen = { navHostController.navigate(SettingsDestination.route) }
                         )
                         authorizationNavigation(
                             authorizationViewModel = appComponent.authorizationViewModel(),
@@ -92,6 +99,13 @@ fun BaseNavHost(
                         createCompanyNavigation(
                             viewModel = appComponent.createCompanyViewModel(),
                             onBackClick = { navHostController.navigateUp() }
+                        )
+                        settingsNavigation(
+                            viewModel = appComponent.settingsViewModel(),
+                            onBackClick = { navHostController.navigateUp() },
+                            isDarkMode = isDarkMode,
+                            onDarkModeChanged = onDarkModeChanged,
+                            onNewStyle = onNewStyle
                         )
                     }
                 )

@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import androidx.paging.compose.itemsIndexed
@@ -20,6 +21,7 @@ import com.example.core_model.data.api.product.ProductItem
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.More
+import com.example.core_ui.view.animation.schimmer.BaseColumnShimmer
 
 
 @Composable
@@ -31,6 +33,19 @@ internal fun Products(
         itemsIndexed(products){ index, item -> item?.let { ProductItem(
             product = item, index = index, company = company
         ) } }
+
+        if (
+            products.loadState.refresh is LoadState.Loading
+            || products.loadState.append is LoadState.Loading
+        ){
+            item {
+                BaseColumnShimmer()
+            }
+        }
+        
+        item { 
+            Spacer(modifier = Modifier.height(70.dp))
+        }
     })
 }
 

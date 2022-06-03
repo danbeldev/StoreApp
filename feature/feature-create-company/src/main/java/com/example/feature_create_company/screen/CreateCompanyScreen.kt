@@ -74,7 +74,7 @@ internal fun CreateCompanyScreen(
     var companyBannerResult:Result<Void?>? by remember { mutableStateOf(null) }
     var companyLogoResult:Result<Void?>? by remember { mutableStateOf(null) }
 
-    var banner by remember { mutableStateOf(NiaIcons.noImage.decodeResourceBitmap(context)) }
+    var banner by remember { mutableStateOf(NiaIcons.baseBanner.decodeResourceBitmap(context)) }
     var logo by remember { mutableStateOf(NiaIcons.noImage.decodeResourceBitmap(context)) }
 
     var userLogin by remember { mutableStateOf(UserLogin()) }
@@ -249,7 +249,7 @@ internal fun CreateCompanyScreen(
                                             BaseButton(
                                                 label = "Company add logo"
                                             ){
-                                                viewModel.postCompanyLogo(banner.toByteArray())
+                                                viewModel.postCompanyLogo(logo.toByteArray())
 
                                                 scope.launch {
                                                     pagerState.animateScrollToPage(PagerEnum.ADD_BANNER.ordinal)
@@ -268,7 +268,7 @@ internal fun CreateCompanyScreen(
                                                 bitmap = banner.asImageBitmap(),
                                                 contentDescription = null,
                                                 modifier = Modifier
-                                                    .size(300.dp)
+                                                    .fillMaxSize()
                                                     .pointerInput(Unit) {
                                                         detectTapGestures(onTap = {
                                                             fileManagerState =

@@ -26,6 +26,7 @@ internal fun ProfileStatusFalse(
 
                 BaseLottieAnimation(
                     lottieAnimation = LottieAnimation.WELCOME,
+                    iterations = 1,
                     modifier = Modifier
                         .size(350.dp)
                         .padding(10.dp)

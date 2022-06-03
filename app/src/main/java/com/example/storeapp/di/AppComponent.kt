@@ -5,6 +5,7 @@ import com.example.feature_apps.viewModel.ProductsViewModel
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 import com.example.feature_create_company.viewModel.CreateCompanyViewModel
 import com.example.feature_profile.veiwModel.ProfileViewModel
+import com.example.feature_settings.viewModel.SettingsViewModel
 import com.example.storeapp.MainViewModel
 import com.example.storeapp.di.modules.ApiModule
 import com.example.storeapp.di.modules.DatabaseModule
@@ -25,6 +26,8 @@ interface AppComponent {
     fun createCompanyViewModel():CreateCompanyViewModel
 
     fun mainViewModel():MainViewModel
+
+    fun settingsViewModel():SettingsViewModel
 
     @Component.Builder
     interface Builder{

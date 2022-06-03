@@ -2,15 +2,38 @@ package com.example.storeapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core_database_domain.useCase.settings.GetSettingsUseCase
+import com.example.core_database_domain.useCase.settings.SaveDarkThemeUseCase
+import com.example.core_database_domain.useCase.settings.SaveStyleUseCase
 import com.example.core_database_domain.useCase.user.GetUserTokenUseCase
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import com.example.core_model.data.database.settings.Settings
+import com.example.core_ui.theme.JetHabitStyle
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    getUserTokenUseCase: GetUserTokenUseCase
+    getUserTokenUseCase: GetUserTokenUseCase,
+    getSettingsUseCase: GetSettingsUseCase,
+    private val saveDarkThemeUseCase: SaveDarkThemeUseCase,
+    private val saveStyleUseCase: SaveStyleUseCase
 ):ViewModel() {
 
     val responseUserToken = getUserTokenUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, "")
+
+    val responseSettings = getSettingsUseCase.invoke()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, Settings())
+
+    fun saveDarkTheme(darkTheme:Boolean){
+        viewModelScope.launch {
+            saveDarkThemeUseCase.invoke(darkTheme)
+        }
+    }
+
+    fun saveStyle(style:JetHabitStyle){
+        viewModelScope.launch {
+            saveStyleUseCase.invoke(style = style.name)
+        }
+    }
 }

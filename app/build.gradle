@@ -65,6 +65,7 @@ dependencies {
 
     implementation project(':feature:feature-products')
     implementation project(':feature:feature-profile')
+    implementation project(':feature:feature-settings')
     implementation project(':feature:feature-authorization')
     implementation project(':feature:feature-create-company')
 

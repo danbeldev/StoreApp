@@ -24,9 +24,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun savaUserRole(userRole: UserRole) {
+    override suspend fun savaUserRole(userRole: UserRole?) {
         context.userDataStore.edit { preferences ->
-            preferences[USER_ROLE] = userRole.name
+            preferences[USER_ROLE] = userRole?.name ?: UserRole.BaseUser.name
         }
     }
 
