@@ -3,12 +3,11 @@ package com.example.feature_authorization.screen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieConstants
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_network_domain.apiResponse.Result
@@ -50,28 +49,25 @@ internal fun AuthorizationScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        if (authorizationResponse is Result.Loading){
-
-                            BaseLottieAnimation(
-                                lottieAnimation = LottieAnimation.LOADING,
-                                modifier = Modifier.size(300.dp)
-                            )
-
-                        }else if (authorizationResponse is Result.Error){
-                            BaseLottieAnimation(
-                                lottieAnimation = LottieAnimation.ERROR,
-                                modifier = Modifier.size(300.dp)
-                            )
-                            authorizationResponse?.let {
-                                Text(
-                                    text = it.message ?: "",
-                                    color = Color.Red,
-                                    modifier = Modifier.padding(5.dp)
-                                )
+                        BaseLottieAnimation(
+                            lottieAnimation = when(authorizationResponse){
+                                is Result.Loading -> LottieAnimation.LOADING
+                                is Result.Error -> LottieAnimation.ERROR
+                                else -> LottieAnimation.LOGIN
+                            },
+                            modifier = Modifier.size(300.dp),
+                            iterations = when(authorizationResponse){
+                                is Result.Error -> 1
+                                else -> LottieConstants.IterateForever
                             }
-                        }
+                        )
                     }
-                }else{ Spacer(modifier = Modifier.height(300.dp)) }
+                }else{
+                    BaseLottieAnimation(
+                        lottieAnimation = LottieAnimation.LOGIN,
+                        modifier = Modifier.size(300.dp)
+                    )
+                }
 
                 TextFieldEmail(value = email)
 
@@ -84,6 +80,10 @@ internal fun AuthorizationScreen(
                     )
                 }
             }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(70.dp))
         }
     })
 }

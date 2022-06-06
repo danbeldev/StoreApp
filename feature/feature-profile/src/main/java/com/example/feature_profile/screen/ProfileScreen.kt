@@ -22,7 +22,9 @@ internal fun ProfileScreen(
     profileViewModel: ProfileViewModel,
     onAuthorizationScreen:() -> Unit,
     onCreateCompanyScreen:() -> Unit,
-    onSettingsScreen:() -> Unit
+    onSettingsScreen:() -> Unit,
+    onRegistration:() -> Unit,
+    onCreateProductScreen:() -> Unit
 ) {
 
     var statusUserRegistration by remember { mutableStateOf(false) }
@@ -59,10 +61,12 @@ internal fun ProfileScreen(
                 userRole = userRole,
                 onCreateCompanyScreen = onCreateCompanyScreen,
                 onSettingsScreen = onSettingsScreen,
-                company = company
+                company = company,
+                onCreateProductScreen = onCreateProductScreen
             )
             false -> ProfileStatusFalse(
-                onAuthorizationScreen = onAuthorizationScreen
+                onAuthorizationScreen = onAuthorizationScreen,
+                onRegistration = onRegistration
             )
         }
     }

@@ -38,6 +38,30 @@ fun TextFieldBase(
 }
 
 @Composable
+fun TextFieldNumber(
+    modifier: Modifier = Modifier,
+    label:String,
+    value:MutableState<String>
+) {
+    OutlinedTextField(
+        value = value.value,
+        onValueChange = {value.value = it},
+        shape = AbsoluteRoundedCornerShape(5.dp),
+        label = { Text(text = label, color = JetHabitTheme.colors.primaryText) },
+        colors = TextFieldDefaults.textFieldColors(
+            focusedIndicatorColor = JetHabitTheme.colors.tintColor,
+            backgroundColor = JetHabitTheme.colors.primaryBackground,
+            cursorColor = JetHabitTheme.colors.tintColor,
+            focusedLabelColor = JetHabitTheme.colors.tintColor
+        ),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Go,
+            keyboardType = KeyboardType.Number
+        ), modifier = modifier.padding(5.dp)
+    )
+}
+
+@Composable
 fun TextFieldEmail(
     modifier: Modifier = Modifier,
     label:String = "Email",

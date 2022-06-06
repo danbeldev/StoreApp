@@ -23,8 +23,10 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/feature-authorization" />
             <option value="$PROJECT_DIR$/feature/feature-create-company" />
+            <option value="$PROJECT_DIR$/feature/feature-create-product" />
             <option value="$PROJECT_DIR$/feature/feature-products" />
             <option value="$PROJECT_DIR$/feature/feature-profile" />
+            <option value="$PROJECT_DIR$/feature/feature-registration" />
             <option value="$PROJECT_DIR$/feature/feature-settings" />
           </set>
         </option>

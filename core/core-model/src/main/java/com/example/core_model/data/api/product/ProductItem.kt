@@ -14,7 +14,7 @@ data class ProductItem(
     @SerialName("ageRating")
     val ageRating: AgeRating,
     @SerialName("country")
-    val country: Country?,
+    val country: CountryItem?,
     @SerialName("datePublication")
     val datePublication: String,
     @SerialName("email")
@@ -26,7 +26,7 @@ data class ProductItem(
     @SerialName("fullDescription")
     val fullDescription: String,
     @SerialName("genre")
-    val genre: Genre?,
+    val genre: GenreItem?,
     @SerialName("icon")
     val icon: String?,
     @SerialName("id")

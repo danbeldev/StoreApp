@@ -88,7 +88,7 @@ private fun ProductItem(
                 )
 
                 Text(
-                    text = "${product.genre} & ${product.country}",
+                    text = "${product.genre?.title} & ${product.country?.countryTitle}",
                     modifier = Modifier.padding(5.dp),
                     color = JetHabitTheme.colors.primaryText
                 )

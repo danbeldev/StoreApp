@@ -12,7 +12,8 @@ import com.example.core_ui.view.animation.LottieAnimation
 
 @Composable
 internal fun ProfileStatusFalse(
-    onAuthorizationScreen:() -> Unit
+    onAuthorizationScreen:() -> Unit,
+    onRegistration:() -> Unit
 ) {
 
     LazyColumn(content = {
@@ -38,9 +39,7 @@ internal fun ProfileStatusFalse(
 
                 BaseButton(
                     label = "Registration"
-                ){
-
-                }
+                ){ onRegistration() }
             }
         }
     })

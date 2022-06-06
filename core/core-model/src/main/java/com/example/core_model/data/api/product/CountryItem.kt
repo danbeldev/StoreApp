@@ -6,6 +6,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Country(
+    val total:Int,
+    val items:List<CountryItem>
+)
+
+@Serializable
+data class CountryItem(
     @SerialName("continent")
     val continent: String,
     @SerialName("countryTitle")

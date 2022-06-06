@@ -33,7 +33,8 @@ fun ProfileStatusTrue(
     company: Result<CompanyItem>,
     userRole: UserRole,
     onCreateCompanyScreen:() -> Unit,
-    onSettingsScreen:() -> Unit
+    onSettingsScreen:() -> Unit,
+    onCreateProductScreen:() -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -162,7 +163,7 @@ fun ProfileStatusTrue(
                                                             horizontalAlignment = Alignment.CenterHorizontally,
                                                             verticalArrangement = Arrangement.Center
                                                         ) {
-                                                            IconButton(onClick = { /*TODO*/ }) {
+                                                            IconButton(onClick = onCreateProductScreen) {
                                                                 Icon(
                                                                     imageVector = Icons.Default.Add,
                                                                     contentDescription = null,

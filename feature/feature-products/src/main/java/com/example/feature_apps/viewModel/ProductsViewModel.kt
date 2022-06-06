@@ -21,7 +21,7 @@ class ProductsViewModel @Inject constructor(
 ):ViewModel() {
 
     fun getProduct():Flow<PagingData<ProductItem>> {
-        return Pager(PagingConfig(pageSize = 20)){
+        return Pager(PagingConfig(pageSize = 1)){
             ProductSource(
                 getProductUseCase = getProductUseCase
             )
@@ -29,7 +29,7 @@ class ProductsViewModel @Inject constructor(
     }
 
     fun getCompany():Flow<PagingData<CompanyItem>>{
-        return Pager(PagingConfig(pageSize = 20)){
+        return Pager(PagingConfig(pageSize = 1)){
             CompanySource(
                 getCompanyUseCase = getCompanyUseCase
             )

@@ -20,13 +20,18 @@ import com.example.feature_authorization.navigation.AuthorizationDestination
 import com.example.feature_authorization.navigation.authorizationNavigation
 import com.example.feature_create_company.navigation.CreateCompanyDestination
 import com.example.feature_create_company.navigation.createCompanyNavigation
+import com.example.feature_create_product.navigation.CreateProductDestination
+import com.example.feature_create_product.navigation.createProductNavigation
 import com.example.feature_profile.navigation.ProfileDestination
 import com.example.feature_profile.navigation.profileNavigation
+import com.example.feature_registration.navigation.RegistrationDestination
+import com.example.feature_registration.navigation.registrationNavigation
 import com.example.feature_settings.navigation.SettingsDestination
 import com.example.feature_settings.navigation.settingsNavigation
 import com.example.storeapp.di.AppComponent
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @Composable
@@ -86,20 +91,36 @@ fun BaseNavHost(
                         productsNavigation(
                             productsViewModel = appComponent.productsViewModel()
                         )
+
                         profileNavigation(
                             profileViewModel = appComponent.profileViewModel(),
                             onAuthorizationScreen = { navHostController.navigate(AuthorizationDestination.route) },
                             onCreateCompanyScreen = { navHostController.navigate(CreateCompanyDestination.route) },
-                            onSettingsScreen = { navHostController.navigate(SettingsDestination.route) }
+                            onSettingsScreen = { navHostController.navigate(SettingsDestination.route) },
+                            onRegistration = { navHostController.navigate(RegistrationDestination.route) },
+                            onCreateProductScreen = { navHostController.navigate(CreateProductDestination.route) }
                         )
+
                         authorizationNavigation(
                             authorizationViewModel = appComponent.authorizationViewModel(),
                             onBackClick = { navHostController.navigateUp() }
                         )
+
+                        registrationNavigation(
+                            viewModel = appComponent.registrationViewModel(),
+                            onProfileScreen = { navHostController.navigate(ProfileDestination.route) }
+                        )
+
                         createCompanyNavigation(
                             viewModel = appComponent.createCompanyViewModel(),
                             onBackClick = { navHostController.navigateUp() }
                         )
+
+                        createProductNavigation(
+                            viewModel = appComponent.createProductViewModel(),
+                            onBackClick = { navHostController.navigateUp() }
+                        )
+
                         settingsNavigation(
                             viewModel = appComponent.settingsViewModel(),
                             onBackClick = { navHostController.navigateUp() },

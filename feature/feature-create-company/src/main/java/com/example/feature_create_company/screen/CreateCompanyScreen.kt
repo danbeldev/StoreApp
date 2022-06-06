@@ -170,7 +170,8 @@ internal fun CreateCompanyScreen(
                                         is Result.Error -> LottieAnimation.ERROR
                                         else -> LottieAnimation.COMPANY
                                     },
-                                    modifier = Modifier.size(400.dp)
+                                    modifier = Modifier.size(400.dp),
+                                    iterations = 1
                                 )
 
                                 Text(

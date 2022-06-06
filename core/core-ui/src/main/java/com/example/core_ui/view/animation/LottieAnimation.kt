@@ -10,7 +10,8 @@ enum class LottieAnimation(val resId: Int){
     ERROR(R.raw.error),
     LOADING(R.raw.loading),
     COMPANY(R.raw.company),
-    ADD_COMPANY(R.raw.company_add)
+    ADD_COMPANY(R.raw.company_add),
+    LOGIN(R.raw.login)
 }
 
 @Composable

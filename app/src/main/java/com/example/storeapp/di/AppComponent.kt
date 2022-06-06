@@ -4,7 +4,9 @@ import android.content.Context
 import com.example.feature_apps.viewModel.ProductsViewModel
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 import com.example.feature_create_company.viewModel.CreateCompanyViewModel
+import com.example.feature_create_product.viewModel.CreateProductViewModel
 import com.example.feature_profile.veiwModel.ProfileViewModel
+import com.example.feature_registration.viewModel.RegistrationViewModel
 import com.example.feature_settings.viewModel.SettingsViewModel
 import com.example.storeapp.MainViewModel
 import com.example.storeapp.di.modules.ApiModule
@@ -23,7 +25,11 @@ interface AppComponent {
 
     fun authorizationViewModel():AuthorizationViewModel
 
+    fun registrationViewModel():RegistrationViewModel
+
     fun createCompanyViewModel():CreateCompanyViewModel
+
+    fun createProductViewModel(): CreateProductViewModel
 
     fun mainViewModel():MainViewModel
 
