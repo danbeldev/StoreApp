@@ -24,4 +24,6 @@ interface ProductRepository {
     suspend fun getGenre():Response<Genre>
 
     suspend fun getCountry():Response<Country>
+
+    suspend fun postFile(id:Int,file:ByteArray):Response<Void?>
 }

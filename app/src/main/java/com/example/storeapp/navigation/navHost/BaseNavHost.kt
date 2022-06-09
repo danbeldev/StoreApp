@@ -1,6 +1,9 @@
 package com.example.storeapp.navigation.navHost
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import android.annotation.SuppressLint
+import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,8 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.example.core_ui.theme.JetHabitStyle
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.feature_apps.navigation.ProductsDestination
@@ -22,6 +23,8 @@ import com.example.feature_create_company.navigation.CreateCompanyDestination
 import com.example.feature_create_company.navigation.createCompanyNavigation
 import com.example.feature_create_product.navigation.CreateProductDestination
 import com.example.feature_create_product.navigation.createProductNavigation
+import com.example.feature_product_info.navigation.ProductInfoDestination
+import com.example.feature_product_info.navigation.productInfoNavigation
 import com.example.feature_profile.navigation.ProfileDestination
 import com.example.feature_profile.navigation.profileNavigation
 import com.example.feature_registration.navigation.RegistrationDestination
@@ -29,8 +32,11 @@ import com.example.feature_registration.navigation.registrationNavigation
 import com.example.feature_settings.navigation.SettingsDestination
 import com.example.feature_settings.navigation.settingsNavigation
 import com.example.storeapp.di.AppComponent
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
@@ -41,7 +47,7 @@ fun BaseNavHost(
     onDarkModeChanged: (Boolean) -> Unit,
     onNewStyle: (JetHabitStyle) -> Unit
 ) {
-    val navHostController = rememberNavController()
+    val navHostController = rememberAnimatedNavController()
 
     var bottomBar by remember { mutableStateOf(BottomBar.Home) }
 
@@ -83,13 +89,58 @@ fun BaseNavHost(
                 modifier = Modifier.fillMaxSize(),
                 color = JetHabitTheme.colors.primaryBackground
             ) {
-                NavHost(
+                AnimatedNavHost(
                     navController = navHostController,
                     startDestination = ProductsDestination.route,
+                    enterTransition = {
+                        slideInHorizontally(
+                            initialOffsetX = {300},
+                            animationSpec = tween(
+                                durationMillis = 300,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) + fadeIn(animationSpec = tween(300))
+                    },
+                    popExitTransition = {
+                        slideOutHorizontally(
+                            targetOffsetX = {-300},
+                            animationSpec = tween(
+                                durationMillis = 300,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) + fadeOut(animationSpec = tween(300))
+                    },
+                    exitTransition = {
+                        slideOutHorizontally(
+                            targetOffsetX = { 300 },
+                            animationSpec = tween(
+                                durationMillis = 300,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) + fadeOut(animationSpec = tween(300))
+                    },
+                    popEnterTransition = {
+                        slideInHorizontally(
+                            initialOffsetX = { -300 },
+                            animationSpec = tween(
+                                durationMillis = 300,
+                                easing = FastOutSlowInEasing
+                            )
+                        ) + fadeIn(animationSpec = tween(300))
+                    },
                     route = "main_route",
                     builder = {
                         productsNavigation(
-                            productsViewModel = appComponent.productsViewModel()
+                            productsViewModel = appComponent.productsViewModel(),
+                            productInfoRoute = ProductInfoDestination.route,
+                            onInfoProductScreen = {
+                                navHostController.navigate("${ProductInfoDestination.route}/$it")
+                            }
+                        )
+
+                        productInfoNavigation(
+                            viewModel = appComponent.productInfoViewModel(),
+                            onBackClick = { navHostController.navigateUp() }
                         )
 
                         profileNavigation(

@@ -5,6 +5,7 @@ import com.example.feature_apps.viewModel.ProductsViewModel
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 import com.example.feature_create_company.viewModel.CreateCompanyViewModel
 import com.example.feature_create_product.viewModel.CreateProductViewModel
+import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.example.feature_profile.veiwModel.ProfileViewModel
 import com.example.feature_registration.viewModel.RegistrationViewModel
 import com.example.feature_settings.viewModel.SettingsViewModel
@@ -20,6 +21,8 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun productsViewModel():ProductsViewModel
+
+    fun productInfoViewModel():ProductInfoViewModel
 
     fun profileViewModel():ProfileViewModel
 

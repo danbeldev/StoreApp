@@ -6,12 +6,14 @@ import com.example.core_model.data.api.product.create.ProductCreate
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_network_domain.useCase.product.GetCountryProductUseCase
 import com.example.core_network_domain.useCase.product.GetGenreProductUseCase
+import com.example.core_network_domain.useCase.product.PostFileUseCase
 import com.example.core_network_domain.useCase.product.PostProductUseCase
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class CreateProductViewModel @Inject constructor(
     private val postProductUseCase: PostProductUseCase,
+    private val postFileUseCase: PostFileUseCase,
     getGenreProductUseCase: GetGenreProductUseCase,
     getCountryProductUseCase: GetCountryProductUseCase
 ):ViewModel() {
@@ -31,6 +33,12 @@ class CreateProductViewModel @Inject constructor(
     fun postProduct(product:ProductCreate){
         postProductUseCase.invoke(product).onEach {
             _responseProductResult.value = it
+        }.launchIn(viewModelScope)
+    }
+
+    fun postFile(id:Int, file:ByteArray){
+        postFileUseCase.invoke(id, file).onEach {
+
         }.launchIn(viewModelScope)
     }
 

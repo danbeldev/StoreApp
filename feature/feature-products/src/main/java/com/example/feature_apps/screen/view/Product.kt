@@ -1,5 +1,6 @@
 package com.example.feature_apps.screen.view
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -10,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -27,11 +29,12 @@ import com.example.core_ui.view.animation.schimmer.BaseColumnShimmer
 @Composable
 internal fun Products(
     products: LazyPagingItems<ProductItem>,
-    company: LazyPagingItems<CompanyItem>
+    company: LazyPagingItems<CompanyItem>,
+    onInfoProductScreen:(Int) -> Unit
 ) {
     LazyColumn(content = {
         itemsIndexed(products){ index, item -> item?.let { ProductItem(
-            product = item, index = index, company = company
+            product = item, index = index, company = company, onInfoProductScreen = onInfoProductScreen
         ) } }
 
         if (
@@ -53,7 +56,8 @@ internal fun Products(
 private fun ProductItem(
     product: ProductItem,
     index:Int,
-    company: LazyPagingItems<CompanyItem>
+    company: LazyPagingItems<CompanyItem>,
+    onInfoProductScreen:(Int) -> Unit
 ) {
     Column {
         if (index != 0){
@@ -69,7 +73,12 @@ private fun ProductItem(
         }
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .pointerInput(Unit){
+                    detectTapGestures(onTap = {onInfoProductScreen(product.id)})
+                }
         ) {
             product.icon?.let { iconUrl ->
                 Image(

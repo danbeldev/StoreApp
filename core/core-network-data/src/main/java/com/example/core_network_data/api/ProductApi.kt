@@ -10,6 +10,8 @@ import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_COUNTRY
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_GENRE
 import com.example.core_network_data.common.ConstantsUrl.POST_PRODUCT
+import com.example.core_network_data.common.ConstantsUrl.POST_PRODUCT_FILE
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -36,4 +38,11 @@ interface ProductApi {
 
     @GET(GET_PRODUCT_COUNTRY)
     suspend fun getCountry():Response<Country>
+
+    @Multipart
+    @POST(POST_PRODUCT_FILE)
+    suspend fun postFile(
+        @Path("id") id:Int,
+        @Part file: MultipartBody.Part
+    ):Response<Void?>
 }

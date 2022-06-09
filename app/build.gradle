@@ -64,6 +64,7 @@ dependencies {
     implementation project(":core:core-navigation")
 
     implementation project(':feature:feature-products')
+    implementation project(':feature:feature-product-info')
     implementation project(':feature:feature-profile')
     implementation project(':feature:feature-settings')
     implementation project(':feature:feature-authorization')
@@ -102,7 +103,7 @@ dependencies {
     kapt("com.google.dagger:dagger-compiler:2.40.5")
 
     //Navigation
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.16.1")
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.24.10-beta")
 
     //System Controller
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.5-alpha"

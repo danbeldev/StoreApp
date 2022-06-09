@@ -3,7 +3,7 @@ package com.example.feature_create_product.navigation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
+import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_create_product.screen.CreateProductScreen
 import com.example.feature_create_product.viewModel.CreateProductViewModel

@@ -7,6 +7,9 @@ import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.create.ProductCreate
 import com.example.core_network_data.api.ProductApi
 import com.example.core_network_domain.repository.ProductRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -32,5 +35,11 @@ class ProductRepositoryImpl @Inject constructor(
 
     override suspend fun getCountry(): Response<Country> {
         return productApi.getCountry()
+    }
+
+    override suspend fun postFile(id:Int,file: ByteArray): Response<Void?> {
+        val requestFile = RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
+        val body = MultipartBody.Part.createFormData("file","product_file",requestFile)
+        return productApi.postFile(file = body, id = id)
     }
 }

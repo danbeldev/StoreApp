@@ -13,7 +13,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalPagerApi
 @Composable
 fun ProductsScreen(
-   productsViewModel: ProductsViewModel
+   productsViewModel: ProductsViewModel,
+   onInfoProductScreen:(Int) -> Unit
 ) {
    val products = productsViewModel.getProduct(
 
@@ -29,7 +30,8 @@ fun ProductsScreen(
    ) {
       Products(
          products = products,
-         company = company
+         company = company,
+         onInfoProductScreen = onInfoProductScreen
       )
    }
 }
