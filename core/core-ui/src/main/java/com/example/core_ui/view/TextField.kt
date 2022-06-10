@@ -3,12 +3,14 @@ package com.example.core_ui.view
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -27,6 +29,7 @@ fun TextFieldBase(
         shape = AbsoluteRoundedCornerShape(5.dp),
         label = { Text(text = label, color = JetHabitTheme.colors.primaryText) },
         colors = TextFieldDefaults.textFieldColors(
+            textColor = JetHabitTheme.colors.primaryText,
             focusedIndicatorColor = JetHabitTheme.colors.tintColor,
             backgroundColor = JetHabitTheme.colors.primaryBackground,
             cursorColor = JetHabitTheme.colors.tintColor,
@@ -34,6 +37,57 @@ fun TextFieldBase(
         ), keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Go
         ), modifier = modifier.padding(5.dp)
+    )
+}
+
+@Composable
+fun TextFieldSearch(
+    modifier: Modifier = Modifier,
+    placeholder:String,
+    onValue:(String) -> Unit,
+    onClose:() -> Unit
+) {
+    var text by remember { mutableStateOf("") }
+
+    TextField(
+        value = text,
+        onValueChange = {
+            text = it
+            onValue(it)
+        },
+        shape = AbsoluteRoundedCornerShape(5.dp),
+        placeholder = { Text(
+            text = placeholder,
+            color = JetHabitTheme.colors.controlColor
+        ) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                tint = JetHabitTheme.colors.controlColor
+            )
+        },
+        trailingIcon = {
+            IconButton(onClick = {
+                onClose()
+                text = ""
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    tint = JetHabitTheme.colors.controlColor
+                )
+            }
+        },
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = JetHabitTheme.colors.primaryText,
+            backgroundColor = JetHabitTheme.colors.secondaryBackground,
+            cursorColor = JetHabitTheme.colors.primaryText,
+            focusedIndicatorColor = JetHabitTheme.colors.secondaryBackground
+        ), keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ), modifier = modifier
+            .clip(AbsoluteRoundedCornerShape(15.dp))
     )
 }
 
@@ -49,6 +103,7 @@ fun TextFieldNumber(
         shape = AbsoluteRoundedCornerShape(5.dp),
         label = { Text(text = label, color = JetHabitTheme.colors.primaryText) },
         colors = TextFieldDefaults.textFieldColors(
+            textColor = JetHabitTheme.colors.primaryText,
             focusedIndicatorColor = JetHabitTheme.colors.tintColor,
             backgroundColor = JetHabitTheme.colors.primaryBackground,
             cursorColor = JetHabitTheme.colors.tintColor,
@@ -74,6 +129,7 @@ fun TextFieldEmail(
             Text(text = label, color = JetHabitTheme.colors.primaryText)
         }, shape = AbsoluteRoundedCornerShape(5.dp),
         colors = TextFieldDefaults.textFieldColors(
+            textColor = JetHabitTheme.colors.primaryText,
             focusedIndicatorColor = JetHabitTheme.colors.tintColor,
             backgroundColor = JetHabitTheme.colors.primaryBackground,
             cursorColor = JetHabitTheme.colors.tintColor,
@@ -98,6 +154,7 @@ fun TextFieldPassword(
             Text(text = label, color = JetHabitTheme.colors.primaryText)
         }, shape = AbsoluteRoundedCornerShape(5.dp),
         colors = TextFieldDefaults.textFieldColors(
+            textColor = JetHabitTheme.colors.primaryText,
             focusedIndicatorColor = JetHabitTheme.colors.tintColor,
             backgroundColor = JetHabitTheme.colors.primaryBackground,
             cursorColor = JetHabitTheme.colors.tintColor,

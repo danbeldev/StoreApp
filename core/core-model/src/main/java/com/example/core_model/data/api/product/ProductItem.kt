@@ -44,7 +44,7 @@ data class ProductItem(
     @SerialName("productType")
     val productType: ProductType,
     @SerialName("rating")
-    val rating: Int?,
+    val rating: Float?,
     @SerialName("reviewsTotal")
     val reviewsTotal: Int?,
     @SerialName("shortDescription")

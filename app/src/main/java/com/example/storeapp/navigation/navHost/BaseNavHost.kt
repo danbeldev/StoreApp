@@ -4,15 +4,12 @@ import android.annotation.SuppressLint
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import com.example.core_model.data.enums.user.UserRole
 import com.example.core_ui.theme.JetHabitStyle
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.feature_apps.navigation.ProductsDestination
@@ -32,10 +29,14 @@ import com.example.feature_registration.navigation.registrationNavigation
 import com.example.feature_settings.navigation.SettingsDestination
 import com.example.feature_settings.navigation.settingsNavigation
 import com.example.storeapp.di.AppComponent
+import com.example.storeapp.navigation.bottomNavigation.CustomBottomNavigation
+import com.example.storeapp.navigation.bottomNavigation.ScreenBottomNavigation
+import com.example.storeapp.navigation.menu.FloatingBottomActionMenu
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalFoundationApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -43,46 +44,49 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @Composable
 fun BaseNavHost(
     appComponent: AppComponent,
+    userRole: UserRole,
     isDarkMode: Boolean,
     onDarkModeChanged: (Boolean) -> Unit,
     onNewStyle: (JetHabitStyle) -> Unit
 ) {
     val navHostController = rememberAnimatedNavController()
 
-    var bottomBar by remember { mutableStateOf(BottomBar.Home) }
+    var bottomBar by remember { mutableStateOf(ScreenBottomNavigation.Home.id) }
+
+    var isVisibleMenu by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = {
-            BottomNavigation(
-                elevation = 8.dp,
-                backgroundColor = JetHabitTheme.colors.primaryBackground
+            AnimatedVisibility(
+                visible = isVisibleMenu
             ) {
-                BottomBar.values().forEach { item ->
-                    BottomNavigationItem(
-                        unselectedContentColor = JetHabitTheme.colors.primaryText,
-                        selectedContentColor  = JetHabitTheme.colors.tintColor,
-                        selected = bottomBar == item,
-                        onClick = {
-                            bottomBar = item
+                FloatingBottomActionMenu(
+                    isVisible = isVisibleMenu,
+                    onAddProduct = {
+                        isVisibleMenu = false
+                        navHostController.navigate(CreateProductDestination.route)
+                    },
+                    onCreateEvent = {
+                        isVisibleMenu = false
+                    },
+                    onClose = { isVisibleMenu = false }
+                )
+            }
 
-                            when(bottomBar){
-                                BottomBar.Home -> navHostController.navigate(ProductsDestination.route)
-                                BottomBar.Profile -> navHostController.navigate(ProfileDestination.route)
-                            }
-
-                        },
-                        label = {
-                            Text(text = item.title)
-                        }, icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = null,
-                                tint = if(bottomBar == item) JetHabitTheme.colors.tintColor else
-                                    JetHabitTheme.colors.primaryText
-                            )
-                        }
-                    )
-                }
+            AnimatedVisibility(
+                visible = !isVisibleMenu
+            ) {
+                CustomBottomNavigation(
+                    navController = navHostController,
+                    userRole = userRole,
+                    backgroundColor = JetHabitTheme.colors.controlColor,
+                    currentScreenId = bottomBar,
+                    onItemSelected = {
+                        if (it != ScreenBottomNavigation.Add)
+                            bottomBar = it.id
+                    },
+                    onClickAdd = { isVisibleMenu = true }
+                )
             }
         }, content = {
             Surface(
@@ -184,9 +188,4 @@ fun BaseNavHost(
             }
         }
     )
-}
-
-private enum class BottomBar(val title:String, val icon:ImageVector){
-    Home(title = "Home", icon = Icons.Default.Home),
-    Profile(title = "Profile", icon = Icons.Default.Person)
 }

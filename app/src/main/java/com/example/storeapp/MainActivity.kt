@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import com.example.core_common.extension.launchWhenStarted
+import com.example.core_model.data.enums.user.UserRole
 import com.example.core_ui.theme.JetHabitStyle
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.theme.MainTheme
@@ -18,6 +20,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.onEach
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
@@ -37,6 +40,8 @@ class MainActivity : ComponentActivity() {
                 .build()
 
             val mainViewModel = appComponent.mainViewModel()
+
+            var userRole by remember { mutableStateOf(UserRole.BaseUser) }
 
             val isSystemInDarkTheme = isSystemInDarkTheme()
             var isDarkMode by remember { mutableStateOf(isSystemInDarkTheme) }
@@ -65,12 +70,17 @@ class MainActivity : ComponentActivity() {
                     )
                 })
 
+                mainViewModel.responseUserRole.onEach {
+                    userRole = it
+                }.launchWhenStarted()
+
                 mainViewModel.responseUserToken.onEach {
                     userToken = it
                 }.launchWhenStarted()
 
                 BaseNavHost(
                     appComponent = appComponent,
+                    userRole = userRole,
                     isDarkMode = isDarkMode,
                     onDarkModeChanged = {
                         mainViewModel.saveDarkTheme(it)

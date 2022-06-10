@@ -149,6 +149,34 @@ internal fun ProductInfoScreen(
                                         description = phone
                                     )
                                 }
+
+                                product.data?.website?.let { website ->
+                                    BaseInfoRaw(
+                                        title = "Website",
+                                        description = website
+                                    )
+                                }
+
+                                product.data?.privacyPolicyWebUrl?.let { privacyPolicyWebUrl ->
+                                    BaseInfoRaw(
+                                        title = "Privacy Policy",
+                                        description = privacyPolicyWebUrl
+                                    )
+                                }
+
+                                product.data?.website?.let { website ->
+                                    BaseInfoRaw(
+                                        title = "Website",
+                                        description = website
+                                    )
+                                }
+
+                                product.data?.website?.let { website ->
+                                    BaseInfoRaw(
+                                        title = "Website",
+                                        description = website
+                                    )
+                                }
                             }
                         }
                         item {

@@ -1,8 +1,12 @@
 package com.example.feature_apps.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_apps.screen.ProductsScreen
@@ -14,6 +18,9 @@ object ProductsDestination : NiaNavigationDestination {
     override val route = "products_route"
 }
 
+@ExperimentalFoundationApi
+@RequiresApi(Build.VERSION_CODES.N)
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.productsNavigation(

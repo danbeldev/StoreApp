@@ -1,0 +1,14 @@
+package com.example.core_model.data.api.product.orderBy
+
+enum class ProductOrderBy {
+    TITLE,
+    DATE,
+    RATING_MIN_MAX,
+    RATING_MAX_MIN,
+    AMOUNT_RATING_MIN_MAX,
+    AMOUNT_RATING_MAX_MIN,
+    AGE_RATING_MIN_MAX,
+    AGE_RATING_MAX_MIN,
+    AMOUNT_USER_DOWNLOAD_MIN_MAX,
+    AMOUNT_USER_DOWLOAD_MAX_MIN
+}

@@ -1,38 +1,53 @@
 package com.example.feature_apps.screen.view
 
-import androidx.compose.foundation.gestures.detectTapGestures
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import androidx.paging.compose.itemsIndexed
+import com.example.core_common.extension.replaceRange
 import com.example.core_model.data.api.company.CompanyItem
+import com.example.core_model.data.api.product.Country
+import com.example.core_model.data.api.product.Genre
 import com.example.core_model.data.api.product.ProductItem
+import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.More
 import com.example.core_ui.view.animation.schimmer.BaseColumnShimmer
+import com.example.feature_apps.screen.view.product.Genre
 
 
+@ExperimentalMaterialApi
+@RequiresApi(Build.VERSION_CODES.N)
+@ExperimentalFoundationApi
 @Composable
 internal fun Products(
     products: LazyPagingItems<ProductItem>,
     company: LazyPagingItems<CompanyItem>,
+    genre:Result<Genre>,
+    country: Result<Country>,
     onInfoProductScreen:(Int) -> Unit
 ) {
     LazyColumn(content = {
+
+        item { Genre(genre = genre) }
+
         itemsIndexed(products){ index, item -> item?.let { ProductItem(
             product = item, index = index, company = company, onInfoProductScreen = onInfoProductScreen
         ) } }
@@ -52,6 +67,7 @@ internal fun Products(
     })
 }
 
+@ExperimentalMaterialApi
 @Composable
 private fun ProductItem(
     product: ProductItem,
@@ -72,38 +88,44 @@ private fun ProductItem(
             }
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .pointerInput(Unit){
-                    detectTapGestures(onTap = {onInfoProductScreen(product.id)})
-                }
+                .padding(5.dp)
+                .fillMaxWidth(),
+            shape = AbsoluteRoundedCornerShape(10.dp),
+            elevation = 8.dp,
+            backgroundColor = JetHabitTheme.colors.primaryBackground,
+            onClick = { onInfoProductScreen(product.id) }
         ) {
-            product.icon?.let { iconUrl ->
-                Image(
-                    url = iconUrl,
-                    width = 70.dp,
-                    height = 70.dp
-                )
-            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                product.icon?.let { iconUrl ->
+                    Image(
+                        url = iconUrl,
+                        width = 100.dp,
+                        height = 100.dp
+                    )
+                }
 
-            Column {
-                Text(
-                    text = product.title,
-                    modifier = Modifier.padding(5.dp),
-                    fontWeight = FontWeight.Bold,
-                    color = JetHabitTheme.colors.primaryText
-                )
+                Column {
+                    Text(
+                        text = if (product.rating == null) product.title else "" +
+                                "${product.title}, ${product.rating}",
+                        modifier = Modifier.padding(5.dp),
+                        fontWeight = FontWeight.W900,
+                        color = JetHabitTheme.colors.primaryText
+                    )
 
-                Text(
-                    text = "${product.genre?.title} & ${product.country?.countryTitle}",
-                    modifier = Modifier.padding(5.dp),
-                    color = JetHabitTheme.colors.primaryText
-                )
+                    Text(
+                        text = product.shortDescription.replaceRange(100),
+                        modifier = Modifier.padding(5.dp),
+                        fontWeight = FontWeight.W100,
+                        color = JetHabitTheme.colors.primaryText
+                    )
+                }
             }
         }
-        Divider()
     }
 }
 

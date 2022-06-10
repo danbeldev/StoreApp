@@ -5,7 +5,10 @@ import com.example.core_model.data.api.product.Genre
 import com.example.core_model.data.api.product.Product
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.create.ProductCreate
+import com.example.core_model.data.api.product.enums.AgeRating
 import com.example.core_model.data.api.product.enums.ProductStatus
+import com.example.core_model.data.api.product.enums.ProductType
+import com.example.core_model.data.api.product.orderBy.ProductOrderBy
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_COUNTRY
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_GENRE
@@ -20,7 +23,20 @@ interface ProductApi {
     @GET(GET_PRODUCT)
     suspend fun getProduct(
         @Query("pageSize") pageSize:Int = 20,
-        @Query("pageNumber") pageNumber:Int
+        @Query("pageNumber") pageNumber:Int,
+        @Query("search") search:String?,
+        @Query("genreId") genreId:List<Int>?,
+        @Query("countryId") countryId:List<Int>?,
+        @Query("ageRating") ageRating:AgeRating?,
+        @Query("advertising") advertising:Boolean?,
+        @Query("free") free:Boolean?,
+        @Query("startDatePublication") startDatePublication:String?,
+        @Query("endDatePublication") endDatePublication:String?,
+        @Query("startRating") startRating:Float?,
+        @Query("endRating") endRating:Float?,
+        @Query("productType") productType:ProductType?,
+        @Query("productStatus") productStatus:ProductStatus?,
+        @Query("orderBy") orderBy: ProductOrderBy?
     ):Product
 
     @GET("$GET_PRODUCT/{id}")
