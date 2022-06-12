@@ -14,10 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieConstants
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.user.Registration
+import com.example.core_model.data.api.user.RegistrationResult
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.TextFieldBase
+import com.example.core_ui.view.TextFieldEmail
+import com.example.core_ui.view.TextFieldPassword
 import com.example.core_ui.view.animation.BaseLottieAnimation
 import com.example.core_ui.view.animation.LottieAnimation
 import com.example.feature_registration.viewModel.RegistrationViewModel
@@ -33,7 +36,7 @@ internal fun RegistrationScreen(
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
 
-    var registrationResult:Result<Unit?>? by remember { mutableStateOf(null) }
+    var registrationResult:Result<RegistrationResult?>? by remember { mutableStateOf(null) }
 
     viewModel.responseRegistrationResult.onEach {
         registrationResult = it
@@ -65,7 +68,8 @@ internal fun RegistrationScreen(
                     )
 
                     Text(
-                        text = registrationResult?.message ?: "",
+                        text = registrationResult?.data?.error
+                            ?: registrationResult?.message ?: "",
                         modifier = Modifier.padding(5.dp),
                         color = JetHabitTheme.colors.errorColor,
                         fontWeight = FontWeight.W900,
@@ -77,12 +81,12 @@ internal fun RegistrationScreen(
                         value = username
                     )
 
-                    TextFieldBase(
+                    TextFieldEmail(
                         label = "Email",
                         value = email
                     )
 
-                    TextFieldBase(
+                    TextFieldPassword(
                         label = "Password",
                         value = password
                     )

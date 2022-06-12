@@ -59,7 +59,7 @@ class ProductRepositoryImpl @Inject constructor(
         return productApi.getProductById(id)
     }
 
-    override suspend fun postProduct(product: ProductCreate): Response<Unit?> {
+    override suspend fun postProduct(product: ProductCreate): Response<ProductItem> {
         return productApi.postProduct(product)
     }
 

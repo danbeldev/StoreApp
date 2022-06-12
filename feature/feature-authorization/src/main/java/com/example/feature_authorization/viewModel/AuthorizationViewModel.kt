@@ -33,24 +33,37 @@ class AuthorizationViewModel @Inject constructor(
         authorization: Authorization,
         onBackClick:() -> Unit
     ){
-        authorizationUseCase.invoke(authorization).onEach {
-            _responseAuthorizationResponse.value = when(it){
-                is Result.Error -> Result.Error(message = it.message ?: "")
-                is Result.Loading -> Result.Loading()
-                is Result.Success -> null
-            }
-            it.data?.let { data ->
-                val userLogin = UserLogin(
-                    email = authorization.email,
-                    password = authorization.password,
-                )
-                saveUserToken(data.access_token)
-                saveUserRole(data.role)
-                saveUserLogin(userLogin)
-                saveStatusRegistration(true)
-                onBackClick()
-            }
-        }.launchIn(viewModelScope)
+        if (
+            authorization.email.isEmpty()
+            || authorization.password.isEmpty()
+        ){
+            _responseAuthorizationResponse.value = Result.Error(message = "Заполните все поля")
+        }else {
+            authorizationUseCase.invoke(authorization).onEach {
+                _responseAuthorizationResponse.value = when(it){
+                    is Result.Error -> Result.Error(
+                        message = if (it.message == null)
+                            "Error"
+                        else if(it.message!!.contains("400"))
+                            "Неверный пароль или Email"
+                        else it.message.toString()
+                    )
+                    is Result.Loading -> Result.Loading()
+                    is Result.Success -> null
+                }
+                it.data?.let { data ->
+                    val userLogin = UserLogin(
+                        email = authorization.email,
+                        password = authorization.password,
+                    )
+                    saveUserToken(data.access_token)
+                    saveUserRole(data.role)
+                    saveUserLogin(userLogin)
+                    saveStatusRegistration(true)
+                    onBackClick()
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
     private suspend fun saveStatusRegistration(statusRegistration:Boolean){

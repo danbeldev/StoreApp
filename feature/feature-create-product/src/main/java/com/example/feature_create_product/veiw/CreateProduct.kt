@@ -18,6 +18,7 @@ import com.example.core_common.extension.getDate
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.product.Country
 import com.example.core_model.data.api.product.Genre
+import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.create.ProductCreate
 import com.example.core_model.data.api.product.enums.AgeRating
 import com.example.core_model.data.api.product.enums.ProductType
@@ -40,7 +41,8 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 internal fun CreateProduct(
     viewModel: CreateProductViewModel,
-    pagerState:PagerState
+    pagerState:PagerState,
+    onProductId:(Int) -> Unit
 ) {
 
     val title = remember { mutableStateOf("") }
@@ -59,7 +61,7 @@ internal fun CreateProduct(
     var productType by remember { mutableStateOf(ProductType.APP_ANDROID) }
 
     var validateCreateProductResult:String? by remember { mutableStateOf("") }
-    var productResult:Result<Unit?>? by remember { mutableStateOf(null) }
+    var productResult:Result<ProductItem>? by remember { mutableStateOf(null) }
 
     var genre:Result<Genre> by remember { mutableStateOf(Result.Loading()) }
     var countrty:Result<Country> by remember { mutableStateOf(Result.Loading()) }
@@ -82,7 +84,10 @@ internal fun CreateProduct(
 
     LaunchedEffect(key1 = productResult, block = {
         if (productResult is Result.Success){
-            pagerState.animateScrollToPage(PagerProductState.ADD_FILE.ordinal)
+            productResult?.data?.id?.let { id ->
+                onProductId(id)
+                pagerState.animateScrollToPage(PagerProductState.ADD_FILE.ordinal)
+            }
         }
     })
 
@@ -349,7 +354,10 @@ internal fun CreateProduct(
                                 genreId = genreId,
                                 email = email.value,
                                 phone = phone.value,
-                                price = price.value.toInt(),
+                                price = if (price.value.isNotEmpty())
+                                    price.value.toInt()
+                                else
+                                    null,
                                 website = website.value,
                                 privacyPolicyWebUrl = privacyPolicyWebUrl.value
                             )

@@ -1,4 +1,4 @@
-package com.example.storeapp
+package com.example.storeapp.activity
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,9 +17,11 @@ import com.example.core_ui.theme.MainTheme
 import com.example.storeapp.di.DaggerAppComponent
 import com.example.storeapp.navigation.navHost.BaseNavHost
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.onEach
 
+@ExperimentalPermissionsApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi

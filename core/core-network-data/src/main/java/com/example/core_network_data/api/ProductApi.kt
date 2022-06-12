@@ -47,7 +47,7 @@ interface ProductApi {
     @POST(POST_PRODUCT)
     suspend fun postProduct(
         @Body product:ProductCreate
-    ):Response<Unit?>
+    ):Response<ProductItem>
 
     @GET(GET_PRODUCT_GENRE)
     suspend fun getGenre():Response<Genre>

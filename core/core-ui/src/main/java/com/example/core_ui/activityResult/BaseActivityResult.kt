@@ -12,23 +12,36 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import java.io.ByteArrayOutputStream
 
+
+enum class FileExtension{
+    IMAGE,
+    FILE
+}
+
 @SuppressLint("ComposableNaming", "NewApi")
 @Composable
 fun FileManagerActivityResult(
-    openFileManager:MutableState<Boolean>,
-    byteArray:(ByteArray?) -> Unit
+    fileExtension: FileExtension = FileExtension.IMAGE,
+    openFileManager: MutableState<Boolean>,
+    onByteArray: ((ByteArray?) -> Unit?)? = null,
+    onUri: ((Uri?) -> Unit)? = null
 ): ManagedActivityResultLauncher<String, Uri?> {
     val context = LocalContext.current
     return rememberLauncherForActivityResult(ActivityResultContracts.GetContent()){ uri ->
         if (uri != null){
-            val sourse = ImageDecoder.createSource(context.applicationContext.contentResolver, uri)
-            val bitmap = ImageDecoder.decodeBitmap(sourse)
-            val outputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
-            byteArray(outputStream.toByteArray())
+            if (fileExtension == FileExtension.IMAGE){
+                val sourse = ImageDecoder.createSource(context.applicationContext.contentResolver, uri)
+                val bitmap = ImageDecoder.decodeBitmap(sourse)
+                val outputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
+                onByteArray?.let { it(outputStream.toByteArray()) }
+            }else {
+                val iStream = context.contentResolver.openInputStream(uri)
+                val byteArray = iStream?.readBytes()
+                onByteArray?.let { it(byteArray) }
+            }
+            onUri?.let { it(uri) }
             openFileManager.value = false
-        }else{
-            byteArray(null)
         }
     }
 }

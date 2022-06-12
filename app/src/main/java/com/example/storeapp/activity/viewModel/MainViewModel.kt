@@ -1,4 +1,4 @@
-package com.example.storeapp
+package com.example.storeapp.activity.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

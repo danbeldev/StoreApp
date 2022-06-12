@@ -8,15 +8,13 @@ import com.example.core_database_domain.useCase.user.SaveUserLoginUseCase
 import com.example.core_database_domain.useCase.user.SaveUserTokenUseCase
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.api.user.Registration
+import com.example.core_model.data.api.user.RegistrationResult
 import com.example.core_model.data.database.user.UserLogin
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_network_domain.useCase.user.AuthorizationUseCase
 import com.example.core_network_domain.useCase.user.RegistrationUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class RegistrationViewModel @Inject constructor(
@@ -28,23 +26,35 @@ class RegistrationViewModel @Inject constructor(
     private val saveUserTokenUseCase: SaveUserTokenUseCase
 ):ViewModel() {
 
-    private val _responseRegistrationResult:MutableStateFlow<Result<Unit?>?> = MutableStateFlow(null)
-    val responseRegistrationResult = _responseRegistrationResult.asStateFlow()
+    private val _responseRegistrationResult:MutableStateFlow<Result<RegistrationResult?>?> = MutableStateFlow(null)
+    val responseRegistrationResult = _responseRegistrationResult.asStateFlow().filterNotNull()
 
     fun registration(
         registration: Registration,
         onProfileScreen:() -> Unit
     ){
-        registrationUseCase.invoke(registration).onEach {
-            _responseRegistrationResult.value = it
-            if (it is Result.Success){
-                val authorization = Authorization(
-                    email = registration.email,
-                    password = registration.password
-                )
-                authorization(authorization, onProfileScreen)
-            }
-        }.launchIn(viewModelScope)
+        if (
+            registration.email.isEmpty()
+            || registration.password.isEmpty()
+            || registration.username.isEmpty()
+        ){
+            _responseRegistrationResult.value = Result.Success(data = RegistrationResult(
+                error = "Заполните все поля"
+            ))
+        }else {
+            registrationUseCase.invoke(registration).onEach {
+                _responseRegistrationResult.value = it
+                if (it is Result.Success){
+                    if (it.data?.error == null){
+                        val authorization = Authorization(
+                            email = registration.email,
+                            password = registration.password
+                        )
+                        authorization(authorization, onProfileScreen)
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
     }
 
     private fun authorization(

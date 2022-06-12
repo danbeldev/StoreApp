@@ -11,13 +11,14 @@
 - Multi module
 - Clean Architecture (Jetpack ViewModel + Flow)
 - Jetpack Compose
+- Work Manager
 - Dagger
 - Coroutines
 - Retrofit
 - Okhttp
 - Kotlin Serialization
 - Compose Navigation
-- DataStore
+- Data Store
 - Jetpack Paging 3
 - Coil
 - Pager

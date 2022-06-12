@@ -50,7 +50,8 @@ private enum class PagerEnum{
 }
 
 @ExperimentalPagerApi
-@SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition")
+@SuppressLint("FlowOperatorInvokedInComposition", "CoroutineCreationDuringComposition",
+    "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun CreateCompanyScreen(
     viewModel:CreateCompanyViewModel,
@@ -81,7 +82,7 @@ internal fun CreateCompanyScreen(
 
     val fileManagerActivityResult = FileManagerActivityResult(
         openFileManager = openFileManager,
-        byteArray = { byteArray ->
+        onByteArray = { byteArray ->
             byteArray?.let {
                 if (fileManagerState == FileManagerState.BANNER){
                     banner = it.decodeByteArrayBitmap()

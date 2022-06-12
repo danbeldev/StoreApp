@@ -1,7 +1,9 @@
 package com.example.feature_create_product.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.create.ProductCreate
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_network_domain.useCase.product.GetCountryProductUseCase
@@ -21,8 +23,11 @@ class CreateProductViewModel @Inject constructor(
     private val _responseValidateCreateProduct:MutableStateFlow<String?> = MutableStateFlow(null)
     val responseValidateCreateProduct = _responseValidateCreateProduct.asStateFlow()
 
-    private val _responseProductResult:MutableStateFlow<Result<Unit?>?> = MutableStateFlow(null)
+    private val _responseProductResult:MutableStateFlow<Result<ProductItem>?> = MutableStateFlow(null)
     val responseProductResult = _responseProductResult.asStateFlow()
+
+    private val _responseFileResult:MutableStateFlow<Result<Void?>?> = MutableStateFlow(null)
+    val responseFileResult = _responseFileResult.asStateFlow()
 
     val responseGenreProduct = getGenreProductUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, Result.Loading())
@@ -38,7 +43,8 @@ class CreateProductViewModel @Inject constructor(
 
     fun postFile(id:Int, file:ByteArray){
         postFileUseCase.invoke(id, file).onEach {
-
+            Log.e("ResponseError", it.message.toString())
+            _responseFileResult.value = it
         }.launchIn(viewModelScope)
     }
 

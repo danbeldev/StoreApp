@@ -36,7 +36,7 @@ interface ProductRepository {
 
     suspend fun postProduct(
         product:ProductCreate
-    ):Response<Unit?>
+    ):Response<ProductItem>
 
     suspend fun getGenre():Response<Genre>
 

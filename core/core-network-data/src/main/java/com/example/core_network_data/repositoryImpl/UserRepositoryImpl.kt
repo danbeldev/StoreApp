@@ -1,9 +1,6 @@
 package com.example.core_network_data.repositoryImpl
 
-import com.example.core_model.data.api.user.Authorization
-import com.example.core_model.data.api.user.AuthorizationResponse
-import com.example.core_model.data.api.user.Registration
-import com.example.core_model.data.api.user.User
+import com.example.core_model.data.api.user.*
 import com.example.core_network_data.api.UserApi
 import com.example.core_network_domain.repository.UserRepository
 import retrofit2.Response
@@ -17,7 +14,7 @@ class UserRepositoryImpl @Inject constructor(
         return userApi.authorization(authorization)
     }
 
-    override suspend fun registration(registration: Registration): Response<Unit?> {
+    override suspend fun registration(registration: Registration): Response<RegistrationResult?> {
         return userApi.registration(registration)
     }
 

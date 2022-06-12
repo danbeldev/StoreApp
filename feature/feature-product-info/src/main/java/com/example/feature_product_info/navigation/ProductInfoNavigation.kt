@@ -10,12 +10,14 @@ import com.example.feature_product_info.screen.ProductInfoScreen
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 object ProductInfoDestination : NiaNavigationDestination {
     override val route = "product_info_route"
     const val productId = "id"
 }
 
+@ExperimentalPermissionsApi
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi

@@ -1,9 +1,6 @@
 package com.example.core_network_data.api
 
-import com.example.core_model.data.api.user.Authorization
-import com.example.core_model.data.api.user.AuthorizationResponse
-import com.example.core_model.data.api.user.Registration
-import com.example.core_model.data.api.user.User
+import com.example.core_model.data.api.user.*
 import com.example.core_network_data.common.ConstantsUrl.AUTHORIZATION
 import com.example.core_network_data.common.ConstantsUrl.GET_USER
 import com.example.core_network_data.common.ConstantsUrl.REGISTRATION
@@ -22,7 +19,7 @@ interface UserApi {
     @POST(REGISTRATION)
     suspend fun registration(
         @Body registration: Registration
-    ):Response<Unit?>
+    ):Response<RegistrationResult?>
 
     @GET(GET_USER)
     suspend fun getUser():Response<User>

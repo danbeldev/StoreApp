@@ -1,10 +1,11 @@
 package com.example.feature_create_product.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.JetHabitTheme
@@ -20,6 +21,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @Composable
@@ -27,10 +29,13 @@ internal fun CreateProductScreen(
     viewModel:CreateProductViewModel,
     onBackClick:() -> Unit
 ) {
-
+    val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState(pageCount = PagerProductState.values().size)
 
+    var productId by remember { mutableStateOf(0) }
+
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 elevation = 8.dp,
@@ -71,9 +76,15 @@ internal fun CreateProductScreen(
                     when(pager){
                         PagerProductState.CREATE_PRODUCT.ordinal -> CreateProduct(
                             viewModel = viewModel,
-                            pagerState = pagerState
+                            pagerState = pagerState,
+                            onProductId = { productId = it }
                         )
-                        PagerProductState.ADD_FILE.ordinal -> AddFile()
+                        PagerProductState.ADD_FILE.ordinal -> AddFile(
+                            pagerState = pagerState,
+                            scaffoldState = scaffoldState,
+                            viewModel = viewModel,
+                            productId = productId
+                        )
                         PagerProductState.ADD_ICON.ordinal -> AddIcon()
                         PagerProductState.ADD_IMAGES.ordinal -> AddImages()
                         PagerProductState.ADD_VIDEO.ordinal -> AddVideo()

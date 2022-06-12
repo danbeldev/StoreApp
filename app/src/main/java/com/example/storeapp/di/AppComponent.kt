@@ -9,10 +9,9 @@ import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.example.feature_profile.veiwModel.ProfileViewModel
 import com.example.feature_registration.viewModel.RegistrationViewModel
 import com.example.feature_settings.viewModel.SettingsViewModel
-import com.example.storeapp.MainViewModel
+import com.example.storeapp.activity.viewModel.MainViewModel
 import com.example.storeapp.di.modules.ApiModule
 import com.example.storeapp.di.modules.DatabaseModule
-import com.example.storeapp.di.modules.annotations.UserToken
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -34,7 +33,7 @@ interface AppComponent {
 
     fun createProductViewModel(): CreateProductViewModel
 
-    fun mainViewModel():MainViewModel
+    fun mainViewModel(): MainViewModel
 
     fun settingsViewModel():SettingsViewModel
 

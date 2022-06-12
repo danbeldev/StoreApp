@@ -98,6 +98,12 @@ dependencies {
     //Pager
     implementation("com.google.accompanist:accompanist-pager:0.14.0")
 
+    //Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.19.0")
+
+    //Work manager 
+    implementation("androidx.work:work-multiprocess:2.7.1")
+
     //Dagger
     implementation("com.google.dagger:dagger:2.41")
     kapt("com.google.dagger:dagger-compiler:2.40.5")

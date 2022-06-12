@@ -3,14 +3,17 @@ package com.example.feature_authorization.screen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieConstants
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_network_domain.apiResponse.Result
+import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.TextFieldEmail
 import com.example.core_ui.view.TextFieldPassword
@@ -68,6 +71,13 @@ internal fun AuthorizationScreen(
                         modifier = Modifier.size(300.dp)
                     )
                 }
+
+                Text(
+                    text = authorizationResponse?.message ?: "",
+                    modifier = Modifier.padding(5.dp),
+                    fontWeight = FontWeight.W900,
+                    color = JetHabitTheme.colors.errorColor
+                )
 
                 TextFieldEmail(value = email)
 
