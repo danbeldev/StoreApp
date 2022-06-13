@@ -5,6 +5,8 @@ internal object ConstantsUrl {
     const val GET_PRODUCT = "/storeApp/api/Product"
     const val POST_PRODUCT = "/storeApp/api/Product"
     const val POST_PRODUCT_FILE = "/storeApp/api/Product/{id}/File"
+    const val OPTIONS_PRODUCT_FILE = "/storeApp/api/Product/{id}/File/Size"
+    const val PRODUCT_REVIEW_URL = "/storeApp/api/Product/{id}/Review"
 
     const val GET_PRODUCT_GENRE = "/storeApp/api/Product/Genre"
     const val GET_PRODUCT_COUNTRY = "/storeApp/api/Product/Country"

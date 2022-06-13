@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.work.*
 import com.example.core_common.extension.launchWhenStarted
+import com.example.core_common.extension.ratingColor
 import com.example.core_common.worker.DownloadFileWorker
 import com.example.core_common.worker.DownloadFileWorker.Companion.DOWNLOAD_TYPE_WORKER_KEY
 import com.example.core_common.worker.DownloadFileWorker.Companion.TOKEN_WORKER_KEY
@@ -29,11 +30,13 @@ import com.example.core_common.worker.DownloadFileWorker.Companion.URL_WORKER_KE
 import com.example.core_common.worker.DownloadType
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.enums.ProductFileExtension.*
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.animation.schimmer.TextShimmer
+import com.example.feature_product_info.veiw.productReviews
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -54,8 +57,11 @@ internal fun ProductInfoScreen(
     val permission = rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     var product:Result<ProductItem> by remember { mutableStateOf(Result.Loading()) }
+    var productFileSize:String? by remember { mutableStateOf(null) }
 
     var token by remember { mutableStateOf("") }
+
+    var productReview:Result<ProductReview> by remember { mutableStateOf(Result.Loading()) }
 
     val builder = Data.Builder()
 
@@ -91,11 +97,10 @@ internal fun ProductInfoScreen(
 
     val workManager = WorkManager.getInstance(context)
 
-
     val outputWorkInfo = workManager.getWorkInfoByIdLiveData(downloadFileWorker.id)
     outputWorkInfo.observe(owner) {
         if (it.state == WorkInfo.State.SUCCEEDED) {
-//            showImage.value = uri
+//            it.progress
         } else if (it.state == WorkInfo.State.FAILED) {
             Toast.makeText(context, "Work Manager Failed", Toast.LENGTH_SHORT).show()
         }
@@ -108,6 +113,16 @@ internal fun ProductInfoScreen(
     viewModel.getProductById(productId)
     viewModel.responseProduct.onEach {
         product = it
+    }.launchWhenStarted()
+
+    viewModel.getProductReview(id = productId)
+    viewModel.responseProductReview.onEach {
+        productReview = it
+    }.launchWhenStarted()
+
+    viewModel.optionsProductFileSize(id = productId)
+    viewModel.responseProductFileSize.onEach {
+        productFileSize = it
     }.launchWhenStarted()
 
     Scaffold(
@@ -168,83 +183,108 @@ internal fun ProductInfoScreen(
                                         Image(
                                             url = icon,
                                             modifier = Modifier
-                                                .size(70.dp)
                                                 .clip(AbsoluteRoundedCornerShape(15.dp))
+                                                .size(150.dp)
                                                 .padding(5.dp)
                                         )
 
                                         Spacer(modifier = Modifier.width(20.dp))
                                     }
 
-                                    product.data?.fileUrl?.let {
-                                        BaseButton(label = "Download") {
-                                            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
-                                                permission.launchPermissionRequest()
-                                                if (permission.hasPermission){
-                                                    workManager.enqueue(downloadFileWorker)
+                                    product.data?.shortDescription?.let { description ->
+                                        Text(
+                                            text = description,
+                                            fontWeight = FontWeight.W100,
+                                            modifier = Modifier.padding(5.dp),
+                                            color = JetHabitTheme.colors.primaryText
+                                        )
+                                    }
+                                }
+
+                                LazyRow(
+                                    horizontalArrangement = Arrangement.Center,
+                                    content = {
+                                        item {
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally
+                                            ) {
+                                                product.data?.rating?.let { rating ->
+                                                    Text(
+                                                        text = rating.toString(),
+                                                        fontWeight = FontWeight.W900,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        color = rating.ratingColor()
+                                                    )
                                                 }
+
+                                                product.data?.reviewsTotal?.let { reviewsTotal ->
+                                                    Text(
+                                                        text = "$reviewsTotal reviews",
+                                                        fontWeight = FontWeight.W100,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        color = JetHabitTheme.colors.primaryText
+                                                    )
+                                                }
+                                            }
+                                        }
+
+                                        item {
+                                            product.data?.ageRating?.let { ageRating ->
+                                                Column(
+                                                    horizontalAlignment = Alignment.CenterHorizontally
+                                                ) {
+                                                    Text(
+                                                        text = ageRating.title,
+                                                        fontWeight = FontWeight.W900,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        color = JetHabitTheme.colors.primaryText
+                                                    )
+
+                                                    Text(
+                                                        text = "Rated",
+                                                        fontWeight = FontWeight.W100,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        color = JetHabitTheme.colors.primaryText
+                                                    )
+                                                }
+                                            }
+                                        }
+
+                                        item {
+                                            productFileSize?.let { size ->
+                                                Column {
+                                                    Text(
+                                                        text = size,
+                                                        fontWeight = FontWeight.W900,
+                                                        modifier = Modifier.padding(5.dp),
+                                                        color = JetHabitTheme.colors.primaryText
+                                                    )
+                                                }
+                                            }
+                                        }
+                                })
+
+                                product.data?.fileUrl?.let {
+                                    BaseButton(
+                                        label = "Download",
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                                            permission.launchPermissionRequest()
+                                            if (permission.hasPermission){
+                                                workManager.enqueue(downloadFileWorker)
                                             }
                                         }
                                     }
                                 }
-
-                                product.data?.advertising?.let { advertising ->
-                                    BaseInfoRaw(
-                                        title = "Advertising",
-                                        description = if(advertising) "Yes" else "No"
-                                    )
-                                }
-
-                                product.data?.version?.let { version ->
-                                    BaseInfoRaw(
-                                        title = "Version",
-                                        description = version
-                                    )
-                                }
-
-                                product.data?.email?.let { email ->
-                                    BaseInfoRaw(
-                                        title = "Email",
-                                        description = email
-                                    )
-                                }
-
-                                product.data?.phone?.let { phone ->
-                                    BaseInfoRaw(
-                                        title = "Phone",
-                                        description = phone
-                                    )
-                                }
-
-                                product.data?.website?.let { website ->
-                                    BaseInfoRaw(
-                                        title = "Website",
-                                        description = website
-                                    )
-                                }
-
-                                product.data?.privacyPolicyWebUrl?.let { privacyPolicyWebUrl ->
-                                    BaseInfoRaw(
-                                        title = "Privacy Policy",
-                                        description = privacyPolicyWebUrl
-                                    )
-                                }
-
-                                product.data?.website?.let { website ->
-                                    BaseInfoRaw(
-                                        title = "Website",
-                                        description = website
-                                    )
-                                }
-
-                                product.data?.website?.let { website ->
-                                    BaseInfoRaw(
-                                        title = "Website",
-                                        description = website
-                                    )
-                                }
                             }
                         }
+
+                        productReviews(
+                            review = productReview,
+                            product = product
+                        )
+
                         item {
                             Spacer(modifier = Modifier.height(60.dp))
                         }

@@ -9,6 +9,7 @@ import com.example.core_model.data.api.product.enums.AgeRating
 import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_network_data.api.ProductApi
 import com.example.core_network_domain.repository.ProductRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -75,5 +76,13 @@ class ProductRepositoryImpl @Inject constructor(
         val requestFile = RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
         val body = MultipartBody.Part.createFormData("file","product_file",requestFile)
         return productApi.postFile(file = body, id = id)
+    }
+
+    override suspend fun getProductReview(id: Int, search: String?): Response<ProductReview> {
+        return productApi.getProductReview(id, search)
+    }
+
+    override suspend fun optionsProductFileSize(id: Int): String {
+        return productApi.optionsProductFileSize(id).body() ?: ""
     }
 }

@@ -9,11 +9,14 @@ import com.example.core_model.data.api.product.enums.AgeRating
 import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_COUNTRY
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_GENRE
+import com.example.core_network_data.common.ConstantsUrl.OPTIONS_PRODUCT_FILE
 import com.example.core_network_data.common.ConstantsUrl.POST_PRODUCT
 import com.example.core_network_data.common.ConstantsUrl.POST_PRODUCT_FILE
+import com.example.core_network_data.common.ConstantsUrl.PRODUCT_REVIEW_URL
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -61,4 +64,15 @@ interface ProductApi {
         @Path("id") id:Int,
         @Part file: MultipartBody.Part
     ):Response<Void?>
+
+    @GET(PRODUCT_REVIEW_URL)
+    suspend fun getProductReview(
+        @Path("id") id: Int,
+        @Query("search") search:String?
+    ):Response<ProductReview>
+
+    @OPTIONS(OPTIONS_PRODUCT_FILE)
+    suspend fun optionsProductFileSize(
+        @Path("id") id:Int
+    ):Response<String>
 }

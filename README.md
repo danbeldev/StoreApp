@@ -1,5 +1,5 @@
 
-# Store APP
+# Store App
 <br>
 
 ## API

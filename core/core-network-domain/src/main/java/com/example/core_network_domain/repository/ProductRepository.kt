@@ -9,6 +9,7 @@ import com.example.core_model.data.api.product.enums.AgeRating
 import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
+import com.example.core_model.data.api.product.review.ProductReview
 import retrofit2.Response
 
 interface ProductRepository {
@@ -43,4 +44,8 @@ interface ProductRepository {
     suspend fun getCountry():Response<Country>
 
     suspend fun postFile(id:Int,file:ByteArray):Response<Void?>
+
+    suspend fun getProductReview(id: Int, search: String?):Response<ProductReview>
+
+    suspend fun optionsProductFileSize(id: Int):String
 }
