@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
             val isSystemInDarkTheme = isSystemInDarkTheme()
             var isDarkMode by remember { mutableStateOf(isSystemInDarkTheme) }
-            var currentStyle by remember { mutableStateOf(JetHabitStyle.Purple) }
+            var currentStyle by remember { mutableStateOf(JetHabitStyle.Green) }
 
             mainViewModel.responseSettings.onEach { settings ->
                 isDarkMode = settings.darkTheme

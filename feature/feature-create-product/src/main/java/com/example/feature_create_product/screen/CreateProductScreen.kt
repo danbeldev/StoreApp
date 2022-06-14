@@ -30,7 +30,7 @@ internal fun CreateProductScreen(
     onBackClick:() -> Unit
 ) {
     val scaffoldState = rememberScaffoldState()
-    val pagerState = rememberPagerState(pageCount = PagerProductState.values().size)
+    val pagerState = rememberPagerState()
 
     var productId by remember { mutableStateOf(0) }
 
@@ -66,8 +66,9 @@ internal fun CreateProductScreen(
         },
         content = {
             HorizontalPager(
+                count = PagerProductState.values().size,
                 state = pagerState,
-                dragEnabled = false
+                userScrollEnabled = false
             ) { pager ->
                 Surface(
                     modifier = Modifier.fillMaxSize(),

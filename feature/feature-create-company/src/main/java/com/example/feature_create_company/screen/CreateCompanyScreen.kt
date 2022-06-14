@@ -61,7 +61,7 @@ internal fun CreateCompanyScreen(
 
     val scope = rememberCoroutineScope()
 
-    val pagerState = rememberPagerState(pageCount = PagerEnum.values().size)
+    val pagerState = rememberPagerState()
 
     val title = remember { mutableStateOf("") }
     val description = remember { mutableStateOf("") }
@@ -156,8 +156,9 @@ internal fun CreateCompanyScreen(
                 color = JetHabitTheme.colors.primaryBackground
             ) {
                 HorizontalPager(
+                    count = PagerEnum.values().size,
                     state = pagerState,
-                    dragEnabled = false
+                    userScrollEnabled = false
                 ) {
                     LazyColumn(content = {
                         item {

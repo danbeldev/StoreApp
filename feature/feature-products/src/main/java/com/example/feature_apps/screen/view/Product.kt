@@ -24,6 +24,7 @@ import com.example.core_common.extension.replaceRange
 import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.product.Country
 import com.example.core_model.data.api.product.Genre
+import com.example.core_model.data.api.product.GenreItem
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
@@ -42,11 +43,12 @@ internal fun Products(
     company: LazyPagingItems<CompanyItem>,
     genre:Result<Genre>,
     country: Result<Country>,
-    onInfoProductScreen:(Int) -> Unit
+    onInfoProductScreen:(Int) -> Unit,
+    onGenreSorting:(GenreItem?) -> Unit
 ) {
     LazyColumn(content = {
 
-        item { Genre(genre = genre) }
+        item { Genre(genre = genre, onGenreSorting = onGenreSorting) }
 
         itemsIndexed(products){ index, item -> item?.let { ProductItem(
             product = item, index = index, company = company, onInfoProductScreen = onInfoProductScreen
@@ -55,10 +57,17 @@ internal fun Products(
         if (
             products.loadState.refresh is LoadState.Loading
             || products.loadState.append is LoadState.Loading
+            && products.itemCount > 0
         ){
             item {
                 BaseColumnShimmer()
             }
+        }
+
+        if (
+            products.itemCount <= 0
+        ){
+            item { Text(text = "Нету...") }
         }
         
         item { 

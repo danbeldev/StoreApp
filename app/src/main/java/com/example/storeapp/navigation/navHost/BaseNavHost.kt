@@ -22,6 +22,8 @@ import com.example.feature_create_product.navigation.CreateProductDestination
 import com.example.feature_create_product.navigation.createProductNavigation
 import com.example.feature_product_info.navigation.ProductInfoDestination
 import com.example.feature_product_info.navigation.productInfoNavigation
+import com.example.feature_product_reviews.navigation.ProductReviewsDestination
+import com.example.feature_product_reviews.navigation.productReviewsNavigation
 import com.example.feature_profile.navigation.ProfileDestination
 import com.example.feature_profile.navigation.profileNavigation
 import com.example.feature_registration.navigation.RegistrationDestination
@@ -146,6 +148,13 @@ fun BaseNavHost(
 
                         productInfoNavigation(
                             viewModel = appComponent.productInfoViewModel(),
+                            onBackClick = { navHostController.navigateUp() },
+                            onProductReviewsScreen = { navHostController.navigate(
+                                "${ProductReviewsDestination.route}/$it") }
+                        )
+
+                        productReviewsNavigation(
+                            viewModel = appComponent.productReviewsViewModel(),
                             onBackClick = { navHostController.navigateUp() }
                         )
 

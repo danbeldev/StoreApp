@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.core_database_domain.useCase.user.GetUserTokenUseCase
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.review.ProductReview
+import com.example.core_model.data.api.product.review.ProductReviewAdd
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_network_domain.useCase.product.GetProductByIdUseCase
 import com.example.core_network_domain.useCase.product.GetProductReviewUseCase
 import com.example.core_network_domain.useCase.product.OptionsProductFileSizeUseCase
+import com.example.core_network_domain.useCase.product.PostProductReviewUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +20,7 @@ class ProductInfoViewModel @Inject constructor(
     private val getProductByIdUseCase: GetProductByIdUseCase,
     private val getProductReviewUseCase: GetProductReviewUseCase,
     private val optionsProductFileSizeUseCase: OptionsProductFileSizeUseCase,
+    private val postProductReviewUseCase: PostProductReviewUseCase,
     getUserTokenUseCase: GetUserTokenUseCase
 ): ViewModel() {
 
@@ -32,6 +35,9 @@ class ProductInfoViewModel @Inject constructor(
 
     private val _responseProductFileSize = MutableStateFlow("")
     val responseProductFileSize = _responseProductFileSize.asStateFlow()
+
+    private val _responseReviewAdd:MutableStateFlow<Result<Unit?>?> = MutableStateFlow(null)
+    val responseReviewAdd = _responseReviewAdd.asStateFlow()
 
     fun getProductById(id:Int){
         getProductByIdUseCase.invoke(id).onEach {
@@ -52,5 +58,11 @@ class ProductInfoViewModel @Inject constructor(
                 _responseProductFileSize.value = response
             }catch (e:Exception){ Log.e("ResponseProductSize", e.message.toString()) }
         }
+    }
+
+    fun postProductReview(id:Int,review:ProductReviewAdd){
+        postProductReviewUseCase.invoke(id,review).onEach {
+            _responseReviewAdd.value = it
+        }.launchIn(viewModelScope)
     }
 }

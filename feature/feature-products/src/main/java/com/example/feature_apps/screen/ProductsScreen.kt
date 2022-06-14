@@ -39,25 +39,28 @@ import kotlinx.coroutines.flow.onEach
 @ExperimentalPagerApi
 @Composable
 fun ProductsScreen(
-   productsViewModel: ProductsViewModel,
+   viewModel: ProductsViewModel,
    onInfoProductScreen:(Int) -> Unit
 ) {
 
-   val searchState by productsViewModel.searchState
-   val searchTextState by productsViewModel.searchTextState
+   val searchState by viewModel.searchState
+   val searchTextState by viewModel.searchTextState
+
+   val genreSorting by viewModel.genreSorting
 
    var genre:Result<Genre> by remember { mutableStateOf(Result.Loading()) }
    val country:Result<Country> by remember { mutableStateOf(Result.Loading()) }
 
-   val products = productsViewModel.getProduct(
-      search = searchTextState
+   val products = viewModel.getProduct(
+      search = searchTextState,
+      genreId = if (genreSorting == null) null else listOf(genreSorting!!.id)
    ).collectAsLazyPagingItems()
 
-   val company = productsViewModel.getCompany(
+   val company = viewModel.getCompany(
 
    ).collectAsLazyPagingItems()
 
-   productsViewModel.responseGenre.onEach {
+   viewModel.responseGenre.onEach {
       genre = it
    }.launchWhenStarted()
 
@@ -72,10 +75,10 @@ fun ProductsScreen(
             Search(
                modifier = Modifier.fillMaxWidth(),
                onValue = {
-                  productsViewModel.updateSearchTextState(it)
+                  viewModel.updateSearchTextState(it)
                },
                onClose = {
-                  productsViewModel.updateSearchState(SearchState.CLOSE)
+                  viewModel.updateSearchState(SearchState.CLOSE)
                }
             )
          }
@@ -113,7 +116,7 @@ fun ProductsScreen(
                   ) {
                      CardButton(
                         imageVector = Icons.Outlined.Search
-                     ){ productsViewModel.updateSearchState(state = SearchState.OPEN) }
+                     ){ viewModel.updateSearchState(state = SearchState.OPEN) }
 
                      CardButton(
                         iconId = R.drawable.filter
@@ -128,7 +131,10 @@ fun ProductsScreen(
                   company = company,
                   onInfoProductScreen = onInfoProductScreen,
                   genre = genre,
-                  country = country
+                  country = country,
+                  onGenreSorting = {
+                     viewModel.updateGenreSorting(it)
+                  }
                )
             }
          }

@@ -60,7 +60,7 @@ fun NavGraphBuilder.productsNavigation(
         }
     ){
         ProductsScreen(
-            productsViewModel = productsViewModel,
+            viewModel = productsViewModel,
             onInfoProductScreen = onInfoProductScreen
         )
     }

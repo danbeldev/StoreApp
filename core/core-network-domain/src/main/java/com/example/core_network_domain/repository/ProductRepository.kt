@@ -10,6 +10,7 @@ import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
 import com.example.core_model.data.api.product.review.ProductReview
+import com.example.core_model.data.api.product.review.ProductReviewAdd
 import retrofit2.Response
 
 interface ProductRepository {
@@ -48,4 +49,6 @@ interface ProductRepository {
     suspend fun getProductReview(id: Int, search: String?):Response<ProductReview>
 
     suspend fun optionsProductFileSize(id: Int):String
+
+    suspend fun postProductReview(id:Int, review:ProductReviewAdd):Response<Unit?>
 }

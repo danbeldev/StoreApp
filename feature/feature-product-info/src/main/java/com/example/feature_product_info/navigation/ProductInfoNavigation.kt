@@ -23,7 +23,8 @@ object ProductInfoDestination : NiaNavigationDestination {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.productInfoNavigation(
     viewModel: ProductInfoViewModel,
-    onBackClick:() -> Unit
+    onBackClick:() -> Unit,
+    onProductReviewsScreen:(Int) -> Unit
 ) {
     composable(
         route = "${ProductInfoDestination.route}/{${ProductInfoDestination.productId}}",
@@ -39,7 +40,8 @@ fun NavGraphBuilder.productInfoNavigation(
         ProductInfoScreen(
             viewModel = viewModel,
             onBackClick = onBackClick,
-            productId = it.arguments?.getInt(ProductInfoDestination.productId) ?: 0
+            productId = it.arguments?.getInt(ProductInfoDestination.productId) ?: 0,
+            onProductReviewsScreen = onProductReviewsScreen
         )
     }
 }

@@ -38,18 +38,22 @@ import com.example.core_ui.view.Image
 import com.example.core_ui.view.animation.schimmer.TextShimmer
 import com.example.feature_product_info.veiw.productReviews
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.TimeUnit
 
+@ExperimentalPagerApi
+@ExperimentalMaterialApi
 @ExperimentalPermissionsApi
 @SuppressLint("FlowOperatorInvokedInComposition", "UnusedMaterialScaffoldPaddingParameter")
 @Composable
 internal fun ProductInfoScreen(
     viewModel:ProductInfoViewModel,
     productId:Int,
-    onBackClick:() -> Unit
+    onBackClick:() -> Unit,
+    onProductReviewsScreen:(Int) -> Unit
 ) {
     val context = LocalContext.current
     val owner = LocalLifecycleOwner.current
@@ -281,8 +285,10 @@ internal fun ProductInfoScreen(
                         }
 
                         productReviews(
+                            viewMode = viewModel,
                             review = productReview,
-                            product = product
+                            product = product,
+                            onProductReviewsScreen = onProductReviewsScreen
                         )
 
                         item {

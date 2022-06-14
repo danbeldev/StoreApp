@@ -10,6 +10,7 @@ import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
 import com.example.core_model.data.api.product.review.ProductReview
+import com.example.core_model.data.api.product.review.ProductReviewAdd
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_COUNTRY
 import com.example.core_network_data.common.ConstantsUrl.GET_PRODUCT_GENRE
@@ -75,4 +76,10 @@ interface ProductApi {
     suspend fun optionsProductFileSize(
         @Path("id") id:Int
     ):Response<String>
+
+    @POST(PRODUCT_REVIEW_URL)
+    suspend fun postProductReview(
+        @Path("id") id:Int,
+        @Body productReviewAdd: ProductReviewAdd
+    ):Response<Unit?>
 }

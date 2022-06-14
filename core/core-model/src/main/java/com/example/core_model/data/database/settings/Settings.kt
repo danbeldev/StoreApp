@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Settings(
     var darkTheme: Boolean = true,
-    var style: String = JetHabitStyle.Purple.name
+    var style: String = JetHabitStyle.Green.name
 )

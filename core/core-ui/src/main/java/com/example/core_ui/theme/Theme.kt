@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MainTheme(
-    style: JetHabitStyle = JetHabitStyle.Purple,
+    style: JetHabitStyle = JetHabitStyle.Green,
     textSize: JetHabitSize = JetHabitSize.Medium,
     paddingSize: JetHabitSize = JetHabitSize.Medium,
     corners: JetHabitCorners = JetHabitCorners.Rounded,

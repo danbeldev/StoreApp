@@ -10,6 +10,7 @@ import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
 import com.example.core_model.data.api.product.review.ProductReview
+import com.example.core_model.data.api.product.review.ProductReviewAdd
 import com.example.core_network_data.api.ProductApi
 import com.example.core_network_domain.repository.ProductRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -84,5 +85,9 @@ class ProductRepositoryImpl @Inject constructor(
 
     override suspend fun optionsProductFileSize(id: Int): String {
         return productApi.optionsProductFileSize(id).body() ?: ""
+    }
+
+    override suspend fun postProductReview(id:Int,review: ProductReviewAdd): Response<Unit?> {
+        return productApi.postProductReview(id,review)
     }
 }

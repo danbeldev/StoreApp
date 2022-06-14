@@ -8,7 +8,8 @@ import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core_model.data.api.product.Genre
+import com.example.core_model.data.api.product.GenreItem
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.animation.schimmer.TextShimmer
@@ -24,8 +26,15 @@ import com.example.core_ui.view.animation.schimmer.TextShimmer
 @ExperimentalFoundationApi
 @Composable
 internal fun Genre(
-    genre:Result<Genre>
+    genre:Result<Genre>,
+    onGenreSorting:(GenreItem?) -> Unit
 ) {
+    var genreSorting:GenreItem? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(key1 = genreSorting, block = {
+        onGenreSorting(genreSorting)
+    })
+
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         content = {
@@ -33,13 +42,18 @@ internal fun Genre(
                 if (genre !is Result.Error){
                     Row {
                         Spacer(modifier = Modifier.width(15.dp))
-                        Text(
-                            text = "Genres",
-                            modifier = Modifier.padding(5.dp),
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.W900,
-                            color = JetHabitTheme.colors.tintColor
-                        )
+                        TextButton(onClick = { genreSorting = null }) {
+                            Text(
+                                text = "Genres",
+                                modifier = Modifier.padding(5.dp),
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.W900,
+                                color = if (genreSorting == null)
+                                    JetHabitTheme.colors.tintColor
+                                else
+                                    JetHabitTheme.colors.primaryText
+                            )
+                        }
                     }
                 }
             }
@@ -65,13 +79,16 @@ internal fun Genre(
                                 backgroundColor = JetHabitTheme.colors.secondaryBackground,
                                 elevation = 8.dp,
                                 shape = AbsoluteRoundedCornerShape(10.dp),
-                                onClick = {  }
+                                onClick = { genreSorting = item }
                             ) {
                                 Text(
                                     text = item.title,
                                     modifier = Modifier.padding(10.dp),
                                     fontWeight = FontWeight.W900,
-                                    color = JetHabitTheme.colors.primaryText
+                                    color = if (genreSorting == item)
+                                        JetHabitTheme.colors.tintColor
+                                    else
+                                        JetHabitTheme.colors.primaryText
                                 )
                             }
                         }

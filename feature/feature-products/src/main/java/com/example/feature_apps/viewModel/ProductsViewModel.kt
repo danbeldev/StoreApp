@@ -10,6 +10,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.core_model.data.api.company.CompanyItem
+import com.example.core_model.data.api.product.GenreItem
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_network_domain.source.CompanySource
@@ -43,6 +44,13 @@ class ProductsViewModel @Inject constructor(
     private val _searchTextState:MutableState<String> = mutableStateOf("")
     val searchTextState:State<String> = _searchTextState
 
+    private val _genreSorting:MutableState<GenreItem?> = mutableStateOf(null)
+    val genreSorting:State<GenreItem?> = _genreSorting
+
+    fun updateGenreSorting(genre: GenreItem?){
+        _genreSorting.value = genre
+    }
+
     fun updateSearchTextState(text:String){
         _searchTextState.value = text
     }
@@ -52,12 +60,14 @@ class ProductsViewModel @Inject constructor(
     }
 
     fun getProduct(
-        search:String
+        search:String,
+        genreId:List<Int>?
     ):Flow<PagingData<ProductItem>> {
         return Pager(PagingConfig(pageSize = 1)){
             ProductSource(
                 getProductUseCase = getProductUseCase,
-                search = search
+                search = search,
+                genreId = genreId
             )
         }.flow.cachedIn(viewModelScope)
     }
