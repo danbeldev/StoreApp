@@ -36,6 +36,7 @@ import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.animation.schimmer.TextShimmer
+import com.example.feature_product_info.veiw.ProductVideo
 import com.example.feature_product_info.veiw.productReviews
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -281,6 +282,10 @@ internal fun ProductInfoScreen(
                                         }
                                     }
                                 }
+
+                                ProductVideo(
+                                    product = product
+                                )
                             }
                         }
 
