@@ -21,6 +21,7 @@
 - Data Store
 - Jetpack Paging 3
 - Coil
+- Exo Player
 - Pager
 <br>
 

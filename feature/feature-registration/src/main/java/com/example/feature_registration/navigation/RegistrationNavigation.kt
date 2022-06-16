@@ -2,6 +2,7 @@ package com.example.feature_registration.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
+import com.example.core_common.extension.viewModel.daggerViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_registration.screen.RegistrationScreen
@@ -20,7 +21,7 @@ fun NavGraphBuilder.registrationNavigation(
         route = RegistrationDestination.route
     ){
         RegistrationScreen(
-            viewModel = viewModel,
+            viewModel = daggerViewModel { viewModel },
             onProfileScreen = onProfileScreen
         )
     }

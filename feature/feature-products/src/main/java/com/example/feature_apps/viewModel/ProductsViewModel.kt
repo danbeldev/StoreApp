@@ -19,7 +19,6 @@ import com.example.core_network_domain.useCase.company.GetCompanyUseCase
 import com.example.core_network_domain.useCase.product.GetCountryProductUseCase
 import com.example.core_network_domain.useCase.product.GetGenreProductUseCase
 import com.example.core_network_domain.useCase.product.GetProductUseCase
-import com.example.feature_apps.state.SearchState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -38,25 +37,11 @@ class ProductsViewModel @Inject constructor(
     val responseCountry = getCountryProductUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, Result.Loading())
 
-    private val _searchState:MutableState<SearchState> =  mutableStateOf(SearchState.CLOSE)
-    val searchState:State<SearchState> = _searchState
-
-    private val _searchTextState:MutableState<String> = mutableStateOf("")
-    val searchTextState:State<String> = _searchTextState
-
     private val _genreSorting:MutableState<GenreItem?> = mutableStateOf(null)
     val genreSorting:State<GenreItem?> = _genreSorting
 
     fun updateGenreSorting(genre: GenreItem?){
         _genreSorting.value = genre
-    }
-
-    fun updateSearchTextState(text:String){
-        _searchTextState.value = text
-    }
-
-    fun updateSearchState(state: SearchState){
-        _searchState.value = state
     }
 
     fun getProduct(

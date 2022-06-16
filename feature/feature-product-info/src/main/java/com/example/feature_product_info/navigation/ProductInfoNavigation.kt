@@ -5,6 +5,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.core_common.extension.viewModel.daggerViewModel
+import com.example.core_model.data.navigation.VideoPlayerArgument
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_product_info.screen.ProductInfoScreen
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
@@ -24,7 +26,8 @@ object ProductInfoDestination : NiaNavigationDestination {
 fun NavGraphBuilder.productInfoNavigation(
     viewModel: ProductInfoViewModel,
     onBackClick:() -> Unit,
-    onProductReviewsScreen:(Int) -> Unit
+    onProductReviewsScreen:(Int) -> Unit,
+    onVideoPlayerScreen:(VideoPlayerArgument) -> Unit
 ) {
     composable(
         route = "${ProductInfoDestination.route}/{${ProductInfoDestination.productId}}",
@@ -38,10 +41,11 @@ fun NavGraphBuilder.productInfoNavigation(
         )
     ){
         ProductInfoScreen(
-            viewModel = viewModel,
+            viewModel = daggerViewModel { viewModel },
             onBackClick = onBackClick,
             productId = it.arguments?.getInt(ProductInfoDestination.productId) ?: 0,
-            onProductReviewsScreen = onProductReviewsScreen
+            onProductReviewsScreen = onProductReviewsScreen,
+            onVideoPlayerScreen = onVideoPlayerScreen
         )
     }
 }

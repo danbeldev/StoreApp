@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.work.*
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_common.extension.ratingColor
@@ -31,12 +32,14 @@ import com.example.core_common.worker.DownloadType
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.enums.ProductFileExtension.*
 import com.example.core_model.data.api.product.review.ProductReview
+import com.example.core_model.data.navigation.VideoPlayerArgument
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.animation.schimmer.TextShimmer
 import com.example.feature_product_info.veiw.ProductVideo
+import com.example.feature_product_info.veiw.animation.shimmer.ProductInfoShimmer
 import com.example.feature_product_info.veiw.productReviews
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -54,7 +57,8 @@ internal fun ProductInfoScreen(
     viewModel:ProductInfoViewModel,
     productId:Int,
     onBackClick:() -> Unit,
-    onProductReviewsScreen:(Int) -> Unit
+    onProductReviewsScreen:(Int) -> Unit,
+    onVideoPlayerScreen:(VideoPlayerArgument) -> Unit
 ) {
     val context = LocalContext.current
     val owner = LocalLifecycleOwner.current
@@ -86,7 +90,7 @@ internal fun ProductInfoScreen(
 
     val inputParams = builder.build()
     val powerConstraints = Constraints.Builder()
-        .setRequiresCharging(true)
+//        .setRequiresCharging(true)
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
 
@@ -111,21 +115,24 @@ internal fun ProductInfoScreen(
         }
     }
 
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getProductById(productId)
+        viewModel.getProductReview(id = productId)
+        viewModel.optionsProductFileSize(id = productId)
+    })
+
     viewModel.responseToken.onEach {
         token = it
     }.launchWhenStarted()
 
-    viewModel.getProductById(productId)
     viewModel.responseProduct.onEach {
         product = it
     }.launchWhenStarted()
 
-    viewModel.getProductReview(id = productId)
     viewModel.responseProductReview.onEach {
         productReview = it
     }.launchWhenStarted()
 
-    viewModel.optionsProductFileSize(id = productId)
     viewModel.responseProductFileSize.onEach {
         productFileSize = it
     }.launchWhenStarted()
@@ -177,129 +184,144 @@ internal fun ProductInfoScreen(
                 modifier = Modifier.fillMaxSize(),
                 color = JetHabitTheme.colors.primaryBackground
             ){
-                LazyColumn(
-                    content = {
-                        item {
-                            Column {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    product.data?.icon?.let { icon ->
-                                        Image(
-                                            url = icon,
-                                            modifier = Modifier
-                                                .clip(AbsoluteRoundedCornerShape(15.dp))
-                                                .size(150.dp)
-                                                .padding(5.dp)
-                                        )
-
-                                        Spacer(modifier = Modifier.width(20.dp))
-                                    }
-
-                                    product.data?.shortDescription?.let { description ->
-                                        Text(
-                                            text = description,
-                                            fontWeight = FontWeight.W100,
-                                            modifier = Modifier.padding(5.dp),
-                                            color = JetHabitTheme.colors.primaryText
-                                        )
-                                    }
-                                }
-
-                                LazyRow(
-                                    horizontalArrangement = Arrangement.Center,
-                                    content = {
-                                        item {
-                                            Column(
-                                                horizontalAlignment = Alignment.CenterHorizontally
-                                            ) {
-                                                product.data?.rating?.let { rating ->
-                                                    Text(
-                                                        text = rating.toString(),
-                                                        fontWeight = FontWeight.W900,
-                                                        modifier = Modifier.padding(5.dp),
-                                                        color = rating.ratingColor()
-                                                    )
-                                                }
-
-                                                product.data?.reviewsTotal?.let { reviewsTotal ->
-                                                    Text(
-                                                        text = "$reviewsTotal reviews",
-                                                        fontWeight = FontWeight.W100,
-                                                        modifier = Modifier.padding(5.dp),
-                                                        color = JetHabitTheme.colors.primaryText
-                                                    )
-                                                }
-                                            }
-                                        }
-
-                                        item {
-                                            product.data?.ageRating?.let { ageRating ->
-                                                Column(
-                                                    horizontalAlignment = Alignment.CenterHorizontally
-                                                ) {
-                                                    Text(
-                                                        text = ageRating.title,
-                                                        fontWeight = FontWeight.W900,
-                                                        modifier = Modifier.padding(5.dp),
-                                                        color = JetHabitTheme.colors.primaryText
-                                                    )
-
-                                                    Text(
-                                                        text = "Rated",
-                                                        fontWeight = FontWeight.W100,
-                                                        modifier = Modifier.padding(5.dp),
-                                                        color = JetHabitTheme.colors.primaryText
-                                                    )
-                                                }
-                                            }
-                                        }
-
-                                        item {
-                                            productFileSize?.let { size ->
-                                                Column {
-                                                    Text(
-                                                        text = size,
-                                                        fontWeight = FontWeight.W900,
-                                                        modifier = Modifier.padding(5.dp),
-                                                        color = JetHabitTheme.colors.primaryText
-                                                    )
-                                                }
-                                            }
-                                        }
-                                })
-
-                                product.data?.fileUrl?.let {
-                                    BaseButton(
-                                        label = "Download",
-                                        modifier = Modifier.fillMaxWidth()
-                                    ) {
-                                        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
-                                            permission.launchPermissionRequest()
-                                            if (permission.hasPermission){
-                                                workManager.enqueue(downloadFileWorker)
-                                            }
-                                        }
-                                    }
-                                }
-
-                                ProductVideo(
-                                    product = product
-                                )
-                            }
-                        }
-
-                        productReviews(
-                            viewMode = viewModel,
-                            review = productReview,
-                            product = product,
-                            onProductReviewsScreen = onProductReviewsScreen
+                when(product){
+                    is Result.Error -> {
+                        Text(
+                            text = product.message ?: "",
+                            color = JetHabitTheme.colors.errorColor,
+                            fontWeight = FontWeight.W900,
+                            fontSize = 20.sp
                         )
+                    }
+                    is Result.Loading -> ProductInfoShimmer()
+                    is Result.Success -> {
+                        LazyColumn(
+                            content = {
+                                item {
+                                    Column {
+                                        Row(
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            product.data?.icon?.let { icon ->
+                                                Image(
+                                                    url = icon,
+                                                    modifier = Modifier
+                                                        .clip(AbsoluteRoundedCornerShape(15.dp))
+                                                        .size(150.dp)
+                                                        .padding(5.dp)
+                                                )
 
-                        item {
-                            Spacer(modifier = Modifier.height(60.dp))
-                        }
-                })
+                                                Spacer(modifier = Modifier.width(20.dp))
+                                            }
+
+                                            product.data?.shortDescription?.let { description ->
+                                                Text(
+                                                    text = description,
+                                                    fontWeight = FontWeight.W100,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    color = JetHabitTheme.colors.primaryText
+                                                )
+                                            }
+                                        }
+
+                                        LazyRow(
+                                            horizontalArrangement = Arrangement.Center,
+                                            content = {
+                                                item {
+                                                    Column(
+                                                        horizontalAlignment = Alignment.CenterHorizontally
+                                                    ) {
+                                                        product.data?.rating?.let { rating ->
+                                                            Text(
+                                                                text = rating.toString(),
+                                                                fontWeight = FontWeight.W900,
+                                                                modifier = Modifier.padding(5.dp),
+                                                                color = rating.ratingColor()
+                                                            )
+                                                        }
+
+                                                        product.data?.reviewsTotal?.let { reviewsTotal ->
+                                                            Text(
+                                                                text = "$reviewsTotal reviews",
+                                                                fontWeight = FontWeight.W100,
+                                                                modifier = Modifier.padding(5.dp),
+                                                                color = JetHabitTheme.colors.primaryText
+                                                            )
+                                                        }
+                                                    }
+                                                }
+
+                                                item {
+                                                    product.data?.ageRating?.let { ageRating ->
+                                                        Column(
+                                                            horizontalAlignment = Alignment.CenterHorizontally
+                                                        ) {
+                                                            Text(
+                                                                text = ageRating.title,
+                                                                fontWeight = FontWeight.W900,
+                                                                modifier = Modifier.padding(5.dp),
+                                                                color = JetHabitTheme.colors.primaryText
+                                                            )
+
+                                                            Text(
+                                                                text = "Rated",
+                                                                fontWeight = FontWeight.W100,
+                                                                modifier = Modifier.padding(5.dp),
+                                                                color = JetHabitTheme.colors.primaryText
+                                                            )
+                                                        }
+                                                    }
+                                                }
+
+                                                item {
+                                                    productFileSize?.let { size ->
+                                                        Column {
+                                                            Text(
+                                                                text = size,
+                                                                fontWeight = FontWeight.W900,
+                                                                modifier = Modifier.padding(5.dp),
+                                                                color = JetHabitTheme.colors.primaryText
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                            })
+
+                                        product.data?.fileUrl?.let {
+                                            BaseButton(
+                                                label = "Download",
+                                                modifier = Modifier.fillMaxWidth()
+                                            ) {
+                                                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M){
+                                                    permission.launchPermissionRequest()
+                                                    if (permission.hasPermission){
+                                                        workManager.enqueue(downloadFileWorker)
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        ProductVideo(
+                                            product = product,
+                                            onVideoPlayerScreen = onVideoPlayerScreen
+                                        )
+                                    }
+                                }
+
+                                productReviews(
+                                    viewMode = viewModel,
+                                    review = productReview,
+                                    product = product,
+                                    onProductReviewsScreen = onProductReviewsScreen
+                                )
+
+                                item {
+                                    Spacer(modifier = Modifier.height(60.dp))
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
     )

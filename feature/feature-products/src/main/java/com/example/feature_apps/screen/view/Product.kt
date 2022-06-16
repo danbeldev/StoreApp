@@ -46,33 +46,41 @@ internal fun Products(
     onInfoProductScreen:(Int) -> Unit,
     onGenreSorting:(GenreItem?) -> Unit
 ) {
-    LazyColumn(content = {
+    LazyColumn(
+        userScrollEnabled = products.loadState.refresh !is LoadState.Loading,
+        content = {
+            item { Genre(genre = genre, onGenreSorting = onGenreSorting) }
 
-        item { Genre(genre = genre, onGenreSorting = onGenreSorting) }
+            itemsIndexed(products){ index, item -> item?.let { ProductItem(
+                product = item, index = index, company = company, onInfoProductScreen = onInfoProductScreen
+            ) } }
 
-        itemsIndexed(products){ index, item -> item?.let { ProductItem(
-            product = item, index = index, company = company, onInfoProductScreen = onInfoProductScreen
-        ) } }
-
-        if (
-            products.loadState.refresh is LoadState.Loading
-            || products.loadState.append is LoadState.Loading
-            && products.itemCount > 0
-        ){
-            item {
-                BaseColumnShimmer()
+            if (products.loadState.append is LoadState.Loading
+                && products.itemCount > 0
+            ){
+                item {
+                    BaseColumnShimmer()
+                }
             }
-        }
 
-        if (
-            products.itemCount <= 0
-        ){
-            item { Text(text = "Нету...") }
-        }
-        
-        item { 
-            Spacer(modifier = Modifier.height(70.dp))
-        }
+            if (
+                products.loadState.refresh is LoadState.Loading
+            ){
+                items(10) {
+                    BaseColumnShimmer()
+                }
+            }
+
+            if (
+                products.itemCount <= 0
+                && products.loadState.refresh !is LoadState.Loading
+            ){
+                item { Text(text = "Нету...") }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(70.dp))
+            }
     })
 }
 

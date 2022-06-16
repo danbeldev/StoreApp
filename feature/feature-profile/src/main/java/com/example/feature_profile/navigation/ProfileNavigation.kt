@@ -2,6 +2,7 @@ package com.example.feature_profile.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
+import com.example.core_common.extension.viewModel.daggerViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_profile.screen.ProfileScreen
@@ -26,7 +27,7 @@ fun NavGraphBuilder.profileNavigation(
         route = ProfileDestination.route
     ){
         ProfileScreen(
-            profileViewModel = profileViewModel,
+            profileViewModel = daggerViewModel { profileViewModel },
             onAuthorizationScreen = onAuthorizationScreen,
             onCreateCompanyScreen = onCreateCompanyScreen,
             onSettingsScreen = onSettingsScreen,

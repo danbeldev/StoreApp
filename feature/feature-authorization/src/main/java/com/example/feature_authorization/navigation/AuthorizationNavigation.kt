@@ -2,6 +2,7 @@ package com.example.feature_authorization.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
+import com.example.core_common.extension.viewModel.daggerViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_authorization.screen.AuthorizationScreen
@@ -20,7 +21,7 @@ fun NavGraphBuilder.authorizationNavigation(
         route = AuthorizationDestination.route
     ){
         AuthorizationScreen(
-            viewModel = authorizationViewModel,
+            viewModel = daggerViewModel { authorizationViewModel },
             onBackClick = onBackClick
         )
     }

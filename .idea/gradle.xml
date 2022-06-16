@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/feature/feature-profile" />
             <option value="$PROJECT_DIR$/feature/feature-registration" />
             <option value="$PROJECT_DIR$/feature/feature-settings" />
+            <option value="$PROJECT_DIR$/feature/feature-video-player" />
           </set>
         </option>
       </GradleProjectSettings>

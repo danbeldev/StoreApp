@@ -20,10 +20,18 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 
+enum class VideoPlayerState{
+    PAUSE,
+    PLAY
+}
+
 @Composable
-fun VideoPlayerView(
+fun VideoPlayer(
     url: String,
+    videoPlayerState:VideoPlayerState = VideoPlayerState.PAUSE,
     modifier: Modifier = Modifier,
+    onPlayPauseClick: (() -> Unit)? = null,
+    onBackClick:() -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -37,24 +45,35 @@ fun VideoPlayerView(
                 setMediaItem(MediaItem.fromUri(url))
                 playWhenReady = true
                 prepare()
-                play()
+
+                when(videoPlayerState){
+                    VideoPlayerState.PAUSE -> pause()
+                    VideoPlayerState.PLAY -> play()
+                }
         }
     }
 
     DisposableEffect(
         AndroidView(
             modifier = modifier,
-            factory = { View.inflate(it, R.layout.custom_styled_player, null) },
+            factory = {
+                val view = View.inflate(it, R.layout.custom_styled_player, null)
+                onPlayPauseClick?.let {
+                    val playPauseBth = view.findViewById<ImageView>(R.id.exo_play_pause)
+                    playPauseBth.setOnClickListener { it() }
+                }
+                view
+           },
             update = {
                 val progressBar = it.findViewById<ProgressBar>(R.id.progress_bar)
                 val playerView = it.findViewById<StyledPlayerView>(R.id.player_view)
                 val btFullScreen = it.findViewById<ImageView>(R.id.bt_fullscreen)
+                val backBtn = it.findViewById<ImageView>(R.id.backBtn)
 
                 var fullScreen = false
 
                 playerView.apply {
                     useController = true
-                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
                     layoutParams = FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
@@ -75,13 +94,17 @@ fun VideoPlayerView(
 
                 btFullScreen.setOnClickListener {
                     fullScreen = if (fullScreen){
+                        playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
                         btFullScreen.setImageResource(R.drawable.ic_fullscreen_exit)
-                        true
-                    }else{
-                        btFullScreen.setImageResource(R.drawable.ic_fullscreen)
                         false
+                    }else{
+                        playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+                        btFullScreen.setImageResource(R.drawable.ic_fullscreen)
+                        true
                     }
                 }
+
+                backBtn.setOnClickListener { onBackClick() }
             }
         )
     ) {

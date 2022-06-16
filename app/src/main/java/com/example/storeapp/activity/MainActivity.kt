@@ -10,6 +10,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import com.example.core_common.extension.launchWhenStarted
+import com.example.core_common.extension.viewModel.daggerViewModel
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_ui.theme.JetHabitStyle
 import com.example.core_ui.theme.JetHabitTheme
@@ -41,7 +42,7 @@ class MainActivity : ComponentActivity() {
                 .userToken(userToken)
                 .build()
 
-            val mainViewModel = appComponent.mainViewModel()
+            val mainViewModel = daggerViewModel { appComponent.mainViewModel() }
 
             var userRole by remember { mutableStateOf(UserRole.BaseUser) }
 
@@ -82,6 +83,7 @@ class MainActivity : ComponentActivity() {
 
                 BaseNavHost(
                     appComponent = appComponent,
+                    activity = this,
                     userRole = userRole,
                     isDarkMode = isDarkMode,
                     onDarkModeChanged = {

@@ -3,11 +3,10 @@ package com.example.feature_apps.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.*
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
+import com.example.core_common.extension.viewModel.daggerViewModel
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_apps.screen.ProductsScreen
 import com.example.feature_apps.viewModel.ProductsViewModel
@@ -25,42 +24,13 @@ object ProductsDestination : NiaNavigationDestination {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.productsNavigation(
     productsViewModel: ProductsViewModel,
-    productInfoRoute:String,
     onInfoProductScreen:(Int) -> Unit
 ) {
     composable(
-        route = ProductsDestination.route,
-        exitTransition = {
-            when(initialState.destination.route){
-                productInfoRoute -> {
-                    slideOutHorizontally(
-                        targetOffsetX = {300},
-                        animationSpec = tween(
-                            durationMillis = 300,
-                            easing = FastOutSlowInEasing
-                        )
-                    ) + fadeOut(animationSpec = tween(300))
-                }
-                else -> null
-            }
-        },
-        popEnterTransition = {
-            when(initialState.destination.route){
-                productInfoRoute -> {
-                    slideInHorizontally(
-                        initialOffsetX = {-300},
-                        animationSpec = tween(
-                            durationMillis = 300,
-                            easing = FastOutSlowInEasing
-                        )
-                    ) + fadeIn(animationSpec = tween(300))
-                }
-                else -> null
-            }
-        }
+        route = ProductsDestination.route
     ){
         ProductsScreen(
-            viewModel = productsViewModel,
+            viewModel = daggerViewModel { productsViewModel },
             onInfoProductScreen = onInfoProductScreen
         )
     }

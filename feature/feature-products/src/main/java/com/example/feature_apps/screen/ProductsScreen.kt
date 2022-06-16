@@ -12,6 +12,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -43,8 +44,8 @@ fun ProductsScreen(
    onInfoProductScreen:(Int) -> Unit
 ) {
 
-   val searchState by viewModel.searchState
-   val searchTextState by viewModel.searchTextState
+   var searchState by rememberSaveable { mutableStateOf(SearchState.CLOSE) }
+   var searchTextState by rememberSaveable { mutableStateOf("") }
 
    val genreSorting by viewModel.genreSorting
 
@@ -75,10 +76,11 @@ fun ProductsScreen(
             Search(
                modifier = Modifier.fillMaxWidth(),
                onValue = {
-                  viewModel.updateSearchTextState(it)
+                  searchTextState = it
                },
                onClose = {
-                  viewModel.updateSearchState(SearchState.CLOSE)
+                  searchTextState = ""
+                  searchState = SearchState.CLOSE
                }
             )
          }
@@ -116,7 +118,7 @@ fun ProductsScreen(
                   ) {
                      CardButton(
                         imageVector = Icons.Outlined.Search
-                     ){ viewModel.updateSearchState(state = SearchState.OPEN) }
+                     ){ searchState = SearchState.OPEN }
 
                      CardButton(
                         iconId = R.drawable.filter

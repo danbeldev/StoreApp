@@ -2,6 +2,7 @@ package com.example.feature_settings.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
+import com.example.core_common.extension.viewModel.daggerViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.core_ui.theme.JetHabitStyle
@@ -24,7 +25,7 @@ fun NavGraphBuilder.settingsNavigation(
         route = SettingsDestination.route
     ){
        SettingsScreen(
-           viewModel = viewModel,
+           viewModel = daggerViewModel { viewModel },
            onBackClick = onBackClick,
            isDarkMode = isDarkMode,
            onDarkModeChanged = onDarkModeChanged,
