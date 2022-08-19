@@ -13,6 +13,10 @@ import coil.compose.SubcomposeAsyncImage
 import coil.compose.SubcomposeAsyncImageContent
 import com.example.core_ui.view.animation.schimmer.ImageShimmer
 
+/**
+ * Coil image loader
+ * @param url url image
+ * */
 @Composable
 fun Image(
     url:String,

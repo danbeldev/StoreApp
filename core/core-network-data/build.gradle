@@ -53,4 +53,7 @@ dependencies {
     //Dagger
     implementation("com.google.dagger:dagger:2.41")
     kapt("com.google.dagger:dagger-compiler:2.40.5")
+
+    //Kotlinx coroutines test
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 }

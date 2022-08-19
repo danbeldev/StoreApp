@@ -20,7 +20,7 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 
-enum class VideoPlayerState{
+enum class VideoPlayerState {
     PAUSE,
     PLAY
 }

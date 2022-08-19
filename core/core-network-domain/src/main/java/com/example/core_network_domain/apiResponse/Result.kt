@@ -1,5 +1,6 @@
 package com.example.core_network_domain.apiResponse
 
+// API response result
 sealed class Result<T>(val message:String? = null, val data:T? = null){
     class Error<T>(message: String):Result<T>(message = message)
     class Loading<T>:Result<T>()

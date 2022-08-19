@@ -1,5 +1,11 @@
 package com.example.core_common.worker
 
+/**
+ * @param mimeType HTTP MIME types.
+ * MIME types enable browsers to recognize the filetype of a file
+ * which has been sent via HTTP by the webserver.
+ * @param extension Filename extension
+ * */
 enum class DownloadType(
     val mimeType:String,
     val extension:String

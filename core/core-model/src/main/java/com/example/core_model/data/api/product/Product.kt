@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Product(
     @SerialName("items")
-    val items: List<ProductItem>,
-    val total: Int
+    val items: List<ProductItem> = emptyList(),
+    val total: Int = 0
 )

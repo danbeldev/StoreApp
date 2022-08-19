@@ -17,6 +17,9 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
+/**
+ * [DaggerAppComponent]
+ * */
 @[Singleton Component(modules = [ApiModule::class, DatabaseModule::class])]
 interface AppComponent {
 
@@ -45,9 +48,6 @@ interface AppComponent {
 
         @BindsInstance
         fun context(context: Context):Builder
-
-        @[BindsInstance]
-        fun userToken(token:String):Builder
 
         fun build():AppComponent
     }

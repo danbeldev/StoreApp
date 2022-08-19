@@ -6,7 +6,6 @@ import com.example.core_database_domain.useCase.settings.GetSettingsUseCase
 import com.example.core_database_domain.useCase.settings.SaveDarkThemeUseCase
 import com.example.core_database_domain.useCase.settings.SaveStyleUseCase
 import com.example.core_database_domain.useCase.user.GetUserRoleUseCase
-import com.example.core_database_domain.useCase.user.GetUserTokenUseCase
 import com.example.core_model.data.database.settings.Settings
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_ui.theme.JetHabitStyle
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    getUserTokenUseCase: GetUserTokenUseCase,
     getSettingsUseCase: GetSettingsUseCase,
     private val saveDarkThemeUseCase: SaveDarkThemeUseCase,
     private val saveStyleUseCase: SaveStyleUseCase,
@@ -24,9 +22,6 @@ class MainViewModel @Inject constructor(
 
     val responseUserRole = getUserRoleUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, UserRole.BaseUser)
-
-    val responseUserToken = getUserTokenUseCase.invoke()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, "")
 
     val responseSettings = getSettingsUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, Settings())

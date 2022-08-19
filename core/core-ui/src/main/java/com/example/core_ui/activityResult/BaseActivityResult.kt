@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import java.io.ByteArrayOutputStream
 
 
-enum class FileExtension{
+enum class FileExtension {
     IMAGE,
     FILE
 }

@@ -31,7 +31,6 @@ class ProductInfoViewModel @Inject constructor(
     val responseProductReview = _responseProductReview.asStateFlow()
 
     val responseToken = getUserTokenUseCase.invoke()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, "")
 
     private val _responseProductFileSize = MutableStateFlow("")
     val responseProductFileSize = _responseProductFileSize.asStateFlow()

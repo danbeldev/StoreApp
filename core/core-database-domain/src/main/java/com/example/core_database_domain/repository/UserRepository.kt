@@ -18,7 +18,7 @@ interface UserRepository {
 
     fun getUserLogin():Flow<UserLogin>
 
-    fun getUserToken():Flow<String>
+    fun getUserToken():String?
 
     suspend fun saveUserToken(token: String)
 }

@@ -10,6 +10,7 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 
+// Company Api Repository
 class CompanyRepositoryImpl @Inject constructor(
     private val companyApi: CompanyApi
 ): CompanyRepository {

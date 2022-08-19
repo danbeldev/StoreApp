@@ -54,7 +54,7 @@ class ProductRepositoryImpl @Inject constructor(
             productType = productType,
             productStatus = productStatus,
             orderBy = orderBy
-        )
+        ).body() ?: Product()
     }
 
     override suspend fun getProductById(id: Int): Response<ProductItem> {

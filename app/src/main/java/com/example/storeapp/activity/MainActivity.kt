@@ -34,23 +34,27 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-            var userToken by remember { mutableStateOf("") }
-
+            // Create Dagger App Component
             val appComponent = DaggerAppComponent
                 .builder()
                 .context(this)
-                .userToken(userToken)
                 .build()
 
-            val mainViewModel = daggerViewModel { appComponent.mainViewModel() }
+            // Create Main View Model
+            val viewModel = daggerViewModel { appComponent.mainViewModel() }
 
+            // User Role
             var userRole by remember { mutableStateOf(UserRole.BaseUser) }
 
+            // Get system dark mode
             val isSystemInDarkTheme = isSystemInDarkTheme()
+            // Dark mode
             var isDarkMode by remember { mutableStateOf(isSystemInDarkTheme) }
+            // Current style
             var currentStyle by remember { mutableStateOf(JetHabitStyle.Green) }
 
-            mainViewModel.responseSettings.onEach { settings ->
+            // response user setting
+            viewModel.responseSettings.onEach { settings ->
                 isDarkMode = settings.darkTheme
                 currentStyle = enumValueOf(settings.style)
             }.launchWhenStarted()
@@ -59,8 +63,9 @@ class MainActivity : ComponentActivity() {
                 darkTheme = isDarkMode,
                 style = currentStyle
             ){
-
+                // get system ui controller
                 val systemUiController = rememberSystemUiController()
+
                 val primaryBackground = JetHabitTheme.colors.primaryBackground
 
                 LaunchedEffect(key1 = isDarkMode, block = {
@@ -73,23 +78,21 @@ class MainActivity : ComponentActivity() {
                     )
                 })
 
-                mainViewModel.responseUserRole.onEach {
+                // get user role
+                viewModel.responseUserRole.onEach {
                     userRole = it
                 }.launchWhenStarted()
 
-                mainViewModel.responseUserToken.onEach {
-                    userToken = it
-                }.launchWhenStarted()
-
+                // start navigation
                 BaseNavHost(
                     appComponent = appComponent,
                     activity = this,
                     userRole = userRole,
                     isDarkMode = isDarkMode,
                     onDarkModeChanged = {
-                        mainViewModel.saveDarkTheme(it)
+                        viewModel.saveDarkTheme(it)
                     }, onNewStyle = {
-                        mainViewModel.saveStyle(it)
+                        viewModel.saveStyle(it)
                     }
                 )
             }

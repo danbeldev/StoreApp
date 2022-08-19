@@ -1,5 +1,8 @@
 package com.example.core_network_data.common
 
+const val BASE_URL = "https://api.cfif31.ru"
+
+// Server cfif31.ru Api Url
 internal object ConstantsUrl {
 
     const val GET_PRODUCT = "/storeApp/api/Product"

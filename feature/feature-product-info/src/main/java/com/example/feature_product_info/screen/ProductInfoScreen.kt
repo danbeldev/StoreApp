@@ -63,12 +63,14 @@ internal fun ProductInfoScreen(
     val context = LocalContext.current
     val owner = LocalLifecycleOwner.current
 
+    // Safe product file app permission
     val permission = rememberPermissionState(permission = Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     var product:Result<ProductItem> by remember { mutableStateOf(Result.Loading()) }
     var productFileSize:String? by remember { mutableStateOf(null) }
 
-    var token by remember { mutableStateOf("") }
+    // JWT Authorization Token
+    val token = viewModel.responseToken
 
     var productReview:Result<ProductReview> by remember { mutableStateOf(Result.Loading()) }
 
@@ -90,7 +92,6 @@ internal fun ProductInfoScreen(
 
     val inputParams = builder.build()
     val powerConstraints = Constraints.Builder()
-//        .setRequiresCharging(true)
         .setRequiredNetworkType(NetworkType.CONNECTED)
         .build()
 
@@ -120,10 +121,6 @@ internal fun ProductInfoScreen(
         viewModel.getProductReview(id = productId)
         viewModel.optionsProductFileSize(id = productId)
     })
-
-    viewModel.responseToken.onEach {
-        token = it
-    }.launchWhenStarted()
 
     viewModel.responseProduct.onEach {
         product = it
@@ -325,28 +322,4 @@ internal fun ProductInfoScreen(
             }
         }
     )
-}
-
-@Composable
-private fun BaseInfoRaw(
-    title:String,
-    description:String
-) {
-    Row {
-        Text(
-            text = title,
-            modifier = Modifier.padding(5.dp),
-            color = JetHabitTheme.colors.primaryText,
-            fontWeight = FontWeight.W100
-        )
-
-        Spacer(modifier = Modifier.width(30.dp))
-
-        Text(
-            text = description,
-            modifier = Modifier.padding(5.dp),
-            color = JetHabitTheme.colors.primaryText,
-            fontWeight = FontWeight.W900
-        )
-    }
 }

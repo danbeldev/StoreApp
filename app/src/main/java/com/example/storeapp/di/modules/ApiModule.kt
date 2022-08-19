@@ -1,5 +1,6 @@
 package com.example.storeapp.di.modules
 
+import android.content.SharedPreferences
 import com.example.core_network_data.api.CompanyApi
 import com.example.core_network_data.api.ProductApi
 import com.example.core_network_data.api.UserApi
@@ -8,19 +9,14 @@ import com.example.core_network_data.repositoryImpl.CompanyRepositoryImpl
 import com.example.core_network_data.repositoryImpl.ProductRepositoryImpl
 import com.example.core_network_data.repositoryImpl.UserCompanyRepositoryImpl
 import com.example.core_network_data.repositoryImpl.UserRepositoryImpl
+import com.example.core_network_data.retrofit.RetrofitInst
 import com.example.core_network_domain.repository.CompanyRepository
 import com.example.core_network_domain.repository.ProductRepository
 import com.example.core_network_domain.repository.UserCompanyRepository
 import com.example.core_network_domain.repository.UserRepository
-import com.example.storeapp.common.Constants.BASE_URL
-import com.example.storeapp.di.modules.annotations.UserToken
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -79,31 +75,26 @@ class ApiModule {
     @ExperimentalSerializationApi
     @[Provides Singleton]
     fun providerRetrofit(
-        contentType: MediaType,
-        json: Json,
         okHttpClient: OkHttpClient
-    ):Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(json.asConverterFactory(contentType))
-        .client(okHttpClient)
-        .build()
+    ):Retrofit = RetrofitInst.createRetrofit(okHttpClient)
 
-    @[Singleton Provides]
-    fun providerContentType(): MediaType = "application/json".toMediaTypeOrNull()!!
-
-    @ExperimentalSerializationApi
-    @[Singleton Provides]
-    fun providerJson(): Json = Json {
-        ignoreUnknownKeys = true
-        explicitNulls = false
-    }
-
+    /**
+     * Create OkHttpClient
+     * @param sharedPreferences Authorization JWT Token
+     * */
     @[Singleton Provides]
     fun providerOkHttpClient(
-        token:String
+        sharedPreferences: SharedPreferences
     ):OkHttpClient = OkHttpClient.Builder()
         .addInterceptor {
+            // Get Authorization JWT Token
+            val token = sharedPreferences.getString(
+                com.example.core_database_data.repositoryImpl.UserRepositoryImpl.USER_TOKEN,
+                ""
+            )
+
             val request = it.request().newBuilder()
+                //Add header Authorization JWT Token
                 .addHeader("Authorization", "Bearer $token")
                 .build()
             it.proceed(request = request)

@@ -29,6 +29,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
+/**
+ * @param appComponent Dagger App Company
+ */
 @ExperimentalPermissionsApi
 @ExperimentalFoundationApi
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter", "NewApi")
