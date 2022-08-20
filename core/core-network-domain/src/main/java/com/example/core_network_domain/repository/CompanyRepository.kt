@@ -10,16 +10,14 @@ import retrofit2.Response
 interface CompanyRepository {
 
     /**
-     * Authorization not required
      * @param pageNumber A page number within the paginated result set
      */
     suspend fun getCompany(
-        pageNumber:Int
+        pageNumber:Int = 1
     ): Company
 
     /**
      * Create company
-     * Authorization role [BaseUser]
      * @param postCompany Company name and description information
      */
     suspend fun postCompany(
@@ -28,16 +26,14 @@ interface CompanyRepository {
 
     /**
      * Company add logo
-     * Authorization role [CompanyUser]
      * @param logo company logo
      * */
     suspend fun postCompanyLogo(
         logo: ByteArray
-    ):Response<Void?>
+    ):Response<Unit?>
 
     /**
      * Company add banner
-     * Authorization role [CompanyUser]
      * @param banner company banner
      */
     suspend fun postCompanyBanner(

@@ -48,7 +48,7 @@ interface ProductApi {
     @GET(GET_PRODUCT)
     suspend fun getProduct(
         @Query("pageSize") pageSize:Int = 20,
-        @Query("pageNumber") pageNumber:Int,
+        @Query("pageNumber") pageNumber:Int = 1,
         @Query("search") search:String? = null,
         @Query("genreId") genreId:List<Int>? = null,
         @Query("countryId") countryId:List<Int>? = null,

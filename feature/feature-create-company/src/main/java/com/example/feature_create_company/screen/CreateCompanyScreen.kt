@@ -73,7 +73,7 @@ internal fun CreateCompanyScreen(
 
     var companyResult:Result<Unit?>? by remember { mutableStateOf(null) }
     var companyBannerResult:Result<Void?>? by remember { mutableStateOf(null) }
-    var companyLogoResult:Result<Void?>? by remember { mutableStateOf(null) }
+    var companyLogoResult:Result<Unit?>? by remember { mutableStateOf(null) }
 
     var banner by remember { mutableStateOf(NiaIcons.baseBanner.decodeResourceBitmap(context)) }
     var logo by remember { mutableStateOf(NiaIcons.noImage.decodeResourceBitmap(context)) }

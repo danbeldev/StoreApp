@@ -5,6 +5,9 @@ import retrofit2.Response
 
 interface UserCompanyRepository {
 
+    /**
+     * Get user company
+     * */
     suspend fun getCompany():Response<CompanyItem>
 
 }

@@ -31,7 +31,7 @@ class CreateCompanyViewModel @Inject constructor(
         MutableStateFlow(null)
     val responseCompanyResult = _responseCompanyResult.asStateFlow()
 
-    private val _responseCompanyLogoResult:MutableStateFlow<Result<Void?>?> =
+    private val _responseCompanyLogoResult:MutableStateFlow<Result<Unit?>?> =
         MutableStateFlow(null)
     val responseCompanyLogoResult = _responseCompanyLogoResult.asStateFlow()
 

@@ -34,6 +34,7 @@ android {
 dependencies {
 
     implementation project(":core:core-model")
+    implementation project(":core:core-common")
     implementation project(":core:core-network-domain")
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -56,4 +57,7 @@ dependencies {
 
     //Kotlinx coroutines test
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
+    // MockK
+    testImplementation "io.mockk:mockk:1.12.5"
 }

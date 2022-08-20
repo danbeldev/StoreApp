@@ -5,10 +5,10 @@ import com.example.core_network_data.api.CompanyApi
 import com.example.core_network_data.api.ProductApi
 import com.example.core_network_data.api.UserApi
 import com.example.core_network_data.api.UserCompanyApi
-import com.example.core_network_data.repositoryImpl.CompanyRepositoryImpl
-import com.example.core_network_data.repositoryImpl.ProductRepositoryImpl
-import com.example.core_network_data.repositoryImpl.UserCompanyRepositoryImpl
-import com.example.core_network_data.repositoryImpl.UserRepositoryImpl
+import com.example.core_network_data.repository.CompanyRepositoryImpl
+import com.example.core_network_data.repository.ProductRepositoryImpl
+import com.example.core_network_data.repository.UserCompanyRepositoryImpl
+import com.example.core_network_data.repository.UserRepositoryImpl
 import com.example.core_network_data.retrofit.RetrofitInst
 import com.example.core_network_domain.repository.CompanyRepository
 import com.example.core_network_domain.repository.ProductRepository

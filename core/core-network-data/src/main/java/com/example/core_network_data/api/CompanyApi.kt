@@ -58,7 +58,7 @@ interface CompanyApi {
     @Multipart
     suspend fun postCompanyLogo(
         @Part logo: MultipartBody.Part
-    ):Response<Void?>
+    ):Response<Unit?>
 
     /**
      * Company add banner

@@ -9,7 +9,7 @@ import java.io.OutputStream
 /**
  * Converter from int to Bitmap
  * */
-fun Int.decodeResourceBitmap(context: Context):Bitmap{
+fun Int.decodeResourceBitmap(context: Context):Bitmap {
     return BitmapFactory.decodeResource(context.resources,this)
 }
 
@@ -23,7 +23,7 @@ fun ByteArray.decodeByteArrayBitmap():Bitmap{
 /**
  * Converter Bitmap int to ByteArray
  * */
-fun Bitmap.toByteArray():ByteArray{
+fun Bitmap.toByteArray():ByteArray {
     val outputStream = ByteArrayOutputStream()
     this.compress(Bitmap.CompressFormat.JPEG, 40, outputStream)
     return outputStream.toByteArray()

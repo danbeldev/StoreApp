@@ -21,7 +21,7 @@ class PostCompanyLogoUseCase @Inject constructor(
      * @param logo company logo
      * @return API response result
      * */
-    operator fun invoke(logo: ByteArray):Flow<Result<Void?>> = flow {
+    operator fun invoke(logo: ByteArray):Flow<Result<Unit?>> = flow {
         emit( safeApiCall { companyRepository.postCompanyLogo(logo) } )
     }
 }
