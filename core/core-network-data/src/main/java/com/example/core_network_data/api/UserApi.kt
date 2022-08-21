@@ -20,7 +20,7 @@ interface UserApi {
     @POST(AUTHORIZATION)
     suspend fun authorization(
         @Body authorization: Authorization
-    ): Response<AuthorizationResponse>
+    ): Response<AuthorizationResult>
 
     /**
      * Authorization not required

@@ -19,13 +19,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.core_common.extension.getDate
+import com.example.core_common.date.getUserDate
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_common.extension.ratingColor
 import com.example.core_common.extension.replaceRange
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.review.ProductReview
-import com.example.core_model.data.api.product.review.ProductReviewAdd
+import com.example.core_model.data.api.product.review.ProductReviewPush
 import com.example.core_network_domain.apiResponse.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.Image
@@ -153,11 +153,11 @@ internal fun LazyListScope.productReviews(
                     product.data?.id?.let { id ->
                         viewMode.postProductReview(
                             id = id,
-                            review = ProductReviewAdd(
+                            review = ProductReviewPush(
                                 title = reviewTitle.value,
                                 description = reviewDescription.value,
                                 rating = reviewRating.toFloat(),
-                                datePublication = getDate()
+                                datePublication = getUserDate()
                             )
                         )
                     }

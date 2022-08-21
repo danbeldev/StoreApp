@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.core_common.extension.getDate
+import com.example.core_common.date.getUserDate
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.product.Country
 import com.example.core_model.data.api.product.Genre
@@ -349,7 +349,7 @@ internal fun CreateProduct(
                                 advertising = advertising,
                                 ageRating = ageRating,
                                 productType = productType,
-                                datePublication = getDate(),
+                                datePublication = getUserDate(),
                                 countryId = countryId,
                                 genreId = genreId,
                                 email = email.value,

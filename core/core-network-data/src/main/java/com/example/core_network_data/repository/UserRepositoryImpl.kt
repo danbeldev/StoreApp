@@ -15,7 +15,7 @@ class UserRepositoryImpl @Inject constructor(
      * Authorization not required
      * @param authorization email and password
      * */
-    override suspend fun authorization(authorization: Authorization): Response<AuthorizationResponse> {
+    override suspend fun authorization(authorization: Authorization): Response<AuthorizationResult> {
         return userApi.authorization(authorization)
     }
 

@@ -12,6 +12,9 @@ class GetUserCompanyUseCase @Inject constructor(
     private val userCompanyRepository: UserCompanyRepository
 ):BaseApiResponse() {
 
+    /**
+     * Get user company
+     * */
     operator fun invoke():Flow<Result<CompanyItem>> = flow {
         emit( safeApiCall { userCompanyRepository.getCompany() } )
     }

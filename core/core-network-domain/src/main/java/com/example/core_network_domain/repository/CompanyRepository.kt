@@ -1,9 +1,7 @@
 package com.example.core_network_domain.repository
 
 import com.example.core_model.data.api.company.Company
-import com.example.core_model.data.api.company.PostCompany
-import com.example.core_model.data.enums.user.UserRole.CompanyUser
-import com.example.core_model.data.enums.user.UserRole.BaseUser
+import com.example.core_model.data.api.company.CreateCompany
 import retrofit2.Response
 
 // Company Api Repository
@@ -21,7 +19,7 @@ interface CompanyRepository {
      * @param postCompany Company name and description information
      */
     suspend fun postCompany(
-        postCompany: PostCompany
+        postCompany: CreateCompany
     ): Response<Unit?>
 
     /**

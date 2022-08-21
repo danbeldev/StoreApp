@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProductReview(
-    val total:Int,
-    val totalHasOneRating:Int,
-    val totalHasTwoRating:Int,
-    val totalHasThreeRating:Int,
-    val totalHasFourRating:Int,
-    val totalHasFiveRating:Int,
-    val items:List<ProductReviewItem>
+    val total:Int = 0,
+    val totalHasOneRating:Int = 0,
+    val totalHasTwoRating:Int = 0,
+    val totalHasThreeRating:Int = 0,
+    val totalHasFourRating:Int = 0,
+    val totalHasFiveRating:Int = 0,
+    val items:List<ProductReviewItem> = emptyList()
 )
 
 @Serializable

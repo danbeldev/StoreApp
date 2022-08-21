@@ -12,20 +12,20 @@ class GetProductUseCase @Inject constructor(
     private val productRepository: ProductRepository
 ) {
     suspend operator fun invoke(
-        pageNumber:Int,
-        search:String?,
-        genreId:List<Int>?,
-        countryId:List<Int>?,
-        ageRating: AgeRating?,
-        advertising:Boolean?,
-        free:Boolean?,
-        startDatePublication:String?,
-        endDatePublication:String?,
-        startRating:Float?,
-        endRating:Float?,
-        productType: ProductType?,
-        productStatus: ProductStatus?,
-        orderBy: ProductOrderBy?
+        pageNumber:Int = 0,
+        search:String? = null,
+        genreId:List<Int>? = null,
+        countryId:List<Int>? = null,
+        ageRating: AgeRating? = null,
+        advertising:Boolean? = null,
+        free:Boolean? = null,
+        startDatePublication:String? = null,
+        endDatePublication:String? = null,
+        startRating:Float? = null,
+        endRating:Float? = null,
+        productType: ProductType? = null,
+        productStatus: ProductStatus? = null,
+        orderBy: ProductOrderBy? = null
     ):Product {
         return  productRepository.getProduct(
             pageNumber = pageNumber,

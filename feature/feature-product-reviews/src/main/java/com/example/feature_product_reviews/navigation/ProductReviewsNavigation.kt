@@ -5,7 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.core_common.extension.viewModel.daggerViewModel
+import com.example.core_common.viewModel.daggerViewModel
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_product_reviews.screen.ProductReviewsScreen
 import com.example.feature_product_reviews.viewModel.ProductReviewsViewModel

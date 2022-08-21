@@ -10,7 +10,7 @@ import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
 import com.example.core_model.data.api.product.review.ProductReview
-import com.example.core_model.data.api.product.review.ProductReviewAdd
+import com.example.core_model.data.api.product.review.ProductReviewPush
 import retrofit2.Response
 
 interface ProductRepository {
@@ -91,5 +91,5 @@ interface ProductRepository {
      * @param id product id
      * @param review product info for add product review
      * */
-    suspend fun postProductReview(id:Int, review:ProductReviewAdd):Response<Unit?>
+    suspend fun postProductReview(id:Int, review:ProductReviewPush):Response<Unit?>
 }

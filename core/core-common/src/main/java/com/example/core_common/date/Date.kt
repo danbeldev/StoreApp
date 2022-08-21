@@ -1,4 +1,4 @@
-package com.example.core_common.extension
+package com.example.core_common.date
 
 import java.text.SimpleDateFormat
 import java.util.*
@@ -6,7 +6,7 @@ import java.util.*
 /**
  * Get user date device
  * */
-fun getDate():String {
+fun getUserDate():String {
     val time = Calendar.getInstance().time
     val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
     return formatter.format(time)

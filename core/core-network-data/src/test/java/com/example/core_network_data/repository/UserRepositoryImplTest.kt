@@ -30,7 +30,7 @@ class UserRepositoryImplTest {
             )
 
             // create test authorization response date
-            val authorizationResponse = AuthorizationResponse(
+            val authorizationResponse = AuthorizationResult(
                 access_token = "token",
                 role = UserRole.BaseUser
             )

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.core_database_domain.useCase.user.GetUserLoginUseCase
 import com.example.core_database_domain.useCase.user.SavaUserRoleUseCase
 import com.example.core_database_domain.useCase.user.SaveUserTokenUseCase
-import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.database.user.UserLogin
 import com.example.core_model.data.enums.user.UserRole
@@ -42,7 +42,7 @@ class CreateCompanyViewModel @Inject constructor(
     val responseUserLogin = getUserLoginUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, UserLogin())
 
-    fun postCompany(company:PostCompany){
+    fun postCompany(company:CreateCompany){
         postCompanyUseCase.invoke(company).onEach {
             _responseCompanyResult.value = it
         }.launchIn(viewModelScope)

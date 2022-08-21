@@ -2,7 +2,7 @@ package com.example.core_network_data.api
 
 import com.example.core_model.data.api.company.Company
 import com.example.core_model.data.api.company.CompanyItem
-import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.enums.user.UserRole.BaseUser
 import com.example.core_model.data.enums.user.UserRole.CompanyUser
 import com.example.core_network_data.common.BASE_URL
@@ -44,7 +44,7 @@ interface CompanyApi {
      */
     @POST(COMPANY)
     suspend fun postCompany(
-        @Body postCompany: PostCompany,
+        @Body postCompany: CreateCompany,
         @Header("Authorization") token:String = ""
     ):Response<Unit?>
 

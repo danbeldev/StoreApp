@@ -10,7 +10,7 @@ data class Authorization(
 )
 
 @Serializable
-data class AuthorizationResponse(
+data class AuthorizationResult(
     val access_token:String,
     val role:UserRole
 )

@@ -10,7 +10,7 @@ import com.example.core_model.data.api.product.enums.ProductStatus
 import com.example.core_model.data.api.product.enums.ProductType
 import com.example.core_model.data.api.product.orderBy.ProductOrderBy
 import com.example.core_model.data.api.product.review.ProductReview
-import com.example.core_model.data.api.product.review.ProductReviewAdd
+import com.example.core_model.data.api.product.review.ProductReviewPush
 import com.example.core_model.data.enums.user.UserRole.BaseUser
 import com.example.core_model.data.enums.user.UserRole.CompanyUser
 import com.example.core_network_data.api.ProductApi
@@ -142,7 +142,7 @@ class ProductRepositoryImpl @Inject constructor(
      * @param id product id
      * @param review product info for add product review
      * */
-    override suspend fun postProductReview(id:Int,review: ProductReviewAdd): Response<Unit?> {
+    override suspend fun postProductReview(id:Int,review: ProductReviewPush): Response<Unit?> {
         return productApi.postProductReview(id,review)
     }
 }

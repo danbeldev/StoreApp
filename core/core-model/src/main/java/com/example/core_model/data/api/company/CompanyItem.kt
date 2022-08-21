@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CompanyItem(
-    val banner: String?,
-    val dateCreating: String,
-    val description: String,
-    val icon: String?,
-    val id: Int,
-    val logo: String?,
-    val title: String,
-    val totalProduct: Int
+    val banner: String? = null,
+    val dateCreating: String = "",
+    val description: String = "",
+    val icon: String? = null,
+    val id: Int = 0,
+    val logo: String? = null,
+    val title: String = "",
+    val totalProduct: Int = 0
 )

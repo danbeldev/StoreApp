@@ -10,7 +10,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import com.example.core_common.extension.launchWhenStarted
-import com.example.core_common.extension.viewModel.daggerViewModel
+import com.example.core_common.viewModel.daggerViewModel
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_ui.theme.JetHabitStyle
 import com.example.core_ui.theme.JetHabitTheme

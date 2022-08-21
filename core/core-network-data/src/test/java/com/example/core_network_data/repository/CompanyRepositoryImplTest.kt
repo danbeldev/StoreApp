@@ -2,7 +2,7 @@ package com.example.core_network_data.repository
 
 import com.example.core_common.test.testByteArray
 import com.example.core_model.data.api.company.Company
-import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_network_data.api.CompanyApi
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -67,8 +67,8 @@ class CompanyRepositoryImplTest {
     fun `post company`() = runTest {
         launch(Dispatchers.IO){
             // arrange
-            // Create test date company info
-            val companyInfoCreate = PostCompany(
+            // Create test data company info
+            val companyInfoCreate = CreateCompany(
                 title = "title",
                 description = "description"
             )
@@ -109,7 +109,7 @@ class CompanyRepositoryImplTest {
             val response = repository.postCompanyLogo(logo)
 
             // assert
-            // method [api.getUser(any())] must be done once
+            // method [api.postCompanyLogo(any())] must be done once
             coVerify(exactly = 1) {
                 companyApi.postCompanyLogo(any())
             }
@@ -120,6 +120,30 @@ class CompanyRepositoryImplTest {
             Assert.assertNotNull(response.body())
             // Unit and response body must equal
             Assert.assertEquals(Unit, response.body())
+        }
+    }
+
+    @Test
+    fun `post company banner`() = runTest {
+        launch(Dispatchers.IO){
+            // arrange
+            // test company banner byte array
+            val banner = testByteArray
+
+            // create impl method companyApi.postCompanyBanner(any())
+            coEvery { companyApi.postCompanyBanner(any()) } returns Response.success(null)
+
+            // act
+            val response = repository.postCompanyBanner(banner)
+
+            // assert
+            // method [api.postCompanyBanner(any())] must be done once
+            coVerify(exactly = 1) {
+                companyApi.postCompanyBanner(any())
+            }
+            confirmVerified(companyApi)
+            // response code [200..300]
+            Assert.assertTrue(response.isSuccessful)
         }
     }
 }

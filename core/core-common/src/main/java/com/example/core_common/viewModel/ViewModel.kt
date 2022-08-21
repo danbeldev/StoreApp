@@ -1,4 +1,4 @@
-package com.example.core_common.extension.viewModel
+package com.example.core_common.viewModel
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel

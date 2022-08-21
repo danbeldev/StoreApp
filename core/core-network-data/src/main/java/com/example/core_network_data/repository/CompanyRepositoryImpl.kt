@@ -1,7 +1,7 @@
 package com.example.core_network_data.repository
 
 import com.example.core_model.data.api.company.Company
-import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.enums.user.UserRole.BaseUser
 import com.example.core_model.data.enums.user.UserRole.CompanyUser
 import com.example.core_network_data.api.CompanyApi
@@ -31,7 +31,7 @@ class CompanyRepositoryImpl @Inject constructor(
      * Authorization role [BaseUser]
      * @param postCompany Company name and description information
      */
-    override suspend fun postCompany(postCompany: PostCompany): Response<Unit?> {
+    override suspend fun postCompany(postCompany: CreateCompany): Response<Unit?> {
         return companyApi.postCompany(postCompany)
     }
 

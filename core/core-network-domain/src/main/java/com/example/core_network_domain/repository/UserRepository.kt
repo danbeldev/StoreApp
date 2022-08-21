@@ -8,7 +8,7 @@ interface UserRepository {
     /**
      * @param authorization email and password
      * */
-    suspend fun authorization(authorization: Authorization): Response<AuthorizationResponse>
+    suspend fun authorization(authorization: Authorization): Response<AuthorizationResult>
 
     /**
      * @param registration user info for registration

@@ -6,7 +6,7 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
-import com.example.core_common.extension.viewModel.daggerViewModel
+import com.example.core_common.viewModel.daggerViewModel
 import com.example.core_navigation.NiaNavigationDestination
 import com.example.feature_apps.screen.ProductsScreen
 import com.example.feature_apps.viewModel.ProductsViewModel

@@ -21,7 +21,7 @@ import com.example.core_common.extension.decodeByteArrayBitmap
 import com.example.core_common.extension.decodeResourceBitmap
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_common.extension.toByteArray
-import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.database.user.UserLogin
 import com.example.core_network_domain.apiResponse.Result
@@ -212,7 +212,7 @@ internal fun CreateCompanyScreen(
                                                 return@BaseButton
                                             }
 
-                                            val company = PostCompany(
+                                            val company = CreateCompany(
                                                 title = title.value, description = description.value)
 
                                             val authorization = Authorization(

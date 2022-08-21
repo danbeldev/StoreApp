@@ -1,6 +1,6 @@
 package com.example.core_network_domain.useCase.company
 
-import com.example.core_model.data.api.company.PostCompany
+import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.enums.user.UserRole.BaseUser
 import com.example.core_network_domain.apiResponse.BaseApiResponse
 import com.example.core_network_domain.apiResponse.Result
@@ -19,10 +19,10 @@ class PostCompanyUseCase @Inject constructor(
     /**
      * Create company
      * Authorization role [BaseUser]
-     * @param postCompany Company name and description information
+     * @param createCompany Company name and description information
      * @return response request Result
      * */
-    operator fun invoke(postCompany: PostCompany):Flow<Result<Unit?>> = flow {
-        emit( safeApiCall { companyRepository.postCompany(postCompany) } )
+    operator fun invoke(createCompany: CreateCompany):Flow<Result<Unit?>> = flow {
+        emit( safeApiCall { companyRepository.postCompany(createCompany) } )
     }
 }
