@@ -60,11 +60,12 @@ fun CardButton(
 @ExperimentalMaterialApi
 @Composable
 fun CardButton(
+    modifier: Modifier = Modifier,
     imageVector:ImageVector,
     onClick:() -> Unit
 ) {
     IconButton(
-        modifier = Modifier
+        modifier = modifier
             .padding(5.dp)
             .clip(AbsoluteRoundedCornerShape(10.dp))
             .background(JetHabitTheme.colors.secondaryBackground),

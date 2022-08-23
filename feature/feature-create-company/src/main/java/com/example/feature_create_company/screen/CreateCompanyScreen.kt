@@ -24,7 +24,7 @@ import com.example.core_common.extension.toByteArray
 import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.database.user.UserLogin
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.activityResult.FileManagerActivityResult
 import com.example.core_ui.icon.NiaIcons
 import com.example.core_ui.theme.JetHabitTheme

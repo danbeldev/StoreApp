@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.navigation.VideoPlayerArgument
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.view.VideoPlayer
 
 @Composable

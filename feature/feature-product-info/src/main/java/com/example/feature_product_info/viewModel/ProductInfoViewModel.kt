@@ -7,7 +7,7 @@ import com.example.core_database_domain.useCase.user.GetUserTokenUseCase
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.api.product.review.ProductReviewPush
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.useCase.product.GetProductByIdUseCase
 import com.example.core_network_domain.useCase.product.GetProductReviewUseCase
 import com.example.core_network_domain.useCase.product.OptionsProductFileSizeUseCase

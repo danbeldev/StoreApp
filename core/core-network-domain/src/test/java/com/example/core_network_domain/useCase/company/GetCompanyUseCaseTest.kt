@@ -40,7 +40,7 @@ class GetCompanyUseCaseTest {
 
             // assert
             // method repository.getCompany(any()) must be done once
-            coVerify {
+            coVerify(exactly = 1) {
                 repository.getCompany(any())
             }
             confirmVerified(repository)

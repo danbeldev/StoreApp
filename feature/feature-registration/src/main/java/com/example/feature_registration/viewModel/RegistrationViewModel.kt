@@ -11,7 +11,7 @@ import com.example.core_model.data.api.user.Registration
 import com.example.core_model.data.api.user.RegistrationResult
 import com.example.core_model.data.database.user.UserLogin
 import com.example.core_model.data.enums.user.UserRole
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.useCase.user.AuthorizationUseCase
 import com.example.core_network_domain.useCase.user.RegistrationUseCase
 import kotlinx.coroutines.flow.*

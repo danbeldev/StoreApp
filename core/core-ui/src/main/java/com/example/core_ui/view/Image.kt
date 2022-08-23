@@ -46,11 +46,12 @@ fun Image(
 @Composable
 fun Image(
     url:String,
-    modifier: Modifier
+    modifier: Modifier,
+    contentDescription:String? = null
 ) {
     SubcomposeAsyncImage(
         model = url,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier
             .padding(5.dp)
     ) {

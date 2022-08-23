@@ -9,7 +9,7 @@ import com.example.core_model.data.api.company.CreateCompany
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.database.user.UserLogin
 import com.example.core_model.data.enums.user.UserRole
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.useCase.company.PostCompanyBannerUseCase
 import com.example.core_network_domain.useCase.company.PostCompanyLogoUseCase
 import com.example.core_network_domain.useCase.company.PostCompanyUseCase

@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.user.User
 import com.example.core_model.data.enums.user.UserRole
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.animation.BaseLottieAnimation

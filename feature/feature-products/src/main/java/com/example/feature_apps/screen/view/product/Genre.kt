@@ -13,14 +13,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.core_model.data.api.product.Genre
 import com.example.core_model.data.api.product.GenreItem
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.animation.schimmer.TextShimmer
+import com.example.feature_apps.screen.ProductScreenTestTags
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
@@ -42,7 +44,11 @@ internal fun Genre(
                 if (genre !is Result.Error){
                     Row {
                         Spacer(modifier = Modifier.width(15.dp))
-                        TextButton(onClick = { genreSorting = null }) {
+                        TextButton(
+                            modifier = Modifier
+                                .testTag(ProductScreenTestTags.GenresTextButton.tag),
+                            onClick = { genreSorting = null }
+                        ) {
                             Text(
                                 text = "Genres",
                                 modifier = Modifier.padding(5.dp),
@@ -63,6 +69,7 @@ internal fun Genre(
                 is Result.Loading -> items(10) {
                     TextShimmer(
                         modifier = Modifier
+                            .testTag(ProductScreenTestTags.GenreItemLoadingTextShimmer.tag)
                             .padding(5.dp)
                             .height(50.dp)
                             .width(70.dp)

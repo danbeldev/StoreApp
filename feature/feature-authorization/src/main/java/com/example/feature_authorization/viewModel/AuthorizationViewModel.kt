@@ -9,7 +9,7 @@ import com.example.core_database_domain.useCase.user.SaveUserTokenUseCase
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.database.user.UserLogin
 import com.example.core_model.data.enums.user.UserRole
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.useCase.user.AuthorizationUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

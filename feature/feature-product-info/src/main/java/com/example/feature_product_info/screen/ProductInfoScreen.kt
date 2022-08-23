@@ -33,7 +33,7 @@ import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.enums.ProductFileExtension.*
 import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.navigation.VideoPlayerArgument
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.Image

@@ -1,4 +1,4 @@
-package com.example.feature_apps
+package com.example.core_testing
 
 import org.junit.Test
 

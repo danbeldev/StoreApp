@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/core/core-navigation" />
             <option value="$PROJECT_DIR$/core/core-network-data" />
             <option value="$PROJECT_DIR$/core/core-network-domain" />
+            <option value="$PROJECT_DIR$/core/core-testing" />
             <option value="$PROJECT_DIR$/core/core-ui" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/feature-authorization" />

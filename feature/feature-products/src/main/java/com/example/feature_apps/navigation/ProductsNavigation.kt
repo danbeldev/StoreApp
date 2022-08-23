@@ -8,7 +8,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavGraphBuilder
 import com.example.core_common.viewModel.daggerViewModel
 import com.example.core_navigation.NiaNavigationDestination
-import com.example.feature_apps.screen.ProductsScreen
+import com.example.feature_apps.screen.ProductsRoute
 import com.example.feature_apps.viewModel.ProductsViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -29,7 +29,7 @@ fun NavGraphBuilder.productsNavigation(
     composable(
         route = ProductsDestination.route
     ){
-        ProductsScreen(
+        ProductsRoute(
             viewModel = daggerViewModel { productsViewModel },
             onInfoProductScreen = onInfoProductScreen
         )

@@ -22,7 +22,7 @@ import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.create.ProductCreate
 import com.example.core_model.data.api.product.enums.AgeRating
 import com.example.core_model.data.api.product.enums.ProductType
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.BaseButton
 import com.example.core_ui.view.TextFieldBase

@@ -2,8 +2,8 @@ package com.example.core_network_domain.useCase.user
 
 import com.example.core_model.data.api.user.Authorization
 import com.example.core_model.data.api.user.AuthorizationResult
-import com.example.core_network_domain.apiResponse.BaseApiResponse
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.BaseApiResponse
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

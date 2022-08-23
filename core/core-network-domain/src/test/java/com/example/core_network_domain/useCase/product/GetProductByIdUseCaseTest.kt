@@ -1,8 +1,7 @@
 package com.example.core_network_domain.useCase.product
 
-import com.example.core_model.data.api.product.Genre
 import com.example.core_model.data.api.product.ProductItem
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.repository.ProductRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

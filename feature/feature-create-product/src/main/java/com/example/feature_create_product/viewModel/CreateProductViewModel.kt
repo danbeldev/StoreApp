@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.create.ProductCreate
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.useCase.product.GetCountryProductUseCase
 import com.example.core_network_domain.useCase.product.GetGenreProductUseCase
 import com.example.core_network_domain.useCase.product.PostFileUseCase

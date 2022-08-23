@@ -1,8 +1,5 @@
 package com.example.feature_apps.viewModel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -10,9 +7,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.core_model.data.api.company.CompanyItem
-import com.example.core_model.data.api.product.GenreItem
 import com.example.core_model.data.api.product.ProductItem
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.source.CompanySource
 import com.example.core_network_domain.source.ProductSource
 import com.example.core_network_domain.useCase.company.GetCompanyUseCase
@@ -37,16 +33,9 @@ class ProductsViewModel @Inject constructor(
     val responseCountry = getCountryProductUseCase.invoke()
         .stateIn(viewModelScope, SharingStarted.Eagerly, Result.Loading())
 
-    private val _genreSorting:MutableState<GenreItem?> = mutableStateOf(null)
-    val genreSorting:State<GenreItem?> = _genreSorting
-
-    fun updateGenreSorting(genre: GenreItem?){
-        _genreSorting.value = genre
-    }
-
     fun getProduct(
-        search:String,
-        genreId:List<Int>?
+        search:String = "",
+        genreId:List<Int>? = emptyList()
     ):Flow<PagingData<ProductItem>> {
         return Pager(PagingConfig(pageSize = 1)){
             ProductSource(

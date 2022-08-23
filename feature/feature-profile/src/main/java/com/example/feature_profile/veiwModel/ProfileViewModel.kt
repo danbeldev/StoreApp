@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.core_database_domain.useCase.user.GetStatusRegistrationUseCase
 import com.example.core_database_domain.useCase.user.GetUserRoleUseCase
 import com.example.core_model.data.enums.user.UserRole
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_network_domain.useCase.user.GetUserUseCase
 import com.example.core_network_domain.useCase.userCompany.GetUserCompanyUseCase
 import kotlinx.coroutines.flow.SharingStarted

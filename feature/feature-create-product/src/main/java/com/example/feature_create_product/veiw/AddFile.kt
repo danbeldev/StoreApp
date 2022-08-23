@@ -1,7 +1,6 @@
 package com.example.feature_create_product.veiw
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ScaffoldState
@@ -13,8 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.core_common.extension.launchWhenStarted
-import com.example.core_model.data.api.product.enums.ProductFileExtension
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.activityResult.FileExtension
 import com.example.core_ui.activityResult.FileManagerActivityResult
 import com.example.core_ui.theme.JetHabitTheme

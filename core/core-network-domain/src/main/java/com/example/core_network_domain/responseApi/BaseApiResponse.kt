@@ -1,4 +1,4 @@
-package com.example.core_network_domain.apiResponse
+package com.example.core_network_domain.responseApi
 
 import retrofit2.Response
 

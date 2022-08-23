@@ -9,7 +9,7 @@ import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.user.User
 import com.example.core_model.data.enums.user.UserRole
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.feature_profile.veiwModel.ProfileViewModel
 import com.example.feature_profile.view.ProfileStatusFalse

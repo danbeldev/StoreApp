@@ -14,6 +14,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
@@ -26,11 +28,12 @@ import com.example.core_model.data.api.product.Country
 import com.example.core_model.data.api.product.Genre
 import com.example.core_model.data.api.product.GenreItem
 import com.example.core_model.data.api.product.ProductItem
-import com.example.core_network_domain.apiResponse.Result
+import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.core_ui.view.Image
 import com.example.core_ui.view.More
 import com.example.core_ui.view.animation.schimmer.BaseColumnShimmer
+import com.example.feature_apps.screen.ProductScreenTestTags
 import com.example.feature_apps.screen.view.product.Genre
 
 
@@ -120,8 +123,10 @@ private fun ProductItem(
                 product.icon?.let { iconUrl ->
                     Image(
                         url = iconUrl,
-                        width = 100.dp,
-                        height = 100.dp
+                        modifier = Modifier
+                            .testTag(ProductScreenTestTags.ProductIconImage.tag)
+                            .clip(AbsoluteRoundedCornerShape(10.dp))
+                            .size(100.dp)
                     )
                 }
 
