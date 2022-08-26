@@ -38,6 +38,7 @@ internal fun Genre(
     })
 
     LazyRow(
+        modifier = Modifier.testTag(ProductScreenTestTags.GenreLazyRow.tag),
         verticalAlignment = Alignment.CenterVertically,
         content = {
             item {

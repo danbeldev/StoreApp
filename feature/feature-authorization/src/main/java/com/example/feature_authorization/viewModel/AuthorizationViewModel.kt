@@ -27,7 +27,7 @@ class AuthorizationViewModel @Inject constructor(
 
     private val _responseAuthorizationResponse:MutableStateFlow<Result<Unit>?> =
         MutableStateFlow(null)
-    val responseAuthorizationResponse = _responseAuthorizationResponse.asStateFlow()
+    val responseAuthorizationState = _responseAuthorizationResponse.asStateFlow()
 
     fun authorization(
         authorization: Authorization,

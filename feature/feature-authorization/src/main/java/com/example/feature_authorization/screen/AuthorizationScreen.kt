@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieConstants
@@ -22,21 +24,41 @@ import com.example.core_ui.view.animation.LottieAnimation
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 import kotlinx.coroutines.flow.onEach
 
+
+@SuppressLint("FlowOperatorInvokedInComposition")
+@Composable
+internal fun AuthorizationRoute(
+    viewModel: AuthorizationViewModel,
+    onBackClick:() -> Unit
+){
+    var authorization by rememberSaveable{ mutableStateOf(Authorization()) }
+
+    var authorizationState:Result<Unit>? by remember { mutableStateOf(null) }
+
+    viewModel.responseAuthorizationState.onEach {
+        authorizationState = it
+    }.launchWhenStarted()
+
+    AuthorizationScreen(
+        authorization = authorization,
+        authorizationState = authorizationState,
+        onAuthorizationData = { newAuthorization ->
+            authorization = newAuthorization
+        },
+        onAuthorizationClick = {
+            viewModel.authorization(authorization,onBackClick)
+        }
+    )
+}
+
 @SuppressLint("FlowOperatorInvokedInComposition")
 @Composable
 internal fun AuthorizationScreen(
-    viewModel: AuthorizationViewModel,
-    onBackClick:() -> Unit
+    authorizationState:Result<Unit>? = null,
+    authorization: Authorization = Authorization(),
+    onAuthorizationData:(Authorization) -> Unit = {},
+    onAuthorizationClick:() -> Unit = {}
 ) {
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
-
-    var authorizationResponse:Result<Unit>? by remember { mutableStateOf(null) }
-
-    viewModel.responseAuthorizationResponse.onEach {
-        authorizationResponse = it
-    }.launchWhenStarted()
-
     LazyColumn(content = {
         item {
             Column(
@@ -44,7 +66,7 @@ internal fun AuthorizationScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if (authorizationResponse != null){
+                if (authorizationState != null){
 
                     Spacer(modifier = Modifier.height(100.dp))
 
@@ -53,13 +75,15 @@ internal fun AuthorizationScreen(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         BaseLottieAnimation(
-                            lottieAnimation = when(authorizationResponse){
+                            lottieAnimation = when(authorizationState){
                                 is Result.Loading -> LottieAnimation.LOADING
                                 is Result.Error -> LottieAnimation.ERROR
                                 else -> LottieAnimation.LOGIN
                             },
-                            modifier = Modifier.size(300.dp),
-                            iterations = when(authorizationResponse){
+                            modifier = Modifier
+                                .size(300.dp)
+                                .testTag(AuthorizationScreenTestTags.BaseLottieAnimation.tag),
+                            iterations = when(authorizationState){
                                 is Result.Error -> 1
                                 else -> LottieConstants.IterateForever
                             }
@@ -73,21 +97,47 @@ internal fun AuthorizationScreen(
                 }
 
                 Text(
-                    text = authorizationResponse?.message ?: "",
-                    modifier = Modifier.padding(5.dp),
+                    text = authorizationState?.message ?: "",
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .testTag(AuthorizationScreenTestTags.ErrorMessageText.tag),
                     fontWeight = FontWeight.W900,
                     color = JetHabitTheme.colors.errorColor
                 )
 
-                TextFieldEmail(value = email)
+                TextFieldEmail(
+                    modifier = Modifier
+                        .testTag(AuthorizationScreenTestTags.EmailTextField.tag),
+                    value = authorization.email,
+                    onValueChange = { newEmail ->
+                        onAuthorizationData(
+                            Authorization(
+                                email = newEmail,
+                                password = authorization.password
+                            )
+                        )
+                    }
+                )
 
-                TextFieldPassword(value = password)
+                TextFieldPassword(
+                    modifier = Modifier
+                        .testTag(AuthorizationScreenTestTags.PasswordTextField.tag),
+                    value = authorization.password,
+                    onValueChange = { newPassword ->
+                        onAuthorizationData(
+                            Authorization(
+                                email = authorization.email,
+                                password = newPassword
+                            )
+                        )
+                    }
+                )
 
-                BaseButton(label = "Authorization") {
-                    viewModel.authorization(
-                        Authorization(email = email.value, password = password.value),
-                        onBackClick = onBackClick
-                    )
+                BaseButton(
+                    modifier = Modifier.testTag(AuthorizationScreenTestTags.AuthorizationButton.tag),
+                    label = "Authorization"
+                ) {
+                    onAuthorizationClick()
                 }
             }
         }

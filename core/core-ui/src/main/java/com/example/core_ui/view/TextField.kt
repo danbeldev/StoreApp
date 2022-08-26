@@ -121,11 +121,12 @@ fun TextFieldNumber(
 fun TextFieldEmail(
     modifier: Modifier = Modifier,
     label:String = "Email",
-    value:MutableState<String>
+    value:String,
+    onValueChange:(String) -> Unit
 ) {
     OutlinedTextField(
-        value = value.value,
-        onValueChange = { value.value = it },
+        value = value,
+        onValueChange = onValueChange,
         label = {
             Text(text = label, color = JetHabitTheme.colors.primaryText)
         }, shape = AbsoluteRoundedCornerShape(5.dp),
@@ -146,11 +147,12 @@ fun TextFieldEmail(
 fun TextFieldPassword(
     modifier: Modifier = Modifier,
     label:String = "Password",
-    value:MutableState<String>
+    value:String,
+    onValueChange:(String) -> Unit
 ) {
     OutlinedTextField(
-        value = value.value,
-        onValueChange = { value.value = it },
+        value = value,
+        onValueChange = onValueChange,
         label = {
             Text(text = label, color = JetHabitTheme.colors.primaryText)
         }, shape = AbsoluteRoundedCornerShape(5.dp),

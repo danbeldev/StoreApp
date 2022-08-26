@@ -14,12 +14,14 @@ import androidx.compose.ui.unit.dp
 import com.example.core_ui.theme.JetHabitTheme
 
 @Composable
-fun BaseColumnShimmer() {
+fun BaseColumnShimmer(
+    modifier: Modifier = Modifier
+) {
 
     val brush = baseAnimationShimmer()
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(140.dp)
             .padding(horizontal = 9.dp, vertical = 5.dp),

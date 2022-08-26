@@ -50,6 +50,7 @@ internal fun Products(
     onGenreSorting:(GenreItem?) -> Unit
 ) {
     LazyColumn(
+        modifier = Modifier.testTag(ProductScreenTestTags.ProductLazyColumn.tag),
         userScrollEnabled = products.loadState.refresh !is LoadState.Loading,
         content = {
             item { Genre(genre = genre, onGenreSorting = onGenreSorting) }
@@ -62,7 +63,10 @@ internal fun Products(
                 && products.itemCount > 0
             ){
                 item {
-                    BaseColumnShimmer()
+                    BaseColumnShimmer(
+                        modifier = Modifier
+                            .testTag(ProductScreenTestTags.ProductBaseColumnShimmer.tag)
+                    )
                 }
             }
 
@@ -70,7 +74,10 @@ internal fun Products(
                 products.loadState.refresh is LoadState.Loading
             ){
                 items(10) {
-                    BaseColumnShimmer()
+                    BaseColumnShimmer(
+                        modifier = Modifier
+                            .testTag(ProductScreenTestTags.ProductBaseColumnShimmer.tag)
+                    )
                 }
             }
 
@@ -124,7 +131,7 @@ private fun ProductItem(
                     Image(
                         url = iconUrl,
                         modifier = Modifier
-                            .testTag(ProductScreenTestTags.ProductIconImage.tag)
+                            .testTag(ProductScreenTestTags.ProductIconImage(product.id).tag)
                             .clip(AbsoluteRoundedCornerShape(10.dp))
                             .size(100.dp)
                     )

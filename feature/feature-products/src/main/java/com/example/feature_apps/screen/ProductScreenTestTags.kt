@@ -7,5 +7,8 @@ internal sealed class ProductScreenTestTags(val tag:String) {
     object SearchButton:ProductScreenTestTags("search:button")
     object GenreItemLoadingTextShimmer:ProductScreenTestTags("genre_item_loading:text_shimmer")
     object GenresTextButton:ProductScreenTestTags("genres:text_button")
-    object ProductIconImage:ProductScreenTestTags("product_icon:image")
+    object GenreLazyRow:ProductScreenTestTags("genre:lazy_row")
+    class ProductIconImage(productId:Int):ProductScreenTestTags("product_icon:$productId:image")
+    object ProductBaseColumnShimmer:ProductScreenTestTags("product:base_column_shimmer")
+    object ProductLazyColumn:ProductScreenTestTags("product:lazy_column")
 }

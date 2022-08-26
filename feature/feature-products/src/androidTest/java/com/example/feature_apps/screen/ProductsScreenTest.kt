@@ -35,7 +35,9 @@ class ProductsScreenTest {
         val products = createProductsTestData()
 
         composeTestRule.setContent {
-            MainTheme {
+            MainTheme(
+                darkTheme = true
+            ) {
                 ProductsScreen(
                     products = createProducts(PagingData.from(products)),
                     company = createCompanies()
@@ -43,26 +45,33 @@ class ProductsScreenTest {
             }
         }
 
-        // product title is show
         products.forEach { product ->
+            // product title is show
             composeTestRule
                 .onNodeWithText(product.title)
                 .assertExists()
 
+            // product description is show
             composeTestRule
                 .onNodeWithText(product.shortDescription)
                 .assertExists()
 
-            if (product.id == 1){
+            if (product.icon != null){
+                // product icon is show
                 composeTestRule
-                    .onAllNodesWithTag(ProductScreenTestTags.ProductIconImage.tag)
+                    .onAllNodesWithTag(
+                        testTag = ProductScreenTestTags.ProductIconImage(product.id).tag,
+                        useUnmergedTree = true
+                    )
                     .onFirst()
-//                    .assertExists()
-            }
-
-            if (product.id == 2){
+                    .assertExists()
+            }else {
+                // product icon is no show
                 composeTestRule
-                    .onAllNodesWithTag(ProductScreenTestTags.ProductIconImage.tag)
+                    .onAllNodesWithTag(
+                        testTag = ProductScreenTestTags.ProductIconImage(product.id).tag,
+                        useUnmergedTree = true
+                    )
                     .onFirst()
                     .assertDoesNotExist()
             }
@@ -82,7 +91,9 @@ class ProductsScreenTest {
     @Test
     fun productScreen_search_open_state(){
         composeTestRule.setContent {
-            MainTheme {
+            MainTheme(
+                darkTheme = true
+            ) {
                 ProductsScreen(
                     products = createProducts(),
                     company = createCompanies(),
@@ -103,7 +114,9 @@ class ProductsScreenTest {
 
             var searchState by remember { mutableStateOf(SearchState.CLOSE) }
 
-            MainTheme {
+            MainTheme(
+                darkTheme = true
+            ) {
                 ProductsScreen(
                     products = createProducts(),
                     company = createCompanies(),
@@ -144,7 +157,9 @@ class ProductsScreenTest {
         val genre = createGenreTestData()
 
         composeTestRule.setContent {
-            MainTheme {
+            MainTheme(
+                darkTheme = true
+            ) {
                 ProductsScreen(
                     products = createProducts(),
                     company = createCompanies(),
@@ -174,7 +189,9 @@ class ProductsScreenTest {
     fun productScreen_genre_loading(){
 
         composeTestRule.setContent {
-            MainTheme {
+            MainTheme(
+                darkTheme = true
+            ) {
                 ProductsScreen(
                     products = createProducts(),
                     company = createCompanies(),
@@ -197,7 +214,9 @@ class ProductsScreenTest {
     fun productScreen_genre_error(){
 
         composeTestRule.setContent {
-            MainTheme {
+            MainTheme(
+                darkTheme = true
+            ) {
                 ProductsScreen(
                     products = createProducts(),
                     company = createCompanies(),
@@ -233,7 +252,8 @@ class ProductsScreenTest {
 
 private const val PRODUCT_TITLE_1 = "Store App"
 private const val PRODUCT_ID_1 = 1
-private const val PRODUCT_ICON_1 = "https://avatars.mds.yandex.net/i?id=a02e229150a7d286c94519a57f99b5e8-3374823-images-thumbs&n=13"
+private const val PRODUCT_ICON_1 = "" +
+        "https://avatars.mds.yandex.net/i?id=a02e229150a7d286c94519a57f99b5e8-3374823-images-thumbs&n=13"
 
 private const val PRODUCT_TITLE_2 = "Notes"
 private const val PRODUCT_ID_2 = 2

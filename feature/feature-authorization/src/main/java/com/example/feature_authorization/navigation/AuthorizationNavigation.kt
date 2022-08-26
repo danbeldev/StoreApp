@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import com.example.core_common.viewModel.daggerViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
-import com.example.feature_authorization.screen.AuthorizationScreen
+import com.example.feature_authorization.screen.AuthorizationRoute
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 
 object AuthorizationDestination : NiaNavigationDestination {
@@ -20,7 +20,7 @@ fun NavGraphBuilder.authorizationNavigation(
     composable(
         route = AuthorizationDestination.route
     ){
-        AuthorizationScreen(
+        AuthorizationRoute(
             viewModel = daggerViewModel { authorizationViewModel },
             onBackClick = onBackClick
         )
