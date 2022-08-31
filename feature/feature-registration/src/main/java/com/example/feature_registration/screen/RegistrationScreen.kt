@@ -33,8 +33,8 @@ internal fun RegistrationScreen(
     onProfileScreen:() -> Unit
 ) {
     val username = remember { mutableStateOf("") }
-    val email = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     var registrationResult:Result<RegistrationResult?>? by remember { mutableStateOf(null) }
 
@@ -83,19 +83,21 @@ internal fun RegistrationScreen(
 
                     TextFieldEmail(
                         label = "Email",
-                        value = email
+                        value = email,
+                        onValueChange = { email = it }
                     )
 
                     TextFieldPassword(
                         label = "Password",
-                        value = password
+                        value = password,
+                        onValueChange = { password = it }
                     )
 
                     BaseButton(label = "Registration") {
                         val registration = Registration(
-                            email = email.value,
+                            email = email,
                             username = username.value,
-                            password = password.value
+                            password = password
                         )
                         viewModel.registration(registration, onProfileScreen)
                     }

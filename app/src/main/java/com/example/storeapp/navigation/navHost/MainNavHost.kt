@@ -9,8 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import com.example.core_ui.theme.JetHabitStyle
+import com.example.core_navigation.LocalNavHostController
 import com.example.core_ui.theme.JetHabitTheme
 import com.example.feature_apps.navigation.ProductsDestination
 import com.example.storeapp.di.AppComponent
@@ -30,12 +29,10 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 @Composable
 fun MainNavHost(
     appComponent: AppComponent,
-    navHostController:NavHostController,
-    startDestination:String = ProductsDestination.route,
-    isDarkMode: Boolean,
-    onDarkModeChanged: (Boolean) -> Unit,
-    onNewStyle: (JetHabitStyle) -> Unit
+    startDestination:String = ProductsDestination.route
 ) {
+    val navHostController = LocalNavHostController.current
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = JetHabitTheme.colors.primaryBackground
@@ -83,10 +80,7 @@ fun MainNavHost(
             builder = {
                 baseNavGraphBuilder(
                     navController = navHostController,
-                    appComponent = appComponent,
-                    isDarkMode = isDarkMode,
-                    onNewStyle = onNewStyle,
-                    onDarkModeChanged = onDarkModeChanged
+                    appComponent = appComponent
                 )
             }
         )

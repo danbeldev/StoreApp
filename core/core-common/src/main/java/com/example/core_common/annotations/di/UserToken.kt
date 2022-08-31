@@ -1,4 +1,4 @@
-package com.example.storeapp.di.modules.annotations
+package com.example.core_common.annotations.di
 
 import javax.inject.Qualifier
 

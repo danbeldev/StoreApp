@@ -10,6 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.example.core_ui.theme.MainTheme
 import com.example.feature_apps.navigation.ProductsDestination
 import com.example.feature_authorization.navigation.AuthorizationDestination
+import com.example.storeapp.activity.MainLocalProvider
 import com.example.storeapp.di.AppComponent
 import com.example.storeapp.di.DaggerAppComponent
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -50,14 +51,17 @@ class MainNavHostTest {
             MainTheme(
                 darkTheme = true
             ) {
-                MainNavHost(
-                    appComponent = appComponent,
-                    navHostController = navHostController,
-                    startDestination = ProductsDestination.route,
-                    isDarkMode = true,
-                    onDarkModeChanged = {},
-                    onNewStyle = {}
-                )
+                MainLocalProvider(
+                    navHostController = navHostController
+                ) {
+                    MainNavHost(
+                        appComponent = appComponent,
+                        startDestination = ProductsDestination.route,
+                        isDarkMode = true,
+                        onDarkModeChanged = {},
+                        onNewStyle = {}
+                    )
+                }
             }
 
             navHostController.navigate(AuthorizationDestination.route)

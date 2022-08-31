@@ -87,93 +87,89 @@ class MainActivity : ComponentActivity() {
                 darkTheme = isDarkMode,
                 style = currentStyle
             ){
-
-                LaunchedEffect(key1 = isDarkMode, block = {
-                    systemUiController.setNavigationBarColor(
-                        color = primaryBackground
-                    )
-
-                    systemUiController.setSystemBarsColor(
-                        color = primaryBackground
-                    )
-                })
-
-                // get user role
-                viewModel.responseUserRole.onEach {
-                    userRole = it
-                }.launchWhenStarted()
-
-                if (route != videoPlayerRoute){
-                    systemUiController.isStatusBarVisible = true
-                    systemUiController.isNavigationBarVisible = true
-                    systemUiController.isSystemBarsVisible = true
-                    systemUiController.isNavigationBarContrastEnforced = true
-                    systemUiController.navigationBarDarkContentEnabled = true
-                    systemUiController.statusBarDarkContentEnabled = true
-                    systemUiController.systemBarsDarkContentEnabled = true
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                }else {
-                    systemUiController.isStatusBarVisible = false
-                    systemUiController.isNavigationBarVisible = false
-                    systemUiController.isSystemBarsVisible = false
-                    systemUiController.isNavigationBarContrastEnforced = false
-                    systemUiController.navigationBarDarkContentEnabled = false
-                    systemUiController.statusBarDarkContentEnabled = false
-                    systemUiController.systemBarsDarkContentEnabled = false
-                    requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                }
-
-                Scaffold(
-                    bottomBar = {
-                        AnimatedVisibility(
-                            visible = route != videoPlayerRoute
-                        ) {
-                            AnimatedVisibility(
-                                visible = isVisibleMenu
-                            ) {
-                                FloatingBottomActionMenu(
-                                    isVisible = isVisibleMenu,
-                                    onAddProduct = {
-                                        isVisibleMenu = false
-                                        navHostController.navigate(CreateProductDestination.route)
-                                    },
-                                    onCreateEvent = {
-                                        isVisibleMenu = false
-                                    },
-                                    onClose = { isVisibleMenu = false }
-                                )
-                            }
-
-                            AnimatedVisibility(
-                                visible = !isVisibleMenu
-                            ) {
-                                CustomBottomNavigation(
-                                    navController = navHostController,
-                                    userRole = userRole,
-                                    backgroundColor = JetHabitTheme.colors.controlColor,
-                                    currentScreenId = bottomBar,
-                                    onItemSelected = {
-                                        if (it != ScreenBottomNavigation.Add)
-                                            bottomBar = it.id
-                                    },
-                                    onClickAdd = { isVisibleMenu = true }
-                                )
-                            }
-                        }
-                    }, content = {
-                        // start navigation
-                        MainNavHost(
-                            appComponent = appComponent,
-                            navHostController = navHostController,
-                            isDarkMode = isDarkMode,
-                            onDarkModeChanged = {
-                                viewModel.saveDarkTheme(it)
-                            }, onNewStyle = {
-                                viewModel.saveStyle(it)
-                            }
+                MainLocalProvider(
+                    navHostController = navHostController
+                ){
+                    LaunchedEffect(key1 = isDarkMode, block = {
+                        systemUiController.setNavigationBarColor(
+                            color = primaryBackground
                         )
+
+                        systemUiController.setSystemBarsColor(
+                            color = primaryBackground
+                        )
+                    })
+
+                    // get user role
+                    viewModel.responseUserRole.onEach {
+                        userRole = it
+                    }.launchWhenStarted()
+
+                    if (route != videoPlayerRoute){
+                        systemUiController.isStatusBarVisible = true
+                        systemUiController.isNavigationBarVisible = true
+                        systemUiController.isSystemBarsVisible = true
+                        systemUiController.isNavigationBarContrastEnforced = true
+                        systemUiController.navigationBarDarkContentEnabled = true
+                        systemUiController.statusBarDarkContentEnabled = true
+                        systemUiController.systemBarsDarkContentEnabled = true
+                        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+                    }else {
+                        systemUiController.isStatusBarVisible = false
+                        systemUiController.isNavigationBarVisible = false
+                        systemUiController.isSystemBarsVisible = false
+                        systemUiController.isNavigationBarContrastEnforced = false
+                        systemUiController.navigationBarDarkContentEnabled = false
+                        systemUiController.statusBarDarkContentEnabled = false
+                        systemUiController.systemBarsDarkContentEnabled = false
+                        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
                     }
-                )
+
+                    Scaffold(
+                        bottomBar = {
+                            AnimatedVisibility(
+                                visible = route != videoPlayerRoute
+                            ) {
+                                AnimatedVisibility(
+                                    visible = isVisibleMenu
+                                ) {
+                                    FloatingBottomActionMenu(
+                                        isVisible = isVisibleMenu,
+                                        onAddProduct = {
+                                            isVisibleMenu = false
+                                            navHostController.navigate(CreateProductDestination.route)
+                                        },
+                                        onCreateEvent = {
+                                            isVisibleMenu = false
+                                        },
+                                        onClose = { isVisibleMenu = false }
+                                    )
+                                }
+
+                                AnimatedVisibility(
+                                    visible = !isVisibleMenu
+                                ) {
+                                    CustomBottomNavigation(
+                                        navController = navHostController,
+                                        userRole = userRole,
+                                        backgroundColor = JetHabitTheme.colors.controlColor,
+                                        currentScreenId = bottomBar,
+                                        onItemSelected = {
+                                            if (it != ScreenBottomNavigation.Add)
+                                                bottomBar = it.id
+                                        },
+                                        onClickAdd = { isVisibleMenu = true }
+                                    )
+                                }
+                            }
+                        }, content = {
+                            // start navigation
+                            MainNavHost(
+                                appComponent = appComponent
+                            )
+                        }
+                    )
+                }
             }
         }
     }

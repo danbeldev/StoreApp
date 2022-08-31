@@ -5,7 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import com.example.core_common.viewModel.daggerViewModel
 import com.google.accompanist.navigation.animation.composable
 import com.example.core_navigation.NiaNavigationDestination
-import com.example.core_ui.theme.JetHabitStyle
 import com.example.feature_settings.screen.SettingsScreen
 import com.example.feature_settings.viewModel.SettingsViewModel
 
@@ -16,20 +15,14 @@ object SettingsDestination : NiaNavigationDestination {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.settingsNavigation(
     viewModel: SettingsViewModel,
-    onBackClick:() -> Unit,
-    isDarkMode: Boolean,
-    onDarkModeChanged: (Boolean) -> Unit,
-    onNewStyle: (JetHabitStyle) -> Unit
+    onBackClick:() -> Unit
 ) {
     composable(
         route = SettingsDestination.route
     ){
        SettingsScreen(
            viewModel = daggerViewModel { viewModel },
-           onBackClick = onBackClick,
-           isDarkMode = isDarkMode,
-           onDarkModeChanged = onDarkModeChanged,
-           onNewStyle = onNewStyle
+           onBackClick = onBackClick
        )
     }
 }

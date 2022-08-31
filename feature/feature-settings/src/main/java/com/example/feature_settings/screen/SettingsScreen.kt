@@ -1,27 +1,35 @@
 package com.example.feature_settings.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.core_common.extension.launchWhenStarted
 import com.example.core_ui.theme.*
 import com.example.feature_settings.viewModel.SettingsViewModel
+import kotlinx.coroutines.flow.onEach
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter", "FlowOperatorInvokedInComposition")
 @Composable
 internal fun SettingsScreen(
     viewModel:SettingsViewModel,
-    onBackClick:() -> Unit,
-    isDarkMode: Boolean,
-    onDarkModeChanged: (Boolean) -> Unit,
-    onNewStyle: (JetHabitStyle) -> Unit
+    onBackClick:() -> Unit
 ) {
+
+    var isDarkMode by remember { mutableStateOf(false) }
+
+    viewModel.responseSettings.onEach { setting ->
+        isDarkMode = setting.darkTheme
+    }.launchWhenStarted()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,7 +70,7 @@ internal fun SettingsScreen(
 
                                 Checkbox(
                                     checked = isDarkMode, onCheckedChange = {
-                                        onDarkModeChanged.invoke(it)
+                                        viewModel.saveDarkTheme(it)
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = JetHabitTheme.colors.tintColor,
@@ -82,19 +90,19 @@ internal fun SettingsScreen(
                                 ColorCard(color = if (isDarkMode) purpleDarkPalette.tintColor else
                                     purpleLightPalette.tintColor,
                                     onClick = {
-                                        onNewStyle.invoke(JetHabitStyle.Purple)
+                                        viewModel.saveStyle(JetHabitStyle.Purple)
                                     }
                                 )
                                 ColorCard(color = if (isDarkMode) orangeDarkPalette.tintColor else
                                     orangeLightPalette.tintColor,
                                     onClick = {
-                                        onNewStyle.invoke(JetHabitStyle.Orange)
+                                        viewModel.saveStyle(JetHabitStyle.Orange)
                                     }
                                 )
                                 ColorCard(color = if (isDarkMode) blueDarkPalette.tintColor else
                                     blueLightPalette.tintColor,
                                     onClick = {
-                                        onNewStyle.invoke(JetHabitStyle.Blue)
+                                        viewModel.saveStyle(JetHabitStyle.Blue)
                                     }
                                 )
                             }
@@ -107,19 +115,19 @@ internal fun SettingsScreen(
                                 ColorCard(color = if (isDarkMode) redDarkPalette.tintColor else
                                     redLightPalette.tintColor,
                                     onClick = {
-                                        onNewStyle.invoke(JetHabitStyle.Red)
+                                        viewModel.saveStyle(JetHabitStyle.Red)
                                     }
                                 )
                                 ColorCard(color = if (isDarkMode) greenDarkPalette.tintColor else
                                     greenLightPalette.tintColor,
                                     onClick = {
-                                        onNewStyle.invoke(JetHabitStyle.Green)
+                                        viewModel.saveStyle(JetHabitStyle.Green)
                                     }
                                 )
                                 ColorCard(color = if (isDarkMode) yellowDarkPalette.tintColor else
                                     yellowLightPalette.tintColor,
                                     onClick = {
-                                        onNewStyle.invoke(JetHabitStyle.Yellow)
+                                        viewModel.saveStyle(JetHabitStyle.Yellow)
                                     }
                                 )
                             }

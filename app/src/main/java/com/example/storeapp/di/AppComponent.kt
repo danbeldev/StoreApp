@@ -1,6 +1,9 @@
 package com.example.storeapp.di
 
 import android.content.Context
+import com.example.core_database_data.di.SettingDatabaseModule
+import com.example.core_database_data.di.UserDatabaseModule
+import com.example.core_network_data.di.*
 import com.example.feature_apps.viewModel.ProductsViewModel
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 import com.example.feature_create_company.viewModel.CreateCompanyViewModel
@@ -11,8 +14,6 @@ import com.example.feature_profile.veiwModel.ProfileViewModel
 import com.example.feature_registration.viewModel.RegistrationViewModel
 import com.example.feature_settings.viewModel.SettingsViewModel
 import com.example.storeapp.activity.viewModel.MainViewModel
-import com.example.storeapp.di.modules.ApiModule
-import com.example.storeapp.di.modules.DatabaseModule
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -20,7 +21,15 @@ import javax.inject.Singleton
 /**
  * [DaggerAppComponent]
  * */
-@[Singleton Component(modules = [ApiModule::class, DatabaseModule::class])]
+@[Singleton Component(modules = [
+    ApiModule::class,
+    UserCompanyApiModule::class,
+    UserApiModule::class,
+    ProductApiModule::class,
+    CompanyApiModule::class,
+    UserDatabaseModule::class,
+    SettingDatabaseModule::class
+])]
 interface AppComponent {
 
     fun productsViewModel():ProductsViewModel

@@ -6,7 +6,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import com.example.core_ui.theme.JetHabitStyle
 import com.example.feature_apps.navigation.productsNavigation
 import com.example.feature_authorization.navigation.AuthorizationDestination
 import com.example.feature_authorization.navigation.authorizationNavigation
@@ -38,10 +37,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 @ExperimentalAnimationApi
 fun NavGraphBuilder.baseNavGraphBuilder(
     navController: NavController,
-    appComponent:AppComponent,
-    isDarkMode: Boolean,
-    onDarkModeChanged: (Boolean) -> Unit,
-    onNewStyle: (JetHabitStyle) -> Unit
+    appComponent:AppComponent
 ) {
     productsNavigation(
         productsViewModel = appComponent.productsViewModel(),
@@ -102,9 +98,6 @@ fun NavGraphBuilder.baseNavGraphBuilder(
 
     settingsNavigation(
         viewModel = appComponent.settingsViewModel(),
-        onBackClick = { navController.navigateUp() },
-        isDarkMode = isDarkMode,
-        onDarkModeChanged = onDarkModeChanged,
-        onNewStyle = onNewStyle
+        onBackClick = { navController.navigateUp() }
     )
 }
