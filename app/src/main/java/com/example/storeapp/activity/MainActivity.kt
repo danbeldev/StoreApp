@@ -39,8 +39,11 @@ import kotlinx.coroutines.flow.onEach
 @ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
-    @SuppressLint("CoroutineCreationDuringComposition", "FlowOperatorInvokedInComposition",
-        "UnusedMaterialScaffoldPaddingParameter")
+    @SuppressLint(
+        "CoroutineCreationDuringComposition",
+        "FlowOperatorInvokedInComposition",
+        "UnusedMaterialScaffoldPaddingParameter"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,8 +70,6 @@ class MainActivity : ComponentActivity() {
             // get system ui controller
             val systemUiController = rememberSystemUiController()
 
-            val primaryBackground = JetHabitTheme.colors.primaryBackground
-
             val navHostController = rememberAnimatedNavController()
             val route = navHostController.currentBackStackEntryAsState().value?.destination?.route
             val videoPlayerRoute = "${VideoPlayerDestination.route}?url={${VideoPlayerDestination.productUrl}}"
@@ -90,6 +91,8 @@ class MainActivity : ComponentActivity() {
                 MainLocalProvider(
                     navHostController = navHostController
                 ){
+                    val primaryBackground = JetHabitTheme.colors.primaryBackground
+
                     LaunchedEffect(key1 = isDarkMode, block = {
                         systemUiController.setNavigationBarColor(
                             color = primaryBackground

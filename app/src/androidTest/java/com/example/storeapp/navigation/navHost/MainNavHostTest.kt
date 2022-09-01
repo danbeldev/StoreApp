@@ -56,10 +56,7 @@ class MainNavHostTest {
                 ) {
                     MainNavHost(
                         appComponent = appComponent,
-                        startDestination = ProductsDestination.route,
-                        isDarkMode = true,
-                        onDarkModeChanged = {},
-                        onNewStyle = {}
+                        startDestination = ProductsDestination.route
                     )
                 }
             }
