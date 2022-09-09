@@ -45,7 +45,7 @@ fun Image(
 
 @Composable
 fun Image(
-    url:String,
+    url:Any?,
     modifier: Modifier,
     contentDescription:String? = null
 ) {

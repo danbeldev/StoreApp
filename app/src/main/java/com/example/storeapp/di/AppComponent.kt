@@ -8,6 +8,7 @@ import com.example.feature_apps.viewModel.ProductsViewModel
 import com.example.feature_authorization.viewModel.AuthorizationViewModel
 import com.example.feature_create_company.viewModel.CreateCompanyViewModel
 import com.example.feature_create_product.viewModel.CreateProductViewModel
+import com.example.feature_history.viewModel.UserHistoryViewModel
 import com.example.feature_product_info.viewModel.ProductInfoViewModel
 import com.example.feature_product_reviews.viewModel.ProductReviewsViewModel
 import com.example.feature_profile.veiwModel.ProfileViewModel
@@ -27,6 +28,7 @@ import javax.inject.Singleton
     UserApiModule::class,
     ProductApiModule::class,
     CompanyApiModule::class,
+    HistoryApiModule::class,
     UserDatabaseModule::class,
     SettingDatabaseModule::class
 ])]
@@ -39,6 +41,8 @@ interface AppComponent {
     fun productReviewsViewModel():ProductReviewsViewModel
 
     fun profileViewModel():ProfileViewModel
+
+    fun userHistoryViewModel():UserHistoryViewModel
 
     fun authorizationViewModel():AuthorizationViewModel
 

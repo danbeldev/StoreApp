@@ -13,6 +13,8 @@ import com.example.feature_create_company.navigation.CreateCompanyDestination
 import com.example.feature_create_company.navigation.createCompanyNavigation
 import com.example.feature_create_product.navigation.CreateProductDestination
 import com.example.feature_create_product.navigation.createProductNavigation
+import com.example.feature_history.navigation.UserHistoryDestination
+import com.example.feature_history.navigation.userHistoryNavigation
 import com.example.feature_product_info.navigation.ProductInfoDestination
 import com.example.feature_product_info.navigation.productInfoNavigation
 import com.example.feature_product_reviews.navigation.ProductReviewsDestination
@@ -73,7 +75,16 @@ fun NavGraphBuilder.baseNavGraphBuilder(
         onCreateCompanyScreen = { navController.navigate(CreateCompanyDestination.route) },
         onSettingsScreen = { navController.navigate(SettingsDestination.route) },
         onRegistration = { navController.navigate(RegistrationDestination.route) },
-        onCreateProductScreen = { navController.navigate(CreateProductDestination.route) }
+        onCreateProductScreen = { navController.navigate(CreateProductDestination.route) },
+        onUserHistoryScreen = { navController.navigate(UserHistoryDestination.route) },
+        onInfoProductScreen = {
+            navController.navigate("${ProductInfoDestination.route}/$it")
+        }
+    )
+
+    userHistoryNavigation(
+        viewModel = appComponent.userHistoryViewModel(),
+        onBackClick = { navController.navigateUp() }
     )
 
     authorizationNavigation(

@@ -72,6 +72,7 @@ dependencies {
     implementation project(':feature:feature-registration')
     implementation project(':feature:feature-create-company')
     implementation project(':feature:feature-create-product')
+    implementation project(':feature:feature-history')
     implementation project(':feature:feature-video-player')
 
     implementation 'androidx.core:core-ktx:1.7.0'

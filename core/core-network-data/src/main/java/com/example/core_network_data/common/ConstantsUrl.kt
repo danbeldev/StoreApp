@@ -24,5 +24,7 @@ internal object ConstantsUrl {
     const val AUTHORIZATION = "/storeApp/api/User/Authorization"
     const val REGISTRATION = "/storeApp/api/User/Registration"
 
+    const val USER_HISTORY_URL = "/storeApp/api/History"
+
     const val GET_USER = "/storeApp/api/User"
 }

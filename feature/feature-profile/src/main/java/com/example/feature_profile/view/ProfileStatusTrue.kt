@@ -1,5 +1,6 @@
 package com.example.feature_profile.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.user.User
+import com.example.core_model.data.api.user.history.History
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
@@ -27,14 +29,18 @@ import com.example.core_ui.view.Image
 import com.example.core_ui.view.animation.BaseLottieAnimation
 import com.example.core_ui.view.animation.LottieAnimation
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ProfileStatusTrue(
     user: Result<User>,
     company: Result<CompanyItem>,
+    history:Result<History>,
     userRole: UserRole,
     onCreateCompanyScreen:() -> Unit,
     onSettingsScreen:() -> Unit,
-    onCreateProductScreen:() -> Unit
+    onCreateProductScreen:() -> Unit,
+    onInfoProductScreen:(Int) -> Unit,
+    onUserHistoryScreen:() -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -180,6 +186,12 @@ fun ProfileStatusTrue(
                             }
                         }
                     }
+
+                    userHistory(
+                        history = history,
+                        onInfoProductScreen = onInfoProductScreen,
+                        onUserHistoryScreen = onUserHistoryScreen
+                    )
                 })
             }
         }

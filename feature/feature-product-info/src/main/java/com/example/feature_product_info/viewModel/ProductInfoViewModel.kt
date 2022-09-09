@@ -7,7 +7,9 @@ import com.example.core_database_domain.useCase.user.GetUserTokenUseCase
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.api.product.review.ProductReviewPush
+import com.example.core_model.data.api.user.history.HistoryCreate
 import com.example.core_network_domain.responseApi.Result
+import com.example.core_network_domain.useCase.history.PostHistoryUseCase
 import com.example.core_network_domain.useCase.product.GetProductByIdUseCase
 import com.example.core_network_domain.useCase.product.GetProductReviewUseCase
 import com.example.core_network_domain.useCase.product.OptionsProductFileSizeUseCase
@@ -21,6 +23,7 @@ class ProductInfoViewModel @Inject constructor(
     private val getProductReviewUseCase: GetProductReviewUseCase,
     private val optionsProductFileSizeUseCase: OptionsProductFileSizeUseCase,
     private val postProductReviewUseCase: PostProductReviewUseCase,
+    private val postHistoryUseCase: PostHistoryUseCase,
     getUserTokenUseCase: GetUserTokenUseCase
 ): ViewModel() {
 
@@ -63,5 +66,11 @@ class ProductInfoViewModel @Inject constructor(
         postProductReviewUseCase.invoke(id,review).onEach {
             _responseReviewAdd.value = it
         }.launchIn(viewModelScope)
+    }
+
+    fun postHistoryUseCase(body:HistoryCreate){
+        viewModelScope.launch {
+            postHistoryUseCase.invoke(body)
+        }
     }
 }

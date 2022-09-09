@@ -21,7 +21,9 @@ fun NavGraphBuilder.profileNavigation(
     onCreateCompanyScreen:() -> Unit,
     onSettingsScreen:() -> Unit,
     onRegistration:() -> Unit,
-    onCreateProductScreen:() -> Unit
+    onCreateProductScreen:() -> Unit,
+    onInfoProductScreen:(Int) -> Unit,
+    onUserHistoryScreen:() -> Unit
 ) {
     composable(
         route = ProfileDestination.route
@@ -32,7 +34,9 @@ fun NavGraphBuilder.profileNavigation(
             onCreateCompanyScreen = onCreateCompanyScreen,
             onSettingsScreen = onSettingsScreen,
             onRegistration = onRegistration,
-            onCreateProductScreen = onCreateProductScreen
+            onCreateProductScreen = onCreateProductScreen,
+            onInfoProductScreen = onInfoProductScreen,
+            onUserHistoryScreen = onUserHistoryScreen
         )
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.company.CompanyItem
 import com.example.core_model.data.api.user.User
+import com.example.core_model.data.api.user.history.History
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
@@ -24,7 +25,9 @@ internal fun ProfileScreen(
     onCreateCompanyScreen:() -> Unit,
     onSettingsScreen:() -> Unit,
     onRegistration:() -> Unit,
-    onCreateProductScreen:() -> Unit
+    onCreateProductScreen:() -> Unit,
+    onInfoProductScreen:(Int) -> Unit,
+    onUserHistoryScreen:() -> Unit
 ) {
 
     var statusUserRegistration by remember { mutableStateOf(false) }
@@ -32,6 +35,12 @@ internal fun ProfileScreen(
     var user:Result<User> by remember { mutableStateOf(Result.Loading()) }
     var userRole by remember { mutableStateOf(UserRole.BaseUser) }
     var company:Result<CompanyItem> by remember { mutableStateOf(Result.Loading()) }
+
+    var history:Result<History> by remember { mutableStateOf(Result.Loading()) }
+
+    profileViewModel.getHistory.onEach {
+        history = it
+    }.launchWhenStarted()
 
     profileViewModel.getStatusRegistration.onEach {
         statusUserRegistration = it
@@ -56,13 +65,17 @@ internal fun ProfileScreen(
         color = JetHabitTheme.colors.primaryBackground
     ) {
         when(statusUserRegistration){
-            true -> ProfileStatusTrue(
+            true ->
+                ProfileStatusTrue(
                 user = user,
                 userRole = userRole,
+                history = history,
                 onCreateCompanyScreen = onCreateCompanyScreen,
                 onSettingsScreen = onSettingsScreen,
                 company = company,
-                onCreateProductScreen = onCreateProductScreen
+                onCreateProductScreen = onCreateProductScreen,
+                onInfoProductScreen = onInfoProductScreen,
+                onUserHistoryScreen = onUserHistoryScreen
             )
             false -> ProfileStatusFalse(
                 onAuthorizationScreen = onAuthorizationScreen,

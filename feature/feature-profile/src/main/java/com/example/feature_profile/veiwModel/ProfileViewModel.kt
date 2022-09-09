@@ -6,6 +6,7 @@ import com.example.core_database_domain.useCase.user.GetStatusRegistrationUseCas
 import com.example.core_database_domain.useCase.user.GetUserRoleUseCase
 import com.example.core_model.data.enums.user.UserRole
 import com.example.core_network_domain.responseApi.Result
+import com.example.core_network_domain.useCase.history.GetHistoryUseCase
 import com.example.core_network_domain.useCase.user.GetUserUseCase
 import com.example.core_network_domain.useCase.userCompany.GetUserCompanyUseCase
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
+    getHistoryUseCase: GetHistoryUseCase,
     getStatusRegistrationUseCase: GetStatusRegistrationUseCase,
     getUserUseCase: GetUserUseCase,
     getUserRoleUseCase: GetUserRoleUseCase,
@@ -29,5 +31,8 @@ class ProfileViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, UserRole.BaseUser)
 
     val getUserCompany = getUserCompanyUseCase.invoke()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, Result.Loading())
+
+    val getHistory = getHistoryUseCase.invoke(type = null)
         .stateIn(viewModelScope, SharingStarted.Eagerly, Result.Loading())
 }

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -31,7 +30,7 @@ internal fun AuthorizationRoute(
     viewModel: AuthorizationViewModel,
     onBackClick:() -> Unit
 ){
-    var authorization by rememberSaveable{ mutableStateOf(Authorization()) }
+    var authorization by remember{ mutableStateOf(Authorization()) }
 
     var authorizationState:Result<Unit>? by remember { mutableStateOf(null) }
 

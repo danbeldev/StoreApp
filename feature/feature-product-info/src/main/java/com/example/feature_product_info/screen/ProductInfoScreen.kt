@@ -32,6 +32,8 @@ import com.example.core_common.worker.DownloadType
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.product.enums.ProductFileExtension.*
 import com.example.core_model.data.api.product.review.ProductReview
+import com.example.core_model.data.api.user.history.HistoryCreate
+import com.example.core_model.data.api.user.history.HistoryType
 import com.example.core_model.data.navigation.VideoPlayerArgument
 import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
@@ -120,6 +122,15 @@ internal fun ProductInfoScreen(
         viewModel.getProductById(productId)
         viewModel.getProductReview(id = productId)
         viewModel.optionsProductFileSize(id = productId)
+
+        if (token != null){
+            viewModel.postHistoryUseCase(
+                body = HistoryCreate(
+                    type = HistoryType.PRODUCT,
+                    productId = productId
+                )
+            )
+        }
     })
 
     viewModel.responseProduct.onEach {
