@@ -1,5 +1,6 @@
 package com.example.core_network_domain.repository
 
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.api.user.*
 import retrofit2.Response
 
@@ -19,4 +20,6 @@ interface UserRepository {
      * Get user info
      * */
     suspend fun getUser():Response<User>
+
+    suspend fun getUserReviews():Response<ProductReview>
 }

@@ -23,5 +23,5 @@ data class ProductReviewItem(
     val rating:Float,
     val datePublication:String,
     val user:User,
-    val product:ProductItem
+    val product:ProductItem?
 )

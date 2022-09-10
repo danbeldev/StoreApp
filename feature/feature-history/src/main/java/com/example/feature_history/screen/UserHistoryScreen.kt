@@ -6,10 +6,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -22,6 +21,7 @@ import com.example.core_common.extension.launchWhenStarted
 import com.example.core_common.extension.replaceRange
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.user.history.History
+import com.example.core_model.data.api.user.history.HistoryItem
 import com.example.core_model.data.api.user.history.HistoryType
 import com.example.core_network_domain.responseApi.Result
 import com.example.core_ui.theme.JetHabitTheme
@@ -34,7 +34,8 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 internal fun UserHistoryRoute(
     viewModel:UserHistoryViewModel,
-    onBackClick:() -> Unit
+    onBackClick:() -> Unit,
+    onProductInfoScreen:(Int) -> Unit
 ) {
     var userHistory:Result<History> by remember { mutableStateOf(Result.Loading()) }
     val historyType by rememberSaveable { mutableStateOf<HistoryType?>(null) }
@@ -46,7 +47,8 @@ internal fun UserHistoryRoute(
 
     UserHistoryScreen(
         history = userHistory,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onProductInfoScreen = onProductInfoScreen
     )
 }
 
@@ -54,27 +56,47 @@ internal fun UserHistoryRoute(
 @Composable
 internal fun UserHistoryScreen(
     history:Result<History>,
-    onBackClick:() -> Unit
+    onBackClick:() -> Unit,
+    onProductInfoScreen:(Int) -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
+                backgroundColor = JetHabitTheme.colors.primaryBackground,
+                elevation = 8.dp,
                 title = {
                     Text(
                         text = "History ${history.data?.total ?: ""}",
                         color = JetHabitTheme.colors.primaryText
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBackClick() }) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowLeft,
+                            contentDescription = null,
+                            tint = JetHabitTheme.colors.tintColor
+                        )
+                    }
                 }
             )
         }
     ) {
-        LazyColumn(
-            userScrollEnabled = history !is Result.Loading
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = JetHabitTheme.colors.primaryBackground
         ) {
-            when(history){
-                is Result.Error -> item { HistoryError(message = history.message) }
-                is Result.Loading -> historyLoading()
-                is Result.Success -> historySuccess(data = history.data!!)
+            LazyColumn(
+                userScrollEnabled = history !is Result.Loading
+            ) {
+                when(history){
+                    is Result.Error -> item { HistoryError(message = history.message) }
+                    is Result.Loading -> historyLoading()
+                    is Result.Success -> historySuccess(
+                        data = history.data?.items ?: emptyList(),
+                        onProductInfoScreen = onProductInfoScreen
+                    )
+                }
             }
         }
     }
@@ -99,23 +121,25 @@ private fun HistoryError(
     }
 }
 
-private fun LazyListScope.historyLoading() {
-    items(10) {
-        BaseColumnShimmer()
+private fun LazyListScope.historyLoading() { items(10) { BaseColumnShimmer() } }
+
+private fun LazyListScope.historySuccess(
+    data:List<HistoryItem>,
+    onProductInfoScreen:(Int) -> Unit
+){
+    items(data){ item ->
+        item.product?.let { product -> HistoryProduct(
+            product = product,
+            onProductInfoScreen = onProductInfoScreen
+        ) }
     }
 }
 
-private fun LazyListScope.historySuccess(
-    data:History
-) {
-   items(data.items){ item ->
-       item.product?.let { product -> HistoryProduct(product = product) }
-   }
-}
-
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun HistoryProduct(
-    product:ProductItem
+    product:ProductItem,
+    onProductInfoScreen:(Int) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -124,7 +148,7 @@ private fun HistoryProduct(
         shape = AbsoluteRoundedCornerShape(10.dp),
         elevation = 8.dp,
         backgroundColor = JetHabitTheme.colors.primaryBackground,
-//        onClick = { onInfoProductScreen(product.id) }
+        onClick = { onProductInfoScreen(product.id) }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically

@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.core_common.extension.launchWhenStarted
 import com.example.core_model.data.api.company.CompanyItem
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.api.user.User
 import com.example.core_model.data.api.user.history.History
 import com.example.core_model.data.enums.user.UserRole
@@ -37,10 +38,7 @@ internal fun ProfileScreen(
     var company:Result<CompanyItem> by remember { mutableStateOf(Result.Loading()) }
 
     var history:Result<History> by remember { mutableStateOf(Result.Loading()) }
-
-    profileViewModel.getHistory.onEach {
-        history = it
-    }.launchWhenStarted()
+    var reviews:Result<ProductReview> by remember { mutableStateOf(Result.Loading()) }
 
     profileViewModel.getStatusRegistration.onEach {
         statusUserRegistration = it
@@ -53,6 +51,16 @@ internal fun ProfileScreen(
     profileViewModel.getUserRole.onEach {
         userRole = it
     }.launchWhenStarted()
+
+    if (statusUserRegistration){
+        profileViewModel.getUserReviews.onEach {
+            reviews = it
+        }.launchWhenStarted()
+
+        profileViewModel.getHistory.onEach {
+            history = it
+        }.launchWhenStarted()
+    }
 
     if (userRole == UserRole.CompanyUser){
         profileViewModel.getUserCompany.onEach {
@@ -67,16 +75,17 @@ internal fun ProfileScreen(
         when(statusUserRegistration){
             true ->
                 ProfileStatusTrue(
-                user = user,
-                userRole = userRole,
-                history = history,
-                onCreateCompanyScreen = onCreateCompanyScreen,
-                onSettingsScreen = onSettingsScreen,
-                company = company,
-                onCreateProductScreen = onCreateProductScreen,
-                onInfoProductScreen = onInfoProductScreen,
-                onUserHistoryScreen = onUserHistoryScreen
-            )
+                    user = user,
+                    userRole = userRole,
+                    history = history,
+                    review = reviews,
+                    onCreateCompanyScreen = onCreateCompanyScreen,
+                    onSettingsScreen = onSettingsScreen,
+                    company = company,
+                    onCreateProductScreen = onCreateProductScreen,
+                    onInfoProductScreen = onInfoProductScreen,
+                    onUserHistoryScreen = onUserHistoryScreen
+                )
             false -> ProfileStatusFalse(
                 onAuthorizationScreen = onAuthorizationScreen,
                 onRegistration = onRegistration

@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.core_model.data.api.product.ProductItem
 import com.example.core_model.data.api.user.history.History
@@ -91,7 +92,12 @@ private fun HistoryProduct(
     Card(
         modifier = Modifier
             .padding(5.dp)
-            .size(100.dp),
+            .widthIn(0.dp, 200.dp)
+            .heightIn(0.dp,250.dp)
+            .defaultMinSize(
+                minHeight = 100.dp,
+                minWidth = 100.dp
+            ),
         shape = AbsoluteRoundedCornerShape(10.dp),
         elevation = 8.dp,
         backgroundColor = JetHabitTheme.colors.primaryBackground,
@@ -112,6 +118,7 @@ private fun HistoryProduct(
 
             Text(
                 text = product.title,
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.W900,
                 color = JetHabitTheme.colors.primaryText
             )

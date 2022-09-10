@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class History(
     val total:Int,
-    val items:List<HistoryItem>
+    val items:MutableList<HistoryItem>
 )
 
 @Serializable

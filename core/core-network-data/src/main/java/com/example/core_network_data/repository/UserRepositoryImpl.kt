@@ -1,5 +1,6 @@
 package com.example.core_network_data.repository
 
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.api.user.*
 import com.example.core_model.data.enums.user.UserRole.BaseUser
 import com.example.core_network_data.api.UserApi
@@ -33,5 +34,9 @@ class UserRepositoryImpl @Inject constructor(
      * */
     override suspend fun getUser(): Response<User> {
         return userApi.getUser()
+    }
+
+    override suspend fun getUserReviews(): Response<ProductReview> {
+        return userApi.getUserReviews()
     }
 }

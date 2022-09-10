@@ -1,9 +1,11 @@
 package com.example.core_network_data.api
 
+import com.example.core_model.data.api.product.review.ProductReview
 import com.example.core_model.data.api.user.*
 import com.example.core_model.data.enums.user.UserRole.BaseUser
 import com.example.core_network_data.common.ConstantsUrl.AUTHORIZATION
 import com.example.core_network_data.common.ConstantsUrl.GET_USER
+import com.example.core_network_data.common.ConstantsUrl.GET_USER_REVIEW_URL
 import com.example.core_network_data.common.ConstantsUrl.REGISTRATION
 import retrofit2.Response
 import retrofit2.http.Body
@@ -40,4 +42,7 @@ interface UserApi {
     suspend fun getUser(
         @Header("Authorization") token:String? = null
     ):Response<User>
+
+    @GET(GET_USER_REVIEW_URL)
+    suspend fun getUserReviews():Response<ProductReview>
 }

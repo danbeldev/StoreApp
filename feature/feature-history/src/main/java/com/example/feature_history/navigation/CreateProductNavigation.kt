@@ -19,14 +19,16 @@ object UserHistoryDestination : NiaNavigationDestination {
 @ExperimentalAnimationApi
 fun NavGraphBuilder.userHistoryNavigation(
     viewModel: UserHistoryViewModel,
-    onBackClick:() -> Unit
+    onBackClick:() -> Unit,
+    onProductInfoScreen:(Int) -> Unit
 ) {
     composable(
         route = UserHistoryDestination.route
     ){
         UserHistoryRoute(
             viewModel = daggerViewModel { viewModel },
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onProductInfoScreen = onProductInfoScreen
         )
     }
 }

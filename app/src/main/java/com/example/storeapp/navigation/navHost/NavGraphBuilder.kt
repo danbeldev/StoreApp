@@ -84,7 +84,10 @@ fun NavGraphBuilder.baseNavGraphBuilder(
 
     userHistoryNavigation(
         viewModel = appComponent.userHistoryViewModel(),
-        onBackClick = { navController.navigateUp() }
+        onBackClick = { navController.navigateUp() },
+        onProductInfoScreen = {
+            navController.navigate("${ProductInfoDestination.route}/$it")
+        }
     )
 
     authorizationNavigation(

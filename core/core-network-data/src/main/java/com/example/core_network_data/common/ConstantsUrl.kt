@@ -27,4 +27,5 @@ internal object ConstantsUrl {
     const val USER_HISTORY_URL = "/storeApp/api/History"
 
     const val GET_USER = "/storeApp/api/User"
+    const val GET_USER_REVIEW_URL = "/storeApp/api/User/Product/Review"
 }
